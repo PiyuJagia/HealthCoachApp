@@ -1,0 +1,27 @@
+# Environment — never commit real keys
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Knowledge — local-only source and extraction artifacts
+knowledge/raw/*
+!knowledge/raw/.gitkeep
+knowledge/extracted/*
+!knowledge/extracted/.gitkeep
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

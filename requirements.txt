@@ -1,0 +1,7 @@
+fastapi[standard]
+pydantic-settings
+openai
+langchain-text-splitters
+langchain-openai
+pinecone
+httpx
