@@ -14,8 +14,31 @@ Health Coach AI is being built to:
 - make grounded observations and recommendations (future);
 - later add persistent memory, TRACE evaluations, alerts, trends, and a richer frontend.
 
-**Current status:** Phase A foundation only. RAG ingestion, retrieval, and API endpoints
-are not implemented yet.
+**Current status:** Phase B knowledge-management foundation. Registry parsing and validation
+are implemented. RAG ingestion, retrieval, and API endpoints are not implemented yet.
+
+## Knowledge Base Management
+
+The project supports **multiple RAG documents** from day one. Each source is tracked in
+`knowledge/registry/source_registry.csv` with metadata, provenance, and an ingestion
+approval flag.
+
+The registry exists so ingestion can be:
+
+- registry-driven rather than hardcoded
+- safe for batch processing across many documents
+- explicit about which curated sources are trusted
+
+**Intended workflow for adding a new knowledge source** *(ingestion not implemented yet)*:
+
+1. Add curated Markdown to `knowledge/curated/`
+2. Add a registry row with metadata
+3. Set `approved_for_ingestion=TRUE`
+4. Run the future ingestion command for one document or all approved documents
+
+No application-code changes should be required when a new approved document is added.
+
+See `knowledge/README.md` for the full knowledge-engineering lifecycle and registry rules.
 
 ## Architecture
 
