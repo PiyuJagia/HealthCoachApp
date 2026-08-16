@@ -14,8 +14,20 @@ Health Coach AI is being built to:
 - make grounded observations and recommendations (future);
 - later add persistent memory, TRACE evaluations, alerts, trends, and a richer frontend.
 
-**Current status:** Phase B knowledge-management foundation. Registry parsing and validation
-are implemented. RAG ingestion, retrieval, and API endpoints are not implemented yet.
+**Current status:** Phase C1 chunking is implemented on a synthetic fixture. Registry parsing
+and validation are implemented. Document ingestion, embeddings, retrieval, and API endpoints
+are not implemented yet.
+
+## Implementation Status
+
+| Component | Status |
+|-----------|--------|
+| Chunking | implemented |
+| Document ingestion | not yet implemented |
+| Embeddings | not yet implemented |
+| Pinecone | not yet implemented |
+
+Default chunking settings: `chunk_size=1200`, `chunk_overlap=200`.
 
 ## Knowledge Base Management
 
