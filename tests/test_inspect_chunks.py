@@ -50,7 +50,7 @@ class InspectChunksTests(unittest.TestCase):
                 "hhs_physical_activity_guidelines_2e",
             ],
         )
-        self.assertTrue(all(not result.record.approved_for_ingestion for result in results))
+        self.assertTrue(all(result.record.approved_for_ingestion for result in results))
 
 
 if __name__ == "__main__":

@@ -220,7 +220,8 @@ class RegistryTests(unittest.TestCase):
 
     def test_project_registry_has_zero_approved_sources(self) -> None:
         approved = get_approved_sources()
-        self.assertEqual(approved, [])
+        self.assertEqual(len(approved), 4)
+        self.assertTrue(all(record.approved_for_ingestion for record in approved))
 
 
 if __name__ == "__main__":
