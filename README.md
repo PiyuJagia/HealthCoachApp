@@ -166,7 +166,13 @@ python -m scripts.ingest_all_approved
 
 ## Test Retrieval
 
-*(Not implemented yet.)*
+```bash
+python scripts/test_retrieval.py --representative
+python scripts/test_retrieval.py --query "your question here"
+```
+
+Uses `RAG_TOP_K` and `RAG_MIN_RELEVANCE_SCORE` from `.env` (defaults: 3 and 0.35).
+Retrieval returns ranked chunks only — no LLM answer generation.
 
 ```bash
 python -m scripts.test_retrieval --question "Your question here"

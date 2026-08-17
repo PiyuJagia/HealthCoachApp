@@ -61,3 +61,28 @@ class ClaimEvidenceRecord:
     verification_status: str
     verified_date: str
     notes: str
+
+
+@dataclass(frozen=True)
+class RetrievalResult:
+    """One retrieved chunk from Pinecone with normalized metadata."""
+
+    vector_id: str
+    score: float
+    text: str
+    document_id: str
+    source_title: str
+    section_heading: str
+    chunk_index: int
+    version: str
+    evidence_level: str
+    evidence_grade: str
+    verification_status: str
+    relationship_id: str
+    relationship_status: str
+    evidence_strength: str
+    measurement_transfer_risk: str
+    max_product_level: str
+    recommendation_eligible: str
+    modifier_suppressor_only: str
+    mandatory_contradiction_suppression: str
