@@ -61,14 +61,30 @@ def _preview(text: str) -> str:
     return collapsed[: PREVIEW_LENGTH - 3] + "..."
 
 
+RELATIONSHIP_PREVIEW_FIELDS = (
+    "relationship_id",
+    "relationship_status",
+    "evidence_strength",
+    "measurement_transfer_risk",
+    "max_product_level",
+    "recommendation_eligible",
+    "modifier_suppressor_only",
+    "mandatory_contradiction_suppression",
+)
+
+
 def _print_result(rank: int, result) -> None:
     print(f"  [{rank}] score={result.score:.4f}  doc={result.document_id}")
     print(f"      vector_id={result.vector_id}")
     print(f"      section={result.section_heading or '(none)'}")
-    if result.relationship_id:
-        print(f"      relationship_id={result.relationship_id}")
-    elif "[L2-CR Safety Envelope" in result.text:
-        print("      relationship_id=(in text envelope, not Pinecone metadata)")
+    if result.relationship_id or result.document_id == "healthcoach_correlation_modeling":
+        rel_fields = {
+            field: getattr(result, field)
+            for field in RELATIONSHIP_PREVIEW_FIELDS
+            if getattr(result, field, "")
+        }
+        if rel_fields:
+            print(f"      relationship_metadata={rel_fields}")
     print(f"      preview={_preview(result.text)!r}")
 
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from typing import Any
 
 from pinecone import Pinecone, ServerlessSpec
 from pinecone.exceptions import NotFoundException
@@ -43,6 +44,28 @@ SUPPLEMENTAL_METADATA_FIELDS = (
     "entities",
 )
 
+RELATIONSHIP_METADATA_FIELDS = (
+    "relationship_id",
+    "relationship_status",
+    "relationship_section_title",
+    "evidence_strength",
+    "measurement_transfer_risk",
+    "max_product_level",
+    "recommendation_eligible",
+    "modifier_suppressor_only",
+    "mandatory_contradiction_suppression",
+)
+
+RELATIONSHIP_BOOL_FIELDS = frozenset(
+    {
+        "recommendation_eligible",
+        "modifier_suppressor_only",
+        "mandatory_contradiction_suppression",
+    }
+)
+
+RELATIONSHIP_INT_FIELDS = frozenset({"max_product_level"})
+
 
 def _require_pinecone_api_key() -> None:
     if not os.getenv("PINECONE_API_KEY", "").strip():
@@ -68,11 +91,30 @@ def build_vector_id(document_id: str, chunk_index: int) -> str:
     return f"{document_id}__chunk_{chunk_index:04d}"
 
 
-def build_vector_metadata(embedded_doc: EmbeddedDocument) -> dict[str, str | int]:
+def _coerce_relationship_metadata_value(field: str, value: Any) -> str | int | bool:
+    """Normalize L2-CR relationship fields to Pinecone-safe scalar types."""
+    if field in RELATIONSHIP_BOOL_FIELDS:
+        normalized = str(value).strip().lower()
+        if normalized in {"yes", "true", "1"}:
+            return True
+        if normalized in {"no", "false", "0"}:
+            return False
+        return normalized
+
+    if field in RELATIONSHIP_INT_FIELDS:
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return str(value).strip()
+
+    return str(value).strip()
+
+
+def build_vector_metadata(embedded_doc: EmbeddedDocument) -> dict[str, str | int | bool]:
     """Build flat Pinecone metadata for one embedded chunk."""
     source_metadata = embedded_doc.metadata
 
-    metadata: dict[str, str | int] = {
+    metadata: dict[str, str | int | bool] = {
         "text": embedded_doc.page_content,
         "embedding_model": DEFAULT_EMBEDDING_MODEL,
         "document_id": str(source_metadata["document_id"]),
@@ -92,6 +134,12 @@ def build_vector_metadata(embedded_doc: EmbeddedDocument) -> dict[str, str | int
         value = source_metadata.get(field)
         if value not in (None, ""):
             metadata[field] = str(value)
+
+    for field in RELATIONSHIP_METADATA_FIELDS:
+        value = source_metadata.get(field)
+        if value in (None, ""):
+            continue
+        metadata[field] = _coerce_relationship_metadata_value(field, value)
 
     return metadata
 

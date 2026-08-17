@@ -41,6 +41,8 @@ def _metadata_str(metadata: dict[str, Any], key: str) -> str:
     value = metadata.get(key)
     if value is None:
         return ""
+    if isinstance(value, bool):
+        return "yes" if value else "no"
     return str(value).strip()
 
 

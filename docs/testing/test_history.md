@@ -12,7 +12,7 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | L3-SF | 14 |
 | **Total** | **407** |
 
-**Offline test suite:** 94 tests passing (includes 12 Phase D2 retrieval unit tests).
+**Offline test suite:** 97 tests passing (includes Phase D2 retrieval + D2.1 metadata tests).
 
 ---
 
@@ -38,6 +38,34 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | **Regression — Non-L2-CR chunking** | HHS/L2-TD/L3-SF counts unchanged | L2-CR special path must not affect others | 289 / 15 / 14 chunks | Pass | `tests/test_relationship_chunker.py` |
 | **D2 — Retrieval (offline)** | Score filter, top_k, metadata mapping, no LLM | Retrieval layer correctness | 12 unit tests pass | Pass | `tests/test_retrieval.py`, `rag/retrieval.py` |
 | **D2 — Retrieval (live smoke)** | 6 representative queries vs Pinecone | Validate 407-vector corpus retrieval | 5/6 pass; 1 partial — see below | Pass (with notes) | `scripts/test_retrieval.py` |
+| **D2.1 — Relationship metadata in Pinecone** | Whitelist + L2-CR-only re-ingestion | Machine-readable policy fields at retrieval time | 54/89 L2-CR vectors carry relationship metadata; corpus 407 | Pass | `rag/vector_store.py`, `scripts/verify_l2cr_relationship_metadata.py` |
+| **D2.1 — Retrieval regression** | Re-run representative queries post re-ingest | Confirm structured metadata + envelope text | Same pass pattern as D2; L2-CR results expose `relationship_metadata` | Pass | `scripts/test_retrieval.py` |
+
+---
+
+## Phase D2.1 — Relationship metadata persistence (2026-08-17)
+
+**Why it matters:** Post-retrieval policy enforcement and future TRACE/evals need structured fields (e.g. `max_product_level`, `recommendation_eligible`) without parsing safety-envelope prose.
+
+**Change:** Added `RELATIONSHIP_METADATA_FIELDS` whitelist to `build_vector_metadata()` with Pinecone-safe types (string / int / bool).
+
+**Re-ingestion:** `healthcoach_correlation_modeling` only — 89 vectors replaced. HHS (289), L2-TD (15), L3-SF (14) untouched. Namespace total **407**.
+
+**Verification:**
+
+| Check | Result |
+|-------|--------|
+| L2-CR vector count | 89 |
+| All versions | `L2-CR-002` |
+| Vectors with `relationship_id` | 54 / 89 (relationship chunks only) |
+| R-02 sample | `measurement_transfer_risk=high`, `max_product_level=2`, `recommendation_eligible=false` |
+| R-03 sample | `mandatory_contradiction_suppression=true` |
+| R-05 sample | `max_product_level=4`, `recommendation_eligible=true` |
+| R-06 sample | `measurement_transfer_risk=high`, `recommendation_eligible=false` |
+| R-08 sample | `max_product_level=2`, `recommendation_eligible=false` |
+| R-09 sample | `modifier_suppressor_only=true` |
+
+**Retrieval regression:** Representative D2 queries unchanged in pass/fail pattern. L2-CR hits now include structured `relationship_metadata` alongside safety-envelope text previews.
 
 ---
 
@@ -56,7 +84,7 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 
 **Threshold assessment:** 0.35 appears reasonable — blocks off-topic noise (D2-F) while retaining domain queries in the 0.51–0.73 range. Not tuned to force passes.
 
-**Pinecone relationship metadata gap (unchanged):** `relationship_id` and related policy fields are **not** in Pinecone metadata; L2-CR safety constraints are recoverable from the embedded `text` field (envelope prefix). Smallest fix: whitelist relationship fields in `build_vector_metadata()` and re-ingest **L2-CR only** (89 vectors). **Not performed in Phase D2.**
+**Pinecone relationship metadata:** **IMPLEMENTED** in Phase D2.1 — structured fields on L2-CR relationship chunks; safety envelopes remain in `text`.
 
 **Notable retrieval risks:**
 

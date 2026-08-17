@@ -50,28 +50,21 @@ Each control is labeled:
 | L2-CR relationship-aware Section 5 chunking | IMPLEMENTED | `rag/relationship_chunker.py` |
 | Self-contained safety envelopes on L2-CR relationship chunks | IMPLEMENTED | Prepended to every R-01…R-09 child chunk |
 | Relationship policy metadata on LangChain chunks | IMPLEMENTED | `relationship_id`, `max_product_level`, etc. at chunk creation |
-| Relationship fields in Pinecone vector metadata | **PARTIAL** | See gap note below — fields exist in chunk metadata but are **not** whitelisted in `build_vector_metadata()` |
+| Relationship fields in Pinecone vector metadata | **IMPLEMENTED** | `RELATIONSHIP_METADATA_FIELDS` in `rag/vector_store.py`; persisted after D2.1 L2-CR re-ingestion |
 | Safety constraints recoverable from retrieved L2-CR text | IMPLEMENTED | Safety envelope embedded in Pinecone `text` field |
 
-### Pinecone relationship metadata gap (PARTIAL)
+### L2-CR relationship metadata in Pinecone (IMPLEMENTED — Phase D2.1)
 
-At chunk creation, L2-CR relationship chunks carry:
+Whitelisted fields copied from chunk metadata with Pinecone-safe types:
 
-- `relationship_id`
-- `relationship_status`
-- `relationship_section_title`
-- `evidence_strength`
-- `measurement_transfer_risk`
-- `max_product_level`
-- `recommendation_eligible`
-- `modifier_suppressor_only`
-- `mandatory_contradiction_suppression`
+- `relationship_id`, `relationship_status`, `relationship_section_title` — string
+- `evidence_strength`, `measurement_transfer_risk` — string
+- `max_product_level` — integer
+- `recommendation_eligible`, `modifier_suppressor_only`, `mandatory_contradiction_suppression` — boolean
 
-`rag/vector_store.py` → `build_vector_metadata()` only copies `section_heading` and `SUPPLEMENTAL_METADATA_FIELDS` (document-level frontmatter). **Relationship policy fields are not stored in Pinecone today.**
+Present on **54 of 89** L2-CR vectors (relationship catalogue chunks only; prefix/suffix sections correctly omit relationship fields).
 
-**Smallest safe fix (not applied in Phase D2):** add a `RELATIONSHIP_METADATA_FIELDS` tuple to `vector_store.py` and copy non-empty values in `build_vector_metadata()`. **Only L2-CR (89 vectors) would need re-ingestion**; HHS/L2-TD/L3-SF unchanged.
-
-Basic semantic retrieval remains viable because safety envelopes are in chunk text.
+Re-ingestion scope: **L2-CR only** — HHS/L2-TD/L3-SF vectors unchanged.
 
 ---
 
@@ -130,8 +123,8 @@ Policy representation is **IMPLEMENTED** in code and curated content; automated 
 |-----|--------|-------|
 | Evidence bibliographic gaps | IMPLEMENTED (visible) | Incomplete metadata intentionally explicit |
 | ACSM page-level verification | IMPLEMENTED (visible) | Flagged, not silently treated as verified |
-| Relationship fields in Pinecone metadata | PARTIAL | Re-ingest L2-CR only if whitelist added |
-| Retrieval quality baselines | PARTIAL | Phase D2 live smoke; not full eval suite |
+| Relationship fields in Pinecone metadata | IMPLEMENTED | D2.1 whitelist + L2-CR-only re-ingestion (54/89 relationship chunks) |
+| Retrieval quality baselines | PARTIAL | Phase D2/D2.1 live smoke; not full eval suite |
 | Answer generation guardrails | PLANNED | No `/ask` or agent yet |
 | TRACE traces and failure taxonomy | PLANNED | `evals/traces/` placeholder |
 | Persistent user memory | PLANNED | Not in scope |
