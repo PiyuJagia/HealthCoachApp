@@ -6,7 +6,7 @@ domain: analytics
 metrics: [hrv_sdnn, rhr, hrr_1min, vo2max, sleep_total, sleep_efficiency, sleep_deep, sleep_rem, sleep_consistency, workout_freq, workout_intensity, training_load, active_kcal, steps, weight, bmi, stress, mood, energy, alcohol_units, smoking, travel_tz_delta, illness, water_intake, diet_quality, caffeine_mg, cycle_phase, recovery_perception]
 entities: [correlation, causation, mediation, confounding, lag, n_of_1, effect_size]
 evidence_grade: B
-verification_status: verified
+verification_status: revision_required
 retrieval_hints:
   - "does alcohol affect my HRV"
   - "how does sleep affect my recovery"

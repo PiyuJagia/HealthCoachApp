@@ -14,18 +14,31 @@ Health Coach AI is being built to:
 - make grounded observations and recommendations (future);
 - later add persistent memory, TRACE evaluations, alerts, trends, and a richer frontend.
 
-**Current status:** Phase C1 chunking is implemented on a synthetic fixture. Registry parsing
-and validation are implemented. Document ingestion, embeddings, retrieval, and API endpoints
-are not implemented yet.
+**Current status:** Phase C3 chunk quality and Phase E embedding/ingestion are
+implemented for the approved corpus. L2-CR correlation modeling is under
+evidence remediation and is not currently approved for ingestion.
 
 ## Implementation Status
 
 | Component | Status |
 |-----------|--------|
 | Chunking | implemented |
-| Document ingestion | not yet implemented |
-| Embeddings | not yet implemented |
-| Pinecone | not yet implemented |
+| Document ingestion | implemented (registry-driven) |
+| Embeddings | implemented |
+| Pinecone | implemented (`healthcoach-rag`) |
+| Retrieval | not yet implemented |
+
+### Approved RAG corpus
+
+- HHS Physical Activity Guidelines (`hhs_physical_activity_guidelines_2e`)
+- Health Coach Trend Detection (`healthcoach_trend_detection`)
+- Health Coach Safety / Scope / Escalation (`healthcoach_safety_scope_escalation`)
+
+### Under remediation
+
+- Health Coach Correlation Modeling (`healthcoach_correlation_modeling`) —
+  claim-level provenance and scientific corrections pending after evidence audit
+  verdict `revision_required`
 
 Default chunking settings: `chunk_size=1200`, `chunk_overlap=200`.
 
@@ -172,7 +185,8 @@ Retrieval testing will validate Pinecone matches without calling an LLM.
 | Embedding model | `text-embedding-3-small` (1536 dimensions) |
 | Similarity metric | cosine |
 
-The Pinecone index has not been created yet. Creation will happen at the Phase E checkpoint.
+The Pinecone index `healthcoach-rag` exists for the approved corpus. L2-CR vectors
+were removed during Phase C4 remediation pending claim-level provenance work.
 
 ## Current Limitations
 

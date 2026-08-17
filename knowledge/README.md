@@ -190,3 +190,54 @@ Registry parsing and validation live in `rag/registry.py`.
 - Parsing the header-only registry is allowed.
 - Curated files are validated only when explicitly checked before ingestion.
 - Duplicate `document_id` values and invalid approval flags are rejected.
+
+---
+
+## Evidence Provenance Registries
+
+Curated synthesis documents such as L2-CR may cite external evidence. Claim-level
+provenance is tracked separately from RAG document approval.
+
+### A. `source_registry.csv`
+
+**Purpose:** Tracks curated RAG documents and whether each document is approved
+for ingestion into Pinecone.
+
+**Approval gate:** `approved_for_ingestion=TRUE`
+
+### B. `evidence_registry.csv`
+
+**Purpose:** Tracks authoritative external sources used to support claims inside
+curated synthesis documents.
+
+**Key field:** `source_key` (for example `Shaffer-2017`, `ACSM-GETP11`)
+
+**Validation:** `rag/evidence_registry.py`
+
+### C. `claim_evidence_registry.csv`
+
+**Purpose:** Maps individual claims to external sources and records:
+
+- support strength (`support_type`)
+- claim grade
+- causal interpretation (`causal_class`)
+- within-person applicability (`within_person_valid`)
+- product-use level (`product_level`)
+- measurement transfer (`evidence_measurement` → `product_measurement`)
+
+**Validation:** `rag/claim_evidence_registry.py`
+
+### Evidence Lifecycle
+
+```text
+external evidence
+  → evidence_registry.csv
+  → claim_evidence_registry.csv
+  → curated synthesis document
+  → document verification
+  → source_registry approval
+  → RAG ingestion
+```
+
+Only curated documents with `approved_for_ingestion=TRUE` may be ingested. A document
+may remain in the curated corpus while undergoing scientific or provenance remediation.

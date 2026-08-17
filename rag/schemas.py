@@ -24,3 +24,40 @@ class SourceRecord:
     approved_for_ingestion: bool
     notes: str
     curated_path: str
+
+
+@dataclass(frozen=True)
+class EvidenceSourceRecord:
+    """One external evidence source from evidence_registry.csv."""
+
+    source_key: str
+    title: str
+    authors_or_organization: str
+    publication_year: str
+    source_type: str
+    doi: str
+    pmid: str
+    source_url: str
+    verification_status: str
+    notes: str
+
+
+@dataclass(frozen=True)
+class ClaimEvidenceRecord:
+    """One claim-to-source mapping from claim_evidence_registry.csv."""
+
+    claim_id: str
+    document_id: str
+    section: str
+    claim_summary: str
+    source_key: str
+    support_type: str
+    claim_grade: str
+    causal_class: str
+    within_person_valid: str
+    product_level: str
+    evidence_measurement: str
+    product_measurement: str
+    verification_status: str
+    verified_date: str
+    notes: str

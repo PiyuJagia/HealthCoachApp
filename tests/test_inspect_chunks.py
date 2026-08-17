@@ -50,7 +50,15 @@ class InspectChunksTests(unittest.TestCase):
                 "hhs_physical_activity_guidelines_2e",
             ],
         )
-        self.assertTrue(all(result.record.approved_for_ingestion for result in results))
+        approved_ids = {result.record.document_id for result in results if result.record.approved_for_ingestion}
+        self.assertEqual(
+            approved_ids,
+            {
+                "hhs_physical_activity_guidelines_2e",
+                "healthcoach_trend_detection",
+                "healthcoach_safety_scope_escalation",
+            },
+        )
 
 
 if __name__ == "__main__":
