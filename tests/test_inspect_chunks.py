@@ -56,6 +56,7 @@ class InspectChunksTests(unittest.TestCase):
             {
                 "hhs_physical_activity_guidelines_2e",
                 "healthcoach_trend_detection",
+                "healthcoach_correlation_modeling",
                 "healthcoach_safety_scope_escalation",
             },
         )

@@ -14,10 +14,10 @@ Health Coach AI is being built to:
 - make grounded observations and recommendations (future);
 - later add persistent memory, TRACE evaluations, alerts, trends, and a richer frontend.
 
-**Current status:** Phase C5 integrated remediated L2-CR-002 content and rebuilt
-evidence/relationship mappings; claim-level review is pending and L2-CR remains
-`approved_for_ingestion=FALSE`. Phase E embedding/ingestion applies only to the
-three approved documents.
+**Current status:** L2-CR-002 is approved for MVP ingestion with
+`verified_with_constraints` status. All four corpus documents are embedded in
+Pinecone (`healthcoach-rag` / `healthcoach-knowledge-base`). Retrieval is not yet
+implemented.
 
 ## Implementation Status
 
@@ -35,14 +35,10 @@ three approved documents.
 - Health Coach Trend Detection (`healthcoach_trend_detection`)
 - Health Coach Safety / Scope / Escalation (`healthcoach_safety_scope_escalation`)
 
-### Under remediation (integrated, not approved)
+- Health Coach Correlation Modeling (`healthcoach_correlation_modeling`)
 
-- Health Coach Correlation Modeling (`healthcoach_correlation_modeling`) —
-  internal doc_id **L2-CR-002** supersedes L2-CR-001; content integrated in Phase C5;
-  `verification_status=revision_complete_pending_review`; claim-level verification
-  and relationship-aware chunking review pending before re-approval
-
-Default chunking settings: `chunk_size=1200`, `chunk_overlap=200`.
+Default chunking settings: `chunk_size=1200`, `chunk_overlap=200`. L2-CR uses
+relationship-aware chunking for Section 5 active relationships (R-01…R-09).
 
 ## Knowledge Base Management
 
@@ -187,8 +183,9 @@ Retrieval testing will validate Pinecone matches without calling an LLM.
 | Embedding model | `text-embedding-3-small` (1536 dimensions) |
 | Similarity metric | cosine |
 
-The Pinecone index `healthcoach-rag` holds **318 vectors** for the three approved
-documents. L2-CR remains at **0 vectors** — no re-ingestion in Phase C5.
+The Pinecone index `healthcoach-rag` holds **407 vectors** across four approved
+documents (289 HHS + 15 L2-TD + 89 L2-CR + 14 L3-SF). L2-CR vectors carry
+`version=L2-CR-002` and `verification_status=verified_with_constraints`.
 
 ## Current Limitations
 

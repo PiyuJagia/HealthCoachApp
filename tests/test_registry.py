@@ -218,20 +218,18 @@ class RegistryTests(unittest.TestCase):
         self.assertEqual(len(paths), 4)
         self.assertTrue(all(path.is_file() for path in paths))
 
-    def test_project_registry_has_three_approved_sources(self) -> None:
+    def test_project_registry_has_four_approved_sources(self) -> None:
         approved = get_approved_sources()
-        self.assertEqual(len(approved), 3)
+        self.assertEqual(len(approved), 4)
         approved_ids = {record.document_id for record in approved}
         self.assertEqual(
             approved_ids,
             {
                 "hhs_physical_activity_guidelines_2e",
                 "healthcoach_trend_detection",
+                "healthcoach_correlation_modeling",
                 "healthcoach_safety_scope_escalation",
             },
-        )
-        self.assertFalse(
-            any(record.document_id == "healthcoach_correlation_modeling" for record in approved)
         )
 
 

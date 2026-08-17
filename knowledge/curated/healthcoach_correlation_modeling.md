@@ -6,9 +6,9 @@ layer: L2
 domain: analytics
 metrics: [hrv_sdnn, rhr, sleep_total, sleep_efficiency, workout_freq, workout_intensity, training_load, vo2max_estimate, caffeine_mg, alcohol_units, cycle_phase]
 entities: [correlation, association, confounding, within_person_inference, suppression, interpretation_level]
-evidence_grade: pending_row_level_verification
-verification_status: revision_complete_pending_review
-approved_for_ingestion: FALSE
+evidence_grade: verified_with_constraints
+verification_status: verified_with_constraints
+approved_for_ingestion: TRUE
 retrieval_hints:
   - "does alcohol affect my HRV"
   - "how does sleep affect my recovery"
