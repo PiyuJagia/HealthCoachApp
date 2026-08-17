@@ -12,6 +12,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from rag.frontmatter import PROTECTED_METADATA_KEYS, extract_frontmatter
 from rag.schemas import SourceRecord
 
+L2CR_DOCUMENT_ID = "healthcoach_correlation_modeling"
+
 MARKDOWN_SEPARATORS = [
     "\n# ",
     "\n## ",
@@ -355,6 +357,25 @@ def chunk_markdown_text(
         raise ValueError("document_id must not be blank.")
 
     supplemental_metadata, chunking_text = extract_frontmatter(text)
+
+    if document_id.strip() == L2CR_DOCUMENT_ID:
+        from rag.relationship_chunker import chunk_l2cr_markdown_text
+
+        return chunk_l2cr_markdown_text(
+            chunking_text,
+            document_id=document_id,
+            source_title=source_title,
+            organization=organization,
+            topic=topic,
+            topic_category=topic_category,
+            source_file=source_file,
+            document_type=document_type,
+            evidence_level=evidence_level,
+            version=version,
+            supplemental_metadata=supplemental_metadata,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+        )
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,

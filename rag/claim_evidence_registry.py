@@ -35,7 +35,13 @@ CLAIM_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
 ALLOWED_SUPPORT_TYPES = frozenset({"direct", "partial", "context", "contradicts", "unsupported"})
 ALLOWED_WITHIN_PERSON_VALID = frozenset({"yes", "conditional", "no"})
 ALLOWED_VERIFICATION_STATUSES = frozenset(
-    {"verified", "needs_verification", "revision_required", "superseded"}
+    {
+        "verified",
+        "needs_verification",
+        "revision_required",
+        "superseded",
+        "revision_complete_pending_review",
+    }
 )
 
 

@@ -14,9 +14,10 @@ Health Coach AI is being built to:
 - make grounded observations and recommendations (future);
 - later add persistent memory, TRACE evaluations, alerts, trends, and a richer frontend.
 
-**Current status:** Phase C3 chunk quality and Phase E embedding/ingestion are
-implemented for the approved corpus. L2-CR correlation modeling is under
-evidence remediation and is not currently approved for ingestion.
+**Current status:** Phase C5 integrated remediated L2-CR-002 content and rebuilt
+evidence/relationship mappings; claim-level review is pending and L2-CR remains
+`approved_for_ingestion=FALSE`. Phase E embedding/ingestion applies only to the
+three approved documents.
 
 ## Implementation Status
 
@@ -34,11 +35,12 @@ evidence remediation and is not currently approved for ingestion.
 - Health Coach Trend Detection (`healthcoach_trend_detection`)
 - Health Coach Safety / Scope / Escalation (`healthcoach_safety_scope_escalation`)
 
-### Under remediation
+### Under remediation (integrated, not approved)
 
 - Health Coach Correlation Modeling (`healthcoach_correlation_modeling`) —
-  claim-level provenance and scientific corrections pending after evidence audit
-  verdict `revision_required`
+  internal doc_id **L2-CR-002** supersedes L2-CR-001; content integrated in Phase C5;
+  `verification_status=revision_complete_pending_review`; claim-level verification
+  and relationship-aware chunking review pending before re-approval
 
 Default chunking settings: `chunk_size=1200`, `chunk_overlap=200`.
 
@@ -185,8 +187,8 @@ Retrieval testing will validate Pinecone matches without calling an LLM.
 | Embedding model | `text-embedding-3-small` (1536 dimensions) |
 | Similarity metric | cosine |
 
-The Pinecone index `healthcoach-rag` exists for the approved corpus. L2-CR vectors
-were removed during Phase C4 remediation pending claim-level provenance work.
+The Pinecone index `healthcoach-rag` holds **318 vectors** for the three approved
+documents. L2-CR remains at **0 vectors** — no re-ingestion in Phase C5.
 
 ## Current Limitations
 

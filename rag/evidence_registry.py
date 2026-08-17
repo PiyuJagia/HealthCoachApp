@@ -26,7 +26,14 @@ REQUIRED_COLUMNS = [
 
 SOURCE_KEY_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
 ALLOWED_VERIFICATION_STATUSES = frozenset(
-    {"verified", "needs_verification", "revision_required", "superseded"}
+    {
+        "verified",
+        "needs_verification",
+        "revision_required",
+        "superseded",
+        "incomplete_metadata",
+        "page_verification_required",
+    }
 )
 
 

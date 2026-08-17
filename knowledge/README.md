@@ -227,6 +227,10 @@ curated synthesis documents.
 
 **Validation:** `rag/claim_evidence_registry.py`
 
+For L2-CR-002, claim IDs are the nine active relationship IDs (`R-01` … `R-09`).
+Deterministic evaluation constraints (suppression, input gating, recommendation
+eligibility) are validated by `rag/relationship_policy.py`.
+
 ### Evidence Lifecycle
 
 ```text

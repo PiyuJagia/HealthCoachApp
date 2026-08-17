@@ -1,5 +1,32 @@
 source_key,title,authors_or_organization,publication_year,source_type,doi,pmid,source_url,verification_status,notes
-Shaffer-2017,"An Overview of Heart Rate Variability Metrics and Norms",Shaffer F; Ginsberg JP,2017,review,10.3389/fpubh.2017.00258,28744322,https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2017.00258/full,verified,"Frontiers in Public Health review of HRV metrics and norms. Used for autonomic and HRV measurement context."
-ACSM-GETP11,"ACSM's Guidelines for Exercise Testing and Prescription (11th Edition)",American College of Sports Medicine,2021,professional_guidance,,,https://www.acsm.org/education-resources/books/guidelines-exercise-testing-and-prescription,needs_verification,"Source exists and is cited in corpus. Superseded by GETP12 (12th edition). Specific passages were not page-verified in this audit; do not treat as fully claim-verified."
-AHA-RHR,"All About Heart Rate (Pulse)",American Heart Association,,professional_guidance,,,https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure/all-about-heart-rate-pulse,verified,"AHA patient guidance on resting heart rate interpretation. Population-level context only."
-WHO-PA-2020,"WHO Guidelines on physical activity and sedentary behaviour",World Health Organization,2020,guideline,,,https://www.who.int/publications/i/item/9789240015128,verified,"WHO 2020 physical activity and sedentary behaviour guidelines."
+
+Shaffer-2017,"An Overview of Heart Rate Variability Metrics and Norms",Shaffer F; Ginsberg JP,2017,review,10.3389/fpubh.2017.00258,28744322,https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2017.00258/full,verified,"Metric definitions and recording-length caveat only for L2-CR."
+
+ACSM-GETP11,"ACSM's Guidelines for Exercise Testing and Prescription (11th Edition)",American College of Sports Medicine,2021,professional_guidance,,,https://www.acsm.org/education-resources/books/guidelines-exercise-testing-and-prescription,superseded,"Superseded by ACSM-GETP12. Retained for historical corpus references only."
+
+ACSM-GETP12,"ACSM's Guidelines for Exercise Testing and Prescription (12th Edition)",American College of Sports Medicine,2025,professional_guidance,,,https://www.acsm.org/education-resources/books/guidelines-exercise-testing-and-prescription,page_verification_required,"Source exists and supersedes GETP11. Specific passages were not page-verified in this audit; do not treat as fully claim-verified."
+
+AHA-RHR,"All About Heart Rate (Pulse)",American Heart Association,,professional_guidance,,,https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure/all-about-heart-rate-pulse,verified,"Consumer patient-education page. Capped at grade C; may support adult reference range only, not threshold/lag/trend rules."
+
+WHO-PA-2020,"WHO Guidelines on physical activity and sedentary behaviour",World Health Organization,2020,guideline,10.1136/bjsports-2020-102955,33239350,https://www.who.int/publications/i/item/9789240015128,verified,"Activity dosing context only for L2-CR."
+
+Reimers-2018-RHR,"Effects of Exercise on the Resting Heart Rate: A Systematic Review and Meta-Analysis of Interventional Studies",Reimers AK; Knapp G; Reimers C-D,2018,systematic_review,10.3390/jcm7120503,,https://doi.org/10.3390/jcm7120503,verified,"Interventional meta-analysis supporting R-05."
+
+Gardiner-2023-CAF-SLEEP,"The effect of caffeine on subsequent sleep: A systematic review and meta-analysis",Gardiner C; Weakley J; Burke LM; et al.,2023,systematic_review,10.1016/j.smrv.2023.101764,36870101,,verified,"Quantified caffeine timing and sleep evidence for R-07."
+
+Bellenger-2016-HR-TRAINING,"Monitoring Athletic Training Status Through Autonomic Heart Rate Regulation",Bellenger CR; Fuller JT; Thomson RL; et al.,2016,systematic_review,10.1007/s40279-016-0484-2,26888648,,verified,"Supports R-03 and R-04; includes overreaching paradox used in contradiction suppression."
+
+Schmalenberger-2019-CYCLE-CVA,"A Systematic Review and Meta-Analysis of Within-Person Changes in Cardiac Vagal Activity across the Menstrual Cycle",Schmalenberger KM; Eisenlohr-Moul TA; Würth L; et al.,2019,systematic_review,10.3390/jcm8111946,31726666,,verified,"Within-person menstrual-cycle evidence for R-09 modifier/suppressor role."
+
+SD-HRV-META-2025,"Effects of sleep deprivation on heart rate variability: a systematic review and meta-analysis",,2025,systematic_review,,,https://pmc.ncbi.nlm.nih.gov/articles/PMC12394884/,incomplete_metadata,"Paper existence verified for audit; author and journal metadata not yet completed in registry."
+
+SLEEP-RESTRICT-HR-2023,"Effects of sleep fragmentation and partial sleep restriction on heart rate variability during night",,2023,primary_research,10.1038/s41598-023-33013-5,,https://doi.org/10.1038/s41598-023-33013-5,incomplete_metadata,"Small male-only crossover study supporting R-01; author metadata not yet completed in registry."
+
+Ralevski-2019-ALC-HRV,"Heart rate variability in alcohol use: A review",Ralevski E; Petrakis I; Altemus M,2019,review,10.1016/j.pbb.2018.12.003,30529588,,verified,"Narrative review supporting R-08."
+
+Spaak-2010-ALC-DOSE,"Dose-related effects of red wine and alcohol on heart rate variability",Spaak J; et al.,2010,primary_research,10.1152/ajpheart.00700.2009,,,verified,"Small laboratory dose-response study supporting R-08 low-dose inconsistency caveat."
+
+Fisher-2018-ERGODICITY,"Lack of group-to-individual generalizability is a threat to human subjects research",Fisher AJ; Medaglia JD; Jeronimus BF,2018,primary_research,10.1073/pnas.1711978115,29915059,,verified,"Supports within-person gate in L2-CR Section 3."
+
+AW-HRV-VALID-2025,"Validity of Heart Rate Variability Measured with Apple Watch Series 6 Compared to Laboratory Measures",,2025,device_validation,,40285070,,verified,"Device validation supporting measurement-transfer constraints for Apple SDNN."
+
