@@ -194,3 +194,20 @@ def validate_curated_file_exists(
     if not path.is_file():
         raise RegistryError(f"Curated file not found for '{record.document_id}': {path}")
     return path
+
+
+def validate_all_curated_files(
+    *,
+    registry_path: Path | None = None,
+    project_root: Path | None = None,
+) -> list[Path]:
+    """Validate that every registry row resolves to an existing curated file."""
+    paths: list[Path] = []
+    for record in load_registry(registry_path):
+        paths.append(validate_curated_file_exists(record, project_root=project_root))
+    return paths
+
+
+def list_registered_sources(*, registry_path: Path | None = None) -> list[SourceRecord]:
+    """Return all registry rows regardless of ingestion approval."""
+    return load_registry(registry_path)

@@ -12,6 +12,7 @@ from rag.registry import (
     get_source_record,
     load_registry,
     resolve_curated_path,
+    validate_all_curated_files,
     validate_curated_file_exists,
 )
 from rag.schemas import SourceRecord
@@ -211,6 +212,15 @@ class RegistryTests(unittest.TestCase):
             registry_path=registry_path,
         )
         self.assertEqual(record.organization, "HHS")
+
+    def test_validate_all_curated_files_resolves_project_registry(self) -> None:
+        paths = validate_all_curated_files()
+        self.assertEqual(len(paths), 4)
+        self.assertTrue(all(path.is_file() for path in paths))
+
+    def test_project_registry_has_zero_approved_sources(self) -> None:
+        approved = get_approved_sources()
+        self.assertEqual(approved, [])
 
 
 if __name__ == "__main__":

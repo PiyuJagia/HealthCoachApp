@@ -5,3 +5,5 @@ langchain-text-splitters
 langchain-openai
 pinecone
 httpx
+pyyaml
+python-dotenv

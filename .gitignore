@@ -19,6 +19,8 @@ knowledge/raw/*
 !knowledge/raw/.gitkeep
 knowledge/extracted/*
 !knowledge/extracted/.gitkeep
+knowledge/staging/*
+!knowledge/staging/.gitkeep
 
 # OS / editor
 .DS_Store
