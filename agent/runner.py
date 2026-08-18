@@ -18,7 +18,6 @@ from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
 from agent.agent import (
-    AGENT_NAME,
     MAX_LLM_CALLS,
     MODEL,
     build_health_coach_agent,
@@ -26,12 +25,22 @@ from agent.agent import (
 )
 from agent.events import extract_final_text
 from agent.instructions import OUTPUT_JSON_REMINDER
+from agent.provider_retry import (
+    FAILURE_QUOTA_EXHAUSTED,
+    FAILURE_TEMPORARY_UNAVAILABLE,
+    MAX_PROVIDER_ATTEMPTS,
+    build_provider_retry_trace,
+    is_gemini_quota_exhausted,
+    is_transient_gemini_unavailable,
+    run_with_provider_reliability,
+)
 from agent.schemas import (
-    HealthCoachStatus,
     bounded_failure_result,
     guard_blocked_result,
     health_coach_result_from_payload,
+    model_quota_exhausted_result,
     parse_agent_json_payload,
+    temporary_model_unavailable_result,
 )
 from agent.tools import RunContext
 from agent.trace import PersistedAgentRun, persist_agent_run
@@ -51,6 +60,7 @@ class HealthCoachRunResult:
     raw_final_text: str | None = None
     guard_passed: bool = True
     guard_violations: list[str] | None = None
+    provider_retry: dict[str, Any] | None = None
 
     @property
     def status(self) -> str:
@@ -105,7 +115,45 @@ def _apply_output_guard(
     return blocked.to_dict()
 
 
-async def _run_agent_async(
+def _persist_result(
+    *,
+    trace: TraceRecord,
+    context: RunContext,
+    structured: dict[str, Any],
+    latency_ms: int,
+    provider_retry: dict[str, Any] | None = None,
+    raw_final_text: str | None = None,
+) -> HealthCoachRunResult:
+    trace.candidate_signals = context.candidate_signals
+    trace.tool_calls = context.tool_calls
+    trace.retrieval = context.retrieval
+    trace.policy = context.policy
+    trace.generation = context.generation
+    trace.final_guard = context.final_guard
+    trace.final_output = json.dumps(structured, sort_keys=True)
+
+    persisted = PersistedAgentRun(
+        trace=trace,
+        activity_log=context.activity_log,
+        structured_result=structured,
+        latency_ms=latency_ms,
+        model=MODEL,
+        provider_retry=provider_retry,
+    )
+    path = persist_agent_run(persisted)
+    return HealthCoachRunResult(
+        structured=structured,
+        activity_log=context.activity_log,
+        trace_path=path,
+        latency_ms=latency_ms,
+        raw_final_text=raw_final_text,
+        guard_passed=bool(context.final_guard.passed if context.final_guard else True),
+        guard_violations=list(context.final_guard.violations if context.final_guard else []),
+        provider_retry=provider_retry,
+    )
+
+
+async def _execute_adk_run_once(
     *,
     scenario_id: str,
     user_id: int,
@@ -147,22 +195,11 @@ async def _run_agent_async(
         )
         trace.final_output = blocked.user_facing_summary()
         trace.final_guard = FinalGuardTrace(passed=True, violations=[])
-        persisted = PersistedAgentRun(
+        return _persist_result(
             trace=trace,
-            activity_log=context.activity_log,
-            structured_result=blocked.to_dict(),
-            latency_ms=latency_ms,
-            model=MODEL,
-        )
-        path = persist_agent_run(persisted)
-        return HealthCoachRunResult(
+            context=context,
             structured=blocked.to_dict(),
-            activity_log=context.activity_log,
-            trace_path=path,
             latency_ms=latency_ms,
-            raw_final_text=None,
-            guard_passed=True,
-            guard_violations=[],
         )
 
     latency_ms = round((time.perf_counter() - started) * 1000)
@@ -204,31 +241,104 @@ async def _run_agent_async(
     context.generation = GenerationTrace(model_name=MODEL, final_insight=str(insight_text))
     context.record_final(f"Completed with status={structured.get('status')}.")
 
-    trace.candidate_signals = context.candidate_signals
-    trace.tool_calls = context.tool_calls
-    trace.retrieval = context.retrieval
-    trace.policy = context.policy
-    trace.generation = context.generation
-    trace.final_guard = context.final_guard
-    trace.final_output = json.dumps(structured, sort_keys=True)
-
-    persisted = PersistedAgentRun(
+    return _persist_result(
         trace=trace,
-        activity_log=context.activity_log,
-        structured_result=structured,
-        latency_ms=latency_ms,
-        model=MODEL,
-    )
-    path = persist_agent_run(persisted)
-    return HealthCoachRunResult(
+        context=context,
         structured=structured,
-        activity_log=context.activity_log,
-        trace_path=path,
         latency_ms=latency_ms,
         raw_final_text=raw_final_text,
-        guard_passed=bool(context.final_guard.passed if context.final_guard else True),
-        guard_violations=list(context.final_guard.violations if context.final_guard else []),
     )
+
+
+async def _provider_failure_result(
+    *,
+    scenario_id: str,
+    user_id: int,
+    as_of_date: date,
+    structured: dict[str, Any],
+    provider_retry: dict[str, Any],
+    final_label: str,
+) -> HealthCoachRunResult:
+    trace = empty_trace(
+        scenario_id=scenario_id,
+        user_id=user_id,
+        as_of_date=as_of_date.isoformat(),
+    )
+    trace.final_guard = FinalGuardTrace(passed=True, violations=[])
+    context = RunContext(scenario_id=scenario_id, user_id=user_id, as_of_date=as_of_date)
+    context.record_final(final_label)
+    return _persist_result(
+        trace=trace,
+        context=context,
+        structured=structured,
+        latency_ms=0,
+        provider_retry=provider_retry,
+    )
+
+
+async def _run_agent_async(
+    *,
+    scenario_id: str,
+    user_id: int,
+    as_of_date: date,
+) -> HealthCoachRunResult:
+    attempts = 0
+    last_exc: Exception | None = None
+
+    async def _attempt() -> HealthCoachRunResult:
+        nonlocal attempts
+        attempts += 1
+        return await _execute_adk_run_once(
+            scenario_id=scenario_id,
+            user_id=user_id,
+            as_of_date=as_of_date,
+        )
+
+    try:
+        return await run_with_provider_reliability(_attempt)
+    except Exception as exc:  # noqa: BLE001 — fail closed on exhausted provider retries
+        last_exc = exc
+        if is_gemini_quota_exhausted(exc):
+            quota = model_quota_exhausted_result(
+                scenario_id=scenario_id,
+                user_id=user_id,
+                as_of_date=as_of_date.isoformat(),
+            )
+            provider_retry = build_provider_retry_trace(
+                exc=last_exc,
+                attempts=attempts or 1,
+                exhausted=True,
+                failure_category=FAILURE_QUOTA_EXHAUSTED,
+            ).to_dict()
+            return await _provider_failure_result(
+                scenario_id=scenario_id,
+                user_id=user_id,
+                as_of_date=as_of_date,
+                structured=quota.to_dict(),
+                provider_retry=provider_retry,
+                final_label="Model quota exhausted after bounded provider retry.",
+            )
+        if is_transient_gemini_unavailable(exc):
+            unavailable = temporary_model_unavailable_result(
+                scenario_id=scenario_id,
+                user_id=user_id,
+                as_of_date=as_of_date.isoformat(),
+            )
+            provider_retry = build_provider_retry_trace(
+                exc=last_exc,
+                attempts=attempts or MAX_PROVIDER_ATTEMPTS,
+                exhausted=True,
+                failure_category=FAILURE_TEMPORARY_UNAVAILABLE,
+            ).to_dict()
+            return await _provider_failure_result(
+                scenario_id=scenario_id,
+                user_id=user_id,
+                as_of_date=as_of_date,
+                structured=unavailable.to_dict(),
+                provider_retry=provider_retry,
+                final_label="Provider unavailable after bounded retries.",
+            )
+        raise
 
 
 def run_health_review(

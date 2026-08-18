@@ -12,7 +12,7 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | L3-SF | 14 |
 | **Total** | **407** |
 
-**Offline test suite:** 169 tests passing (includes Phase E3.1.1 product semantics correction).
+**Offline test suite:** 186 tests passing (includes Phase E3.1.3 quota/rate-limit handling).
 
 ---
 
@@ -97,6 +97,40 @@ warrants further investigation.
 - Preserved E3.1 live scenario evidence (including Day 30 steps/HHS INSIGHT and Day 90 stability outcome)
 
 **Verification:** 169 offline tests pass (terminology + schema tests only; no live rerun required).
+
+---
+
+## Phase E3.1.2 — Transient Gemini 503 resilience (2026-08-17)
+
+**Why it matters:** During the real Assignment 3 Streamlit demo, a live run failed with
+`google.genai.errors.ServerError: 503 UNAVAILABLE` ("model is currently experiencing high demand").
+
+**Implemented:**
+
+- Bounded provider retry for transient 503 only (`agent/provider_retry.py`)
+- Max 3 total attempts with ~2s / ~4s exponential backoff (respects `Retry-After` when present)
+- Fail-closed structured status `TEMPORARY_MODEL_UNAVAILABLE` when retries exhausted
+- Trace field `provider_retry` records `provider_error_type`, `status_code`, `retry_count`, `exhausted`
+- Streamlit shows user-safe warning without exposing stack traces
+
+**Verification:** 178 offline tests pass (mocked retry tests; no live rerun required).
+
+---
+
+## Phase E3.1.3 — Gemini 429 quota / rate-limit handling (2026-08-17)
+
+**Why it matters:** During the real Assignment 3 Streamlit demo, a second provider failure was observed:
+`google.adk.models.google_llm._ResourceExhaustedError` / `429 RESOURCE_EXHAUSTED` with a retry delay.
+
+**Implemented:**
+
+- Separate 429 handling from 503 (does not share the 503 retry loop)
+- At most **one** delayed retry when provider supplies a short RetryInfo/`Retry-After` delay (≤60s)
+- Fail-closed structured status `MODEL_QUOTA_EXHAUSTED` when quota/rate limit persists
+- Trace metadata extended with `retry_after_seconds` and `failure_category` (`quota_exhausted` vs `temporary_unavailable`)
+- Streamlit shows user-safe quota message without stack traces
+
+**Verification:** 186 offline tests pass (mocked 429/503 tests; no live rerun required).
 
 ---
 

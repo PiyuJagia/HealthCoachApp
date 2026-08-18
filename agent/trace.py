@@ -19,6 +19,7 @@ class PersistedAgentRun:
     structured_result: dict[str, Any] = field(default_factory=dict)
     latency_ms: int = 0
     model: str = ""
+    provider_retry: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         payload = self.trace.to_dict()
@@ -26,6 +27,8 @@ class PersistedAgentRun:
         payload["structured_result"] = sanitize_for_trace(self.structured_result)
         payload["latency_ms"] = self.latency_ms
         payload["model"] = self.model
+        if self.provider_retry is not None:
+            payload["provider_retry"] = sanitize_for_trace(self.provider_retry)
         return sanitize_for_trace(payload)
 
 

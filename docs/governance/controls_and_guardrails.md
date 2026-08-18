@@ -151,6 +151,8 @@ Policy representation is **IMPLEMENTED** in code and curated content; automated 
 | Google ADK Health Coach agent | IMPLEMENTED | `agent/` — single agent, no sub-agents (E3.1) |
 | Longitudinal interpreter semantics | IMPLEMENTED | Proactive pattern surfacing; `NO_SIGNIFICANT_NEW_PATTERN` (E3.1.1) |
 | Bounded agent execution | IMPLEMENTED | `RunConfig(max_llm_calls=8)`; fail-closed on limit |
+| Transient Gemini 503 retry | IMPLEMENTED | Max 3 attempts; ~2s/4s backoff; `TEMPORARY_MODEL_UNAVAILABLE` (E3.1.2) |
+| Gemini 429 quota / rate limit | IMPLEMENTED | Max 1 delayed retry; `MODEL_QUOTA_EXHAUSTED`; separate from 503 (E3.1.3) |
 | Final output guard before return | IMPLEMENTED | `agent/runner.py` → `check_final_output()` |
 | TRACE run capture | PARTIAL | `evals/traces/{run_id}.json` — no Assignment 4 eval runner |
 | Final output guard contract | IMPLEMENTED | `app/output_guard.py` — deterministic phrase checks |
@@ -167,6 +169,17 @@ an anomaly detector. It may surface positive, negative, recovery, ambiguous, or 
 patterns. `NO_SIGNIFICANT_NEW_PATTERN` means no sufficiently strong new pattern warrants further
 investigation — not that the user's health is meaningless. Absence of a new trend can be useful
 information; absence of evidence is not permission to invent an explanation.
+
+**E3.1.2 reliability control:** Transient Gemini `503 UNAVAILABLE` errors trigger bounded retries
+(max 3 attempts). Retries do not apply to auth/4xx or deterministic policy/validation failures.
+When retries are exhausted, the agent fails closed with `TEMPORARY_MODEL_UNAVAILABLE` and archives
+`provider_retry` metadata in the trace. Discovered during the real Assignment 3 Streamlit demo.
+
+**E3.1.3 reliability control:** `429 RESOURCE_EXHAUSTED` is handled separately from `503 UNAVAILABLE`.
+503 uses up to 3 attempts with 2s/4s backoff. 429 allows at most one provider-delayed retry when a short
+RetryInfo/`Retry-After` delay is supplied; otherwise the run fails closed as `MODEL_QUOTA_EXHAUSTED`.
+Both failure modes are operational reliability controls — not health-policy controls — and were discovered
+through real Assignment 3 live testing.
 
 ---
 

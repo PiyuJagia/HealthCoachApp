@@ -11,7 +11,15 @@ from dotenv import load_dotenv
 PROJECT_ROOT = Path(__file__).resolve().parent
 load_dotenv(PROJECT_ROOT / ".env")
 
-from agent.display import format_activity_lines, policy_summary, summarize_trend_signals
+from agent.display import (
+    format_activity_lines,
+    is_model_quota_exhausted,
+    is_temporary_model_unavailable,
+    model_quota_exhausted_message,
+    policy_summary,
+    summarize_trend_signals,
+    temporary_unavailable_message,
+)
 from agent.runner import run_health_review
 from agent.scenarios import SCENARIOS, resolve_demo_user_id
 from app.agent_tools import get_trend_signals
@@ -70,7 +78,11 @@ if st.button("Analyze Health", type="primary"):
 
     st.subheader("D. HEALTH COACH RESULT")
     structured = result.structured
-    if structured.get("status") == "NO_SIGNIFICANT_NEW_PATTERN":
+    if is_temporary_model_unavailable(structured):
+        st.warning(temporary_unavailable_message(structured))
+    elif is_model_quota_exhausted(structured):
+        st.warning(model_quota_exhausted_message(structured))
+    elif structured.get("status") == "NO_SIGNIFICANT_NEW_PATTERN":
         st.write("No significant new pattern")
         summary = structured.get("insight") or structured.get("reason_not_surfaced")
         if summary:

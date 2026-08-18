@@ -14,11 +14,19 @@ class HealthCoachStatus(str, Enum):
     NO_SIGNIFICANT_NEW_PATTERN = "NO_SIGNIFICANT_NEW_PATTERN"
     BOUNDED_FAILURE = "BOUNDED_FAILURE"
     GUARD_BLOCKED = "GUARD_BLOCKED"
+    TEMPORARY_MODEL_UNAVAILABLE = "TEMPORARY_MODEL_UNAVAILABLE"
+    MODEL_QUOTA_EXHAUSTED = "MODEL_QUOTA_EXHAUSTED"
 
 
 DEFAULT_NO_PATTERN_MESSAGE = (
     "No significant new pattern in the current comparison window "
     "requires further investigation."
+)
+TEMPORARY_MODEL_UNAVAILABLE_MESSAGE = (
+    "The Health Coach model is temporarily busy. Please try again shortly."
+)
+MODEL_QUOTA_EXHAUSTED_MESSAGE = (
+    "The Health Coach has reached its current model usage limit. Please try again later."
 )
 
 
@@ -51,6 +59,10 @@ class HealthCoachResult:
             return "Analysis stopped after reaching the bounded step limit. No health guidance was returned."
         if self.status == HealthCoachStatus.GUARD_BLOCKED.value:
             return "A safety guard blocked the candidate response. No health guidance was returned."
+        if self.status == HealthCoachStatus.TEMPORARY_MODEL_UNAVAILABLE.value:
+            return self.reason_not_surfaced or TEMPORARY_MODEL_UNAVAILABLE_MESSAGE
+        if self.status == HealthCoachStatus.MODEL_QUOTA_EXHAUSTED.value:
+            return self.reason_not_surfaced or MODEL_QUOTA_EXHAUSTED_MESSAGE
         parts: list[str] = []
         if self.theme:
             parts.append(f"Theme: {self.theme}")
@@ -74,6 +86,36 @@ def bounded_failure_result(
         as_of_date=as_of_date,
         status=HealthCoachStatus.BOUNDED_FAILURE.value,
         reason_not_surfaced=reason,
+    )
+
+
+def temporary_model_unavailable_result(
+    *,
+    scenario_id: str,
+    user_id: int,
+    as_of_date: str,
+) -> HealthCoachResult:
+    return HealthCoachResult(
+        scenario_id=scenario_id,
+        user_id=user_id,
+        as_of_date=as_of_date,
+        status=HealthCoachStatus.TEMPORARY_MODEL_UNAVAILABLE.value,
+        reason_not_surfaced=TEMPORARY_MODEL_UNAVAILABLE_MESSAGE,
+    )
+
+
+def model_quota_exhausted_result(
+    *,
+    scenario_id: str,
+    user_id: int,
+    as_of_date: str,
+) -> HealthCoachResult:
+    return HealthCoachResult(
+        scenario_id=scenario_id,
+        user_id=user_id,
+        as_of_date=as_of_date,
+        status=HealthCoachStatus.MODEL_QUOTA_EXHAUSTED.value,
+        reason_not_surfaced=MODEL_QUOTA_EXHAUSTED_MESSAGE,
     )
 
 

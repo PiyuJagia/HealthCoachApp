@@ -23,8 +23,13 @@ Each archived run contains:
 | `final_guard` | Pass/fail + violations |
 | `final_output` | Structured JSON result string |
 | `activity_log` | User-safe DECISION/ACT/OBSERVE/FINAL steps (no hidden CoT) |
+| `provider_retry` | Optional provider failure metadata (503/429 retries) |
 
 Trace helpers sanitize likely secret keys before persistence.
+
+**Provider failure categories:** `temporary_unavailable` (503) and `quota_exhausted` (429). These are
+operational reliability controls discovered during real Assignment 3 live testing; they fail closed and
+do not return partial health guidance.
 
 **Structured result statuses (E3.1.1):** `INSIGHT`, `RECOMMENDATION`, `NO_SIGNIFICANT_NEW_PATTERN`,
 `BOUNDED_FAILURE`, `GUARD_BLOCKED`. Older E3.1 trace archives may contain the retired status
