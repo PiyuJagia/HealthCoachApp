@@ -27,3 +27,7 @@ knowledge/staging/*
 Thumbs.db
 .idea/
 .vscode/
+
+# Local SQLite database files (schema tracked via SQLAlchemy models)
+data/*.db
+data/*.db-journal

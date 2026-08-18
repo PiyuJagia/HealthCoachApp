@@ -12,7 +12,7 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | L3-SF | 14 |
 | **Total** | **407** |
 
-**Offline test suite:** 97 tests passing (includes Phase D2 retrieval + D2.1 metadata tests).
+**Offline test suite:** 129 tests passing (includes Phase E1 + E1.1 synthetic story tests).
 
 ---
 
@@ -40,6 +40,86 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | **D2 — Retrieval (live smoke)** | 6 representative queries vs Pinecone | Validate 407-vector corpus retrieval | 5/6 pass; 1 partial — see below | Pass (with notes) | `scripts/test_retrieval.py` |
 | **D2.1 — Relationship metadata in Pinecone** | Whitelist + L2-CR-only re-ingestion | Machine-readable policy fields at retrieval time | 54/89 L2-CR vectors carry relationship metadata; corpus 407 | Pass | `rag/vector_store.py`, `scripts/verify_l2cr_relationship_metadata.py` |
 | **D2.1 — Retrieval regression** | Re-run representative queries post re-ingest | Confirm structured metadata + envelope text | Same pass pattern as D2; L2-CR results expose `relationship_metadata` | Pass | `scripts/test_retrieval.py` |
+| **E1 — Health-data foundation** | SQLAlchemy models, seed script, trend engine, agent tool | Relational user truth separate from Pinecone knowledge | 25 new offline tests pass | Pass | `tests/test_database.py`, `tests/test_seed_data.py`, `tests/test_trends.py` |
+| **E1.1 — Synthetic demo narrative** | 3-phase story, ambiguity, inspection script | Product demo + future agent/TRACE scenarios | 8 additional seed/trend tests pass | Pass | `data/demo_seed.py`, `scripts/inspect_demo_health_story.py` |
+| **E1.1 — Spec reconciliation** | Marcus Chen profile, spec missing-data days, baseline ranges | Align canonical demo user with attached 90-day specification | Profile + seed tests pass; suite 129 | Pass | `data/demo_seed.py` |
+
+---
+
+## Phase E1.1 — Spec reconciliation (2026-08-17)
+
+**Why it matters:** Canonical demo user and missing-data schedule now match the attached
+*AI Health Coach: 90-Day Synthetic Dataset Specification* without redesigning E1 architecture.
+
+**Changes:** Marcus Chen profile (36M, 177 cm, 84 kg); missing-data days 22–23, 47, 54–55;
+RHR/HRV baseline centers aligned to spec ranges; caffeine/mood event timing adjusted.
+
+**Deferred:** sleep efficiency/latency fields, insight-candidate labels, multi-horizon analytics,
+expected trend-engine prose from spec section 7 (documentation only).
+
+**Verification:** 129 offline tests pass; `scripts/inspect_demo_health_story.py --reset`.
+
+---
+
+## Phase E1.1 — Synthetic demo narrative (2026-08-17)
+
+**Why it matters:** Replaces the simple E1 seed with a capstone-aligned 90-day story
+supporting trend detection, ambiguity, suppression, and recovery scenarios for
+Assignment 3 (agent) and Assignment 4 (TRACE/evals).
+
+**Narrative:** Phase 1 baseline → Phase 2 structured exercise/fitness → Phase 3
+disruption + recovery. Observations only — no causal labels in storage.
+
+**Key controls:**
+
+- Caffeine inside and outside disruption window (confounded scenario)
+- HRV disruption implemented as increased **volatility**, not merely lower mean
+- `respiratory_rate` stable non-signal control
+- Realistic missing-data gaps (sync gaps, incomplete sleep, sparse HRV/VO2 nulls)
+
+**Inspection:** `python scripts/inspect_demo_health_story.py --reset`
+
+**Verification:**
+
+| Check | Result |
+|-------|--------|
+| Offline tests added/modified | 8 seed + trend story tests |
+| Total offline suite | 129 pass |
+| Trend checkpoints | Day 30, 60, 75, 90 reported by inspection script |
+
+---
+
+## Phase E1 — Health-data foundation (2026-08-17)
+
+**Why it matters:** Establishes the relational store for user longitudinal data and a
+deterministic trend layer that a future ADK agent can call without mixing user
+observations into Pinecone.
+
+**Architecture:** `relational DB → analytics/trends → app/health_tools` (framework-independent JSON).
+
+**Database:** SQLAlchemy 2.x with `DATABASE_URL`. Local default `sqlite:///./data/healthcoach.db`;
+PostgreSQL planned for production using the same models.
+
+**Tables:** `users`, `health_daily` (unique `user_id` + `date`), `lifestyle_events`.
+
+**Synthetic demo:** `scripts/seed_demo_health_data.py` — 90 days for fictional user
+"Marcus Chen" with intentional patterns (baseline stability, exercise consistency,
+disruption/recovery, caffeine ambiguity). Fixed seed `42`.
+No causal labels in stored data.
+
+**Trend engine:** 7-day recent average vs prior 30-day baseline; observational directions only.
+
+**Agent interface:** `get_health_trends_for_agent()` — JSON-serializable, no ADK/LLM/Pinecone.
+
+**Verification:**
+
+| Check | Result |
+|-------|--------|
+| Offline tests added | 25 (database + seed + trends) |
+| Total offline suite | 122 pass |
+| Demo days seeded | 90 |
+| Uniqueness constraint | `health_daily (user_id, date)` enforced |
+| Missing data handling | HRV/VO2 gaps tolerated; `data_sufficient` when baseline too short |
 
 ---
 

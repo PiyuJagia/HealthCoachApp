@@ -107,13 +107,32 @@ Policy representation is **IMPLEMENTED** in code and curated content; automated 
 
 | Control | Status | Implementation |
 |---------|--------|----------------|
-| Deterministic unit test suite | IMPLEMENTED | `tests/` (82 tests at Phase D2 start) |
+| Deterministic unit test suite | IMPLEMENTED | `tests/` (129 tests at Phase E1.1 checkpoint) |
 | Registry/evidence validation tests | IMPLEMENTED | `tests/test_registry.py`, `tests/test_evidence_registries.py` |
 | Chunking regression tests | IMPLEMENTED | `tests/test_chunker.py`, `tests/test_relationship_chunker.py` |
 | Relationship policy invariant tests | IMPLEMENTED | `tests/test_relationship_policy.py` |
 | Retrieval unit tests (mocked) | IMPLEMENTED | `tests/test_retrieval.py` (Phase D2) |
 | Live retrieval smoke script | IMPLEMENTED | `scripts/test_retrieval.py` (Phase D2) |
 | TRACE / eval automation | PLANNED | `evals/` placeholders only |
+
+---
+
+## H. Health-data controls (Phase E1)
+
+| Control | Status | Implementation |
+|---------|--------|----------------|
+| User health data in relational DB only | IMPLEMENTED | `data/models.py`, `data/repository.py` |
+| User health data excluded from Pinecone | IMPLEMENTED | Architecture separation; no user-data ingest path |
+| Synthetic demo data clearly labeled | IMPLEMENTED | `data/demo_seed.py`, seed script output label |
+| Deterministic trend calculations (no LLM) | IMPLEMENTED | `analytics/trends.py` |
+| Trend output observational, not causal | IMPLEMENTED | `TrendResult` schema; agent tool disclaimer |
+| SQLite local / PostgreSQL production path | IMPLEMENTED | `DATABASE_URL` in `data/database.py` |
+| No agent-memory tables in MVP schema | IMPLEMENTED | Only `users`, `health_daily`, `lifestyle_events` |
+| Missing-value tolerance in analytics | IMPLEMENTED | Trend engine skips nulls; `data_sufficient` flag |
+| Synthetic data = observations, not causal truth | IMPLEMENTED | E1.1 seed narrative; no causal labels in storage |
+| Intentional ambiguity in demo dataset | IMPLEMENTED | Caffeine + work context + sleep overlap in disruption |
+| Non-signal control metric (respiratory rate) | IMPLEMENTED | Stable independent noise in `data/demo_seed.py` |
+| Agent interpretation via evidence/policy | PLANNED | RAG + relationship policy before user-facing claims |
 
 ---
 
@@ -149,4 +168,11 @@ rag/embedder.py                            → embeddings
 rag/vector_store.py                        → Pinecone I/O
 rag/ingest.py                              → ingest pipeline
 rag/retrieval.py                           → retrieval layer (Phase D2)
+data/database.py                           → DATABASE_URL, engine, init
+data/models.py                             → user health ORM models
+data/repository.py                         → data-access helpers
+data/demo_seed.py                          → synthetic demo dataset
+scripts/inspect_demo_health_story.py       → phase/trend inspection (E1.1)
+analytics/trends.py                        → deterministic trend engine
+app/health_tools.py                        → agent-ready JSON tool interface
 ```

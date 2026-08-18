@@ -27,7 +27,9 @@ implemented.
 | Document ingestion | implemented (registry-driven) |
 | Embeddings | implemented |
 | Pinecone | implemented (`healthcoach-rag`) |
-| Retrieval | not yet implemented |
+| Retrieval | implemented |
+| Health data (relational) | implemented (Phase E1) |
+| Trend analytics | implemented (Phase E1) |
 
 ### Approved RAG corpus
 
@@ -70,14 +72,25 @@ Knowledge engineering          RAG pipeline                 Application (future)
 raw → extracted → curated  →  chunk → embed → Pinecone  →  retrieve → reason → respond
          ↑                           ↑
     source_registry.csv         registry-driven ingest
+
+User health data               Analytics                    Agent (future)
+relational DB (SQLite/PG)  →  trend engine (deterministic) →  ADK tools / coaching
+         ↑
+   user's longitudinal truth — NOT stored in Pinecone
 ```
+
+**Storage split:** Postgres (or SQLite locally) stores the **user's longitudinal truth**.
+Pinecone stores the **application's curated scientific knowledge**. User health
+observations must not be mixed into Pinecone.
 
 | Layer | Responsibility |
 |-------|----------------|
 | `knowledge/` | Source documents, curation workflow, registry metadata |
 | `rag/` | Chunking, embeddings, vector store, ingestion, retrieval |
-| `app/` | FastAPI HTTP boundary (backend source of truth) |
-| `scripts/` | CLI tools for ingest and retrieval testing |
+| `data/` | SQLAlchemy models, database init, repository access |
+| `analytics/` | Deterministic trend calculations from stored health data |
+| `app/` | FastAPI boundary and agent-ready tool functions |
+| `scripts/` | CLI tools for ingest, retrieval testing, demo data seeding |
 
 Curated Markdown in `knowledge/curated/` is the trusted source of truth for ingestion.
 The RAG pipeline does not perform PDF cleaning, OCR, or substantive content rewriting.
@@ -107,7 +120,9 @@ Only documents with `approved_for_ingestion=TRUE` are eligible for batch ingesti
 
 ```text
 health-coach-ai/
-├── app/                 # FastAPI application
+├── app/                 # FastAPI application and agent-ready tools
+├── analytics/           # Deterministic trend analytics
+├── data/                # SQLAlchemy models, DB init, repositories
 ├── rag/                 # Reusable RAG engine
 ├── knowledge/           # Document corpus and registry
 ├── scripts/             # CLI entry points
@@ -115,6 +130,46 @@ health-coach-ai/
 ├── .env.example
 ├── requirements.txt
 └── README.md
+```
+
+## Health Data (Phase E1 / E1.1)
+
+Local development uses **SQLite** as a fast adapter (`sqlite:///./data/healthcoach.db`).
+Production is planned to use **PostgreSQL** with the same SQLAlchemy models — no
+SQLite-specific business logic in application code.
+
+```bash
+python scripts/seed_demo_health_data.py --reset
+python scripts/inspect_demo_health_story.py --reset
+```
+
+Tables:
+
+- `users` — minimal profile (display name, age, sex, height, weight, goal)
+- `health_daily` — one row per user per date (HR, HRV, sleep, activity, VO2 max, etc.)
+- `lifestyle_events` — timestamped caffeine, alcohol, mood/context events
+
+**Synthetic 3-phase demo narrative (E1.1):** fictional user **Marcus Chen**, 90 days.
+
+1. **Days 1–30** — baseline/calibration (noise, no strong directional signal)
+2. **Days 31–60** — structured Mon/Wed/Fri exercise; emerging fitness trends
+3. **Days 61–90** — disruption (61–75) then recovery (76–90); mixed signals
+
+Synthetic data encodes **observations and temporal patterns, not causal truth**.
+Afternoon caffeine, late-work context, and sleep changes overlap intentionally so a
+future agent must handle ambiguity — caffeine is not the sole encoded cause.
+`respiratory_rate` is a stable non-signal control metric.
+
+Trend analytics compare a recent **7-day average** to a prior **30-day baseline**.
+This is the **recent trend**; it may differ from **longer-term change** visible
+across the full 90-day window (e.g., sleep improving in recovery week but still
+below an earlier baseline).
+
+Agent-ready entry point (no ADK yet):
+
+```python
+from app.health_tools import get_health_trends_for_agent
+payload = get_health_trends_for_agent(user_id=1)
 ```
 
 ## Environment Variables
@@ -133,6 +188,7 @@ cp .env.example .env
 | `PINECONE_NAMESPACE` | Production namespace (`healthcoach-knowledge-base`) |
 | `RAG_TOP_K` | Default retrieval count (optional) |
 | `RAG_MIN_RELEVANCE_SCORE` | Retrieval refusal threshold (optional) |
+| `DATABASE_URL` | Relational health-data store (SQLite local; PostgreSQL planned) |
 
 Never commit real keys. See `.env.example` for placeholders.
 
