@@ -17,7 +17,7 @@ Health Coach AI is being built to:
 **Current status:** Four approved corpus documents are embedded in Pinecone
 (`healthcoach-rag` / `healthcoach-knowledge-base`, 407 vectors). Retrieval,
 deterministic relationship-policy enforcement, health-data analytics, and trace
-schemas are implemented. Google ADK agent orchestration is **not** implemented yet.
+schemas are implemented. Google ADK Health Coach agent is implemented (Phase E3.1).
 
 ## Implementation Status
 
@@ -30,10 +30,10 @@ schemas are implemented. Google ADK agent orchestration is **not** implemented y
 | Retrieval | implemented |
 | Retrieval→policy enforcement | implemented (Phase E2) |
 | Agent tool contracts | implemented (Phase E2; no ADK yet) |
-| TRACE schemas | partial (Phase E2 schemas only) |
+| TRACE schemas | partial (E2 schemas + E3.1 run capture; Assignment 4 eval runner not built) |
 | Health data (relational) | implemented (Phase E1) |
 | Trend analytics | implemented (Phase E1) |
-| Google ADK agent | setup verified (Phase E3.0); agent not implemented |
+| Google ADK agent | implemented (Phase E3.1 — Assignment 3 Path A) |
 
 ### Approved RAG corpus
 
@@ -80,7 +80,7 @@ raw → extracted → curated  →  chunk → embed → Pinecone  →  retrieve 
 User health data               Analytics                    Agent readiness (E2)
 relational DB (SQLite/PG)  →  trend engine (deterministic) →  tool contracts + policy
                                                                     ↓
-                                                              ADK agent (planned)
+                                                              ADK agent (E3.1)
          ↑
    user's longitudinal truth — NOT stored in Pinecone
 ```
@@ -95,8 +95,9 @@ observations must not be mixed into Pinecone.
 | `rag/` | Chunking, embeddings, vector store, ingestion, retrieval |
 | `data/` | SQLAlchemy models, database init, repository access |
 | `analytics/` | Deterministic trend calculations from stored health data |
-| `app/` | Agent-ready tools, output guard; FastAPI boundary (planned) |
-| `evals/` | TRACE schema placeholders and future run artifacts |
+| `app/` | Agent-ready tools, output guard |
+| `agent/` | Google ADK Health Coach agent, runner, trace capture |
+| `evals/` | TRACE schemas and archived agent run traces |
 | `scripts/` | CLI tools for ingest, retrieval testing, demo data seeding |
 
 Curated Markdown in `knowledge/curated/` is the trusted source of truth for ingestion.
@@ -130,13 +131,16 @@ python scripts/ingest_all_approved.py
 
 ```text
 health-coach-ai/
-├── app/                 # FastAPI application and agent-ready tools
+├── agent/               # Google ADK Health Coach agent (E3.1)
+├── app/                 # Agent-ready tools and output guard
 ├── analytics/           # Deterministic trend analytics
 ├── data/                # SQLAlchemy models, DB init, repositories
 ├── rag/                 # Reusable RAG engine
 ├── knowledge/           # Document corpus and registry
 ├── scripts/             # CLI entry points
 ├── tests/               # Automated tests
+├── evals/               # Trace schemas and run artifacts
+├── streamlit_agent_demo.py
 ├── .env.example
 ├── requirements.txt
 └── README.md
@@ -241,6 +245,50 @@ python scripts/smoke_adk_setup.py
 ```
 
 These confirm Gemini auth and a minimal ADK agent → tool → observation → response cycle.
+
+## Health Coach ADK Agent (Phase E3.1 — Assignment 3)
+
+Stack: **Google ADK** + **Gemini** (`gemini-3.6-flash`).
+
+The Health Coach is a **longitudinal health interpreter**, not merely an anomaly detector.
+It proactively identifies useful themes — improvements, declines, recovery, ambiguity, and meaningful stability —
+while refusing to manufacture correlations or recommendations without authorized evidence.
+
+**Product principle:** Absence of a new trend can itself be useful information; absence of evidence is not permission to invent an explanation.
+
+**Why this is an agent (not a fixed workflow):** It does not follow a fixed analysis sequence — it evaluates deterministic health signals, chooses which patterns warrant investigation, calls real evidence tools based on what it observes, and decides what to surface within deterministic safety and authorization constraints.
+
+Architecture:
+
+```text
+User/scenario request
+        ↓
+health_coach_agent (Google ADK, max_llm_calls=8)
+        ↓
+get_trend_signals()          → SQLite/Postgres analytics (deterministic)
+        ↓
+retrieve_authorized_evidence() → Pinecone retrieve → evidence policy (deterministic)
+        ↓
+structured JSON candidate → check_final_output() (deterministic guard)
+        ↓
+trace archived to evals/traces/{run_id}.json
+```
+
+Run Marcus demo scenarios (live — requires `GOOGLE_API_KEY`, Pinecone, seeded DB):
+
+```bash
+python scripts/seed_demo_health_data.py --reset
+python scripts/run_health_agent_scenarios.py --all
+python scripts/run_health_agent_scenarios.py --scenario day60
+```
+
+Streamlit demo (Assignment 3 UI):
+
+```bash
+streamlit run streamlit_agent_demo.py
+```
+
+TRACE evaluation (Assignment 4) remains **partial** — runs are archived, but eval runner/taxonomy/assertions are not built yet.
 
 ## Ingest One Document
 

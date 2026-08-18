@@ -12,7 +12,7 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | L3-SF | 14 |
 | **Total** | **407** |
 
-**Offline test suite:** 149 tests passing (includes Phase E2.1 policy semantics corrections).
+**Offline test suite:** 169 tests passing (includes Phase E3.1.1 product semantics correction).
 
 ---
 
@@ -45,6 +45,58 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | **E1.1 — Spec reconciliation** | Marcus Chen profile, spec missing-data days, baseline ranges | Align canonical demo user with attached 90-day specification | Profile + seed tests pass; suite 129 | Pass | `data/demo_seed.py` |
 | **E2 — Agent readiness** | Retrieval→policy adapter, agent tools, trace schema, output guard | Enforced evidence path before future ADK | 18 new offline tests pass | Pass | `rag/evidence_policy.py`, `app/agent_tools.py`, `evals/trace_schema.py`, `app/output_guard.py` |
 | **E2.1 — Policy semantics correction** | Remove auto-contradiction; separate evidence vs recommendation auth | Fix over-broad multi-relationship suppression | Policy tests updated; suite 149 | Pass | `rag/evidence_policy.py` |
+| **E3.1 — Health Coach ADK agent** | Google ADK agent, tools, guard, trace capture, Streamlit demo | Assignment 3 Path A — real tools + bounded multi-step agent | 18 new offline tests; 4 live Marcus scenarios | Pass (day30 initial 503 retried) | `agent/`, `streamlit_agent_demo.py`, `tests/test_health_agent.py` |
+
+---
+
+## Phase E3.1 — Health Coach ADK agent (2026-08-17)
+
+**Why it matters:** Assignment 3 requires a real multi-step Google ADK agent with tool observation, bounded execution, visible ACT/OBSERVE proof, and Streamlit UI — without bypassing deterministic policy.
+
+**Implemented:**
+
+- `agent/` — single `health_coach_agent` (no sub-agents/router)
+- Tools: `get_trend_signals`, `retrieve_authorized_evidence` (policy enforced in tool path)
+- `RunConfig(max_llm_calls=8)` with fail-closed `LlmCallsLimitExceededError` handling
+- `check_final_output()` applied before returning success
+- Trace archive to `evals/traces/{run_id}.json` with sanitized activity log
+- `scripts/run_health_agent_scenarios.py` — Marcus day30/day60/day75/day90
+- `streamlit_agent_demo.py` — Assignment 3 demo UI
+
+**Live Marcus scenario results (2026-08-17):**
+
+| Scenario | Trend tool | Evidence tool | Status | Policy | Guard |
+|----------|------------|---------------|--------|--------|-------|
+| day30 | yes | yes (steps/HHS) | INSIGHT | SURFACE | PASS |
+| day60 | yes | yes (R-01) | INSIGHT | QUALIFY | PASS |
+| day75 | yes | yes (R-01, R-02) | INSIGHT | QUALIFY | PASS |
+| day90 | yes | no | NO_MEANINGFUL_INSIGHT *(renamed to `NO_SIGNIFICANT_NEW_PATTERN` in E3.1.1)* | — | PASS |
+
+**E3.1.1 note:** Product status `NO_MEANINGFUL_INSIGHT` was renamed to `NO_SIGNIFICANT_NEW_PATTERN`
+to reflect longitudinal-interpreter semantics (not merely anomaly detection). Historical live trace
+archives from E3.1 may still contain the old status string.
+
+**Verification:** 167 offline tests pass (pre-E3.1.1).
+
+**Not implemented:** Assignment 4 eval runner, failure taxonomy, FastAPI `/agent`, persistent memory.
+
+---
+
+## Phase E3.1.1 — Product semantics correction (2026-08-17)
+
+**Why it matters:** `NO_MEANINGFUL_INSIGHT` implied anomaly-detection-only behavior. The Health Coach
+is a longitudinal health interpreter that may surface positive, negative, recovery, ambiguous, or
+stable/reassuring patterns — or `NO_SIGNIFICANT_NEW_PATTERN` when no sufficiently strong new pattern
+warrants further investigation.
+
+**Corrections:**
+
+- Renamed agent result status: `NO_MEANINGFUL_INSIGHT` → `NO_SIGNIFICANT_NEW_PATTERN`
+- Updated agent instructions for proactive longitudinal interpretation
+- Updated Streamlit copy and schema defaults
+- Preserved E3.1 live scenario evidence (including Day 30 steps/HHS INSIGHT and Day 90 stability outcome)
+
+**Verification:** 169 offline tests pass (terminology + schema tests only; no live rerun required).
 
 ---
 

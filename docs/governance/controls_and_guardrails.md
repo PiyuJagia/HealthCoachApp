@@ -132,7 +132,7 @@ Policy representation is **IMPLEMENTED** in code and curated content; automated 
 | Synthetic data = observations, not causal truth | IMPLEMENTED | E1.1 seed narrative; no causal labels in storage |
 | Intentional ambiguity in demo dataset | IMPLEMENTED | Caffeine + work context + sleep overlap in disruption |
 | Non-signal control metric (respiratory rate) | IMPLEMENTED | Stable independent noise in `data/demo_seed.py` |
-| Agent interpretation via evidence/policy | **PARTIAL** | Deterministic adapter + guard; ADK orchestration planned |
+| Agent interpretation via evidence/policy | **IMPLEMENTED** | Google ADK agent + enforced tool path (E3.1) |
 
 ---
 
@@ -147,16 +147,26 @@ Policy representation is **IMPLEMENTED** in code and curated content; automated 
 | Evidence vs recommendation authorization separated | IMPLEMENTED | `evidence_authorized` / `recommendation_authorized` (E2.1) |
 | General corpus evidence without fabricated policy | IMPLEMENTED | Non-L2-CR chunks → general evidence path |
 | Enforced retrieve+policy composition | IMPLEMENTED | `app/agent_tools.retrieve_authorized_evidence()` |
-| Agent tool contracts (no ADK) | IMPLEMENTED | `app/agent_tools.py` |
-| TRACE schema foundation | PARTIAL | `evals/trace_schema.py` — JSON, sanitized |
-| Final output guard contract | PARTIAL | `app/output_guard.py` — deterministic phrase checks |
+| Agent tool contracts | IMPLEMENTED | `app/agent_tools.py` |
+| Google ADK Health Coach agent | IMPLEMENTED | `agent/` — single agent, no sub-agents (E3.1) |
+| Longitudinal interpreter semantics | IMPLEMENTED | Proactive pattern surfacing; `NO_SIGNIFICANT_NEW_PATTERN` (E3.1.1) |
+| Bounded agent execution | IMPLEMENTED | `RunConfig(max_llm_calls=8)`; fail-closed on limit |
+| Final output guard before return | IMPLEMENTED | `agent/runner.py` → `check_final_output()` |
+| TRACE run capture | PARTIAL | `evals/traces/{run_id}.json` — no Assignment 4 eval runner |
+| Final output guard contract | IMPLEMENTED | `app/output_guard.py` — deterministic phrase checks |
 | LLM decides policy verdict | PLANNED (blocked) | Must not be implemented |
-| Fake trace/eval artifacts | PLANNED (blocked) | Only real future runs |
+| Fake trace/eval artifacts | PLANNED (blocked) | Only real runs archived |
 
 Synthetic health data encodes **observations and temporal patterns, not causal truth**.
 **Retrieval relevance is not authorization.** Evidence validity, interpretation authority,
 and recommendation authority are **separate decisions**. Agent interpretation must pass
 through **evidence retrieval + deterministic policy** before user-facing language.
+
+**E3.1.1 product semantics:** The Health Coach is a **longitudinal health interpreter**, not merely
+an anomaly detector. It may surface positive, negative, recovery, ambiguous, or stable/reassuring
+patterns. `NO_SIGNIFICANT_NEW_PATTERN` means no sufficiently strong new pattern warrants further
+investigation — not that the user's health is meaningless. Absence of a new trend can be useful
+information; absence of evidence is not permission to invent an explanation.
 
 ---
 
@@ -168,10 +178,10 @@ through **evidence retrieval + deterministic policy** before user-facing languag
 | ACSM page-level verification | IMPLEMENTED (visible) | Flagged, not silently treated as verified |
 | Relationship fields in Pinecone metadata | IMPLEMENTED | D2.1 whitelist + L2-CR-only re-ingestion (54/89 relationship chunks) |
 | Retrieval quality baselines | PARTIAL | Phase D2/D2.1 live smoke; not full eval suite |
-| Answer generation guardrails | PLANNED | No `/ask` or agent yet |
-| TRACE traces and failure taxonomy | PLANNED | `evals/traces/` placeholder |
+| Answer generation guardrails | IMPLEMENTED | ADK agent + `check_final_output()` (E3.1) |
+| TRACE traces and failure taxonomy | PARTIAL | Runs archived; eval taxonomy not built |
 | Persistent user memory | PLANNED | Not in scope |
-| Streamlit / deployment controls | PLANNED | Not in scope |
+| Streamlit / deployment controls | PARTIAL | `streamlit_agent_demo.py` (dev demo only) |
 | Automated post-retrieval policy enforcement | **IMPLEMENTED** | `rag/evidence_policy.py` (Phase E2) |
 
 ---
