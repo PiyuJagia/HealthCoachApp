@@ -33,7 +33,7 @@ schemas are implemented. Google ADK agent orchestration is **not** implemented y
 | TRACE schemas | partial (Phase E2 schemas only) |
 | Health data (relational) | implemented (Phase E1) |
 | Trend analytics | implemented (Phase E1) |
-| Google ADK agent | planned |
+| Google ADK agent | setup verified (Phase E3.0); agent not implemented |
 
 ### Approved RAG corpus
 
@@ -220,15 +220,27 @@ Never commit real keys. See `.env.example` for placeholders.
 
 ## Local Setup
 
-*(Placeholder — detailed setup instructions will be added in later phases.)*
-
 ```bash
 python -m venv .venv
 # activate virtual environment
 pip install -r requirements.txt
 cp .env.example .env
-# add real API keys to .env
+# add real API keys to .env (OPENAI_API_KEY, PINECONE_API_KEY, GOOGLE_API_KEY)
 ```
+
+### Google ADK / Gemini (Phase E3.0)
+
+Dependencies: `google-adk`, `google-genai` (see `requirements.txt`).
+
+Set `GOOGLE_API_KEY` in `.env` (from [Google AI Studio](https://aistudio.google.com/apikey)).
+Live verification scripts are **not** part of the offline pytest suite:
+
+```bash
+python scripts/smoke_gemini_auth.py
+python scripts/smoke_adk_setup.py
+```
+
+These confirm Gemini auth and a minimal ADK agent → tool → observation → response cycle.
 
 ## Ingest One Document
 
