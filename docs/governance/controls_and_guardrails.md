@@ -107,13 +107,13 @@ Policy representation is **IMPLEMENTED** in code and curated content; automated 
 
 | Control | Status | Implementation |
 |---------|--------|----------------|
-| Deterministic unit test suite | IMPLEMENTED | `tests/` (129 tests at Phase E1.1 checkpoint) |
+| Deterministic unit test suite | IMPLEMENTED | `tests/` (149 tests at Phase E2.1 checkpoint) |
 | Registry/evidence validation tests | IMPLEMENTED | `tests/test_registry.py`, `tests/test_evidence_registries.py` |
 | Chunking regression tests | IMPLEMENTED | `tests/test_chunker.py`, `tests/test_relationship_chunker.py` |
 | Relationship policy invariant tests | IMPLEMENTED | `tests/test_relationship_policy.py` |
 | Retrieval unit tests (mocked) | IMPLEMENTED | `tests/test_retrieval.py` (Phase D2) |
 | Live retrieval smoke script | IMPLEMENTED | `scripts/test_retrieval.py` (Phase D2) |
-| TRACE / eval automation | PLANNED | `evals/` placeholders only |
+| TRACE / eval automation | **PARTIAL** | `evals/trace_schema.py` schemas only; no eval runner yet |
 
 ---
 
@@ -132,7 +132,31 @@ Policy representation is **IMPLEMENTED** in code and curated content; automated 
 | Synthetic data = observations, not causal truth | IMPLEMENTED | E1.1 seed narrative; no causal labels in storage |
 | Intentional ambiguity in demo dataset | IMPLEMENTED | Caffeine + work context + sleep overlap in disruption |
 | Non-signal control metric (respiratory rate) | IMPLEMENTED | Stable independent noise in `data/demo_seed.py` |
-| Agent interpretation via evidence/policy | PLANNED | RAG + relationship policy before user-facing claims |
+| Agent interpretation via evidence/policy | **PARTIAL** | Deterministic adapter + guard; ADK orchestration planned |
+
+---
+
+## I. Agent-readiness controls (Phase E2)
+
+| Control | Status | Implementation |
+|---------|--------|----------------|
+| Retrieval relevance ≠ authorization | IMPLEMENTED | `rag/evidence_policy.py` |
+| Deterministic SURFACE/QUALIFY/SUPPRESS | IMPLEMENTED | `evaluate_retrieved_evidence()` |
+| Reuses existing relationship policy | IMPLEMENTED | `rag/relationship_policy.py` — no duplicated rules |
+| Conservative multi-relationship handling | IMPLEMENTED | Independent evaluation; QUALIFY when ambiguous — not auto-contradiction (E2.1) |
+| Evidence vs recommendation authorization separated | IMPLEMENTED | `evidence_authorized` / `recommendation_authorized` (E2.1) |
+| General corpus evidence without fabricated policy | IMPLEMENTED | Non-L2-CR chunks → general evidence path |
+| Enforced retrieve+policy composition | IMPLEMENTED | `app/agent_tools.retrieve_authorized_evidence()` |
+| Agent tool contracts (no ADK) | IMPLEMENTED | `app/agent_tools.py` |
+| TRACE schema foundation | PARTIAL | `evals/trace_schema.py` — JSON, sanitized |
+| Final output guard contract | PARTIAL | `app/output_guard.py` — deterministic phrase checks |
+| LLM decides policy verdict | PLANNED (blocked) | Must not be implemented |
+| Fake trace/eval artifacts | PLANNED (blocked) | Only real future runs |
+
+Synthetic health data encodes **observations and temporal patterns, not causal truth**.
+**Retrieval relevance is not authorization.** Evidence validity, interpretation authority,
+and recommendation authority are **separate decisions**. Agent interpretation must pass
+through **evidence retrieval + deterministic policy** before user-facing language.
 
 ---
 
@@ -148,7 +172,7 @@ Policy representation is **IMPLEMENTED** in code and curated content; automated 
 | TRACE traces and failure taxonomy | PLANNED | `evals/traces/` placeholder |
 | Persistent user memory | PLANNED | Not in scope |
 | Streamlit / deployment controls | PLANNED | Not in scope |
-| Automated post-retrieval policy enforcement | PLANNED | Policy exists; not wired to retrieval layer yet |
+| Automated post-retrieval policy enforcement | **IMPLEMENTED** | `rag/evidence_policy.py` (Phase E2) |
 
 ---
 
@@ -172,7 +196,10 @@ data/database.py                           → DATABASE_URL, engine, init
 data/models.py                             → user health ORM models
 data/repository.py                         → data-access helpers
 data/demo_seed.py                          → synthetic demo dataset
-scripts/inspect_demo_health_story.py       → phase/trend inspection (E1.1)
+rag/evidence_policy.py                     → retrieval→policy adapter (E2)
+app/agent_tools.py                         → agent-facing tool contracts (E2)
+app/output_guard.py                        → final output guard (E2)
+evals/trace_schema.py                      → TRACE JSON schema helpers (E2)
 analytics/trends.py                        → deterministic trend engine
 app/health_tools.py                        → agent-ready JSON tool interface
 ```

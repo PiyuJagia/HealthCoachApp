@@ -14,10 +14,10 @@ Health Coach AI is being built to:
 - make grounded observations and recommendations (future);
 - later add persistent memory, TRACE evaluations, alerts, trends, and a richer frontend.
 
-**Current status:** L2-CR-002 is approved for MVP ingestion with
-`verified_with_constraints` status. All four corpus documents are embedded in
-Pinecone (`healthcoach-rag` / `healthcoach-knowledge-base`). Retrieval is not yet
-implemented.
+**Current status:** Four approved corpus documents are embedded in Pinecone
+(`healthcoach-rag` / `healthcoach-knowledge-base`, 407 vectors). Retrieval,
+deterministic relationship-policy enforcement, health-data analytics, and trace
+schemas are implemented. Google ADK agent orchestration is **not** implemented yet.
 
 ## Implementation Status
 
@@ -28,8 +28,12 @@ implemented.
 | Embeddings | implemented |
 | Pinecone | implemented (`healthcoach-rag`) |
 | Retrieval | implemented |
+| Retrieval→policy enforcement | implemented (Phase E2) |
+| Agent tool contracts | implemented (Phase E2; no ADK yet) |
+| TRACE schemas | partial (Phase E2 schemas only) |
 | Health data (relational) | implemented (Phase E1) |
 | Trend analytics | implemented (Phase E1) |
+| Google ADK agent | planned |
 
 ### Approved RAG corpus
 
@@ -54,12 +58,12 @@ The registry exists so ingestion can be:
 - safe for batch processing across many documents
 - explicit about which curated sources are trusted
 
-**Intended workflow for adding a new knowledge source** *(ingestion not implemented yet)*:
+**Workflow for adding a new knowledge source:**
 
 1. Add curated Markdown to `knowledge/curated/`
 2. Add a registry row with metadata
 3. Set `approved_for_ingestion=TRUE`
-4. Run the future ingestion command for one document or all approved documents
+4. Run `python scripts/ingest_document.py --document-id <document_id>` or batch ingest
 
 No application-code changes should be required when a new approved document is added.
 
@@ -73,8 +77,10 @@ raw → extracted → curated  →  chunk → embed → Pinecone  →  retrieve 
          ↑                           ↑
     source_registry.csv         registry-driven ingest
 
-User health data               Analytics                    Agent (future)
-relational DB (SQLite/PG)  →  trend engine (deterministic) →  ADK tools / coaching
+User health data               Analytics                    Agent readiness (E2)
+relational DB (SQLite/PG)  →  trend engine (deterministic) →  tool contracts + policy
+                                                                    ↓
+                                                              ADK agent (planned)
          ↑
    user's longitudinal truth — NOT stored in Pinecone
 ```
@@ -89,7 +95,8 @@ observations must not be mixed into Pinecone.
 | `rag/` | Chunking, embeddings, vector store, ingestion, retrieval |
 | `data/` | SQLAlchemy models, database init, repository access |
 | `analytics/` | Deterministic trend calculations from stored health data |
-| `app/` | FastAPI boundary and agent-ready tool functions |
+| `app/` | Agent-ready tools, output guard; FastAPI boundary (planned) |
+| `evals/` | TRACE schema placeholders and future run artifacts |
 | `scripts/` | CLI tools for ingest, retrieval testing, demo data seeding |
 
 Curated Markdown in `knowledge/curated/` is the trusted source of truth for ingestion.
@@ -106,8 +113,6 @@ Only documents with `approved_for_ingestion=TRUE` are eligible for batch ingesti
 
 ## RAG Ingestion Lifecycle
 
-*(Not implemented yet — placeholder for upcoming phases.)*
-
 1. Look up document in `source_registry.csv`
 2. Confirm approval status
 3. Read curated Markdown
@@ -115,6 +120,11 @@ Only documents with `approved_for_ingestion=TRUE` are eligible for batch ingesti
 5. Embed with `text-embedding-3-small`
 6. Safely replace existing Pinecone vectors for the same `document_id`
 7. Upsert new vectors
+
+```bash
+python scripts/ingest_document.py --document-id <document_id>
+python scripts/ingest_all_approved.py
+```
 
 ## Folder Structure
 
@@ -172,6 +182,22 @@ from app.health_tools import get_health_trends_for_agent
 payload = get_health_trends_for_agent(user_id=1)
 ```
 
+## Agent Readiness (Phase E2 — no ADK yet)
+
+Deterministic path for Assignment 3:
+
+```text
+get_trend_signals() → retrieve_evidence() → evaluate_evidence_policy()
+                              ↓
+                   retrieve_authorized_evidence()  # enforced composition
+                              ↓
+                   check_final_output()            # future generation guard
+```
+
+Retrieval relevance is **not** authorization. Policy evaluation is deterministic
+Python — not LLM-decided. Future traces use JSON under `evals/traces/` via
+`evals/trace_schema.py`.
+
 ## Environment Variables
 
 Copy the example file and fill in real values locally:
@@ -206,18 +232,14 @@ cp .env.example .env
 
 ## Ingest One Document
 
-*(Not implemented yet.)*
-
 ```bash
-python -m scripts.ingest_document --document-id <document_id>
+python scripts/ingest_document.py --document-id <document_id>
 ```
 
 ## Ingest All Approved Documents
 
-*(Not implemented yet.)*
-
 ```bash
-python -m scripts.ingest_all_approved
+python scripts/ingest_all_approved.py
 ```
 
 ## Test Retrieval
@@ -251,21 +273,19 @@ documents (289 HHS + 15 L2-TD + 89 L2-CR + 14 L3-SF). L2-CR vectors carry
 
 ## Current Limitations
 
-- No RAG modules implemented
-- No FastAPI endpoints implemented
-- No curated documents migrated
-- No Pinecone index created
-- No package installation performed in Phase A
+- No Google ADK agent orchestration yet
+- No FastAPI `/ask` endpoint yet
+- No persistent agent memory yet
+- No Assignment 4 eval runner yet (trace schemas only)
+- No Streamlit/deployment yet
+- Analytics engine uses simple 7-day vs 30-day comparisons (not changepoint/z-score methods)
 
 ## Future Roadmap
 
-The following are planned but **not implemented**:
+The following remain planned:
 
-- **HealthKit / health data** — ingest and normalize Apple Health metrics
-- **Trends** — resting HR, HRV, sleep, workouts, VO2 max, recovery patterns
-- **Alerts** — threshold and anomaly notifications
-- **Recommendations** — grounded coaching responses from retrieved evidence
-- **TRACE evaluations** — structured retrieval and response quality testing
-- **Persistent memory** — longitudinal user context
-- **Deployment** — production hosting for API and services
-- **Final frontend** — user-facing Health Coach experience
+- **Google ADK agent** — orchestrate trend signals, retrieval, policy, generation
+- **Apple Health / HealthKit ingest** — live user data beyond synthetic demo
+- **Assignment 4 TRACE eval runner** — score traces under `evals/`
+- **Persistent memory** — Assignment 5
+- **Deployment + frontend** — production hosting and user-facing UI

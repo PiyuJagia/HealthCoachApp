@@ -12,7 +12,7 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | L3-SF | 14 |
 | **Total** | **407** |
 
-**Offline test suite:** 129 tests passing (includes Phase E1 + E1.1 synthetic story tests).
+**Offline test suite:** 149 tests passing (includes Phase E2.1 policy semantics corrections).
 
 ---
 
@@ -43,6 +43,49 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | **E1 — Health-data foundation** | SQLAlchemy models, seed script, trend engine, agent tool | Relational user truth separate from Pinecone knowledge | 25 new offline tests pass | Pass | `tests/test_database.py`, `tests/test_seed_data.py`, `tests/test_trends.py` |
 | **E1.1 — Synthetic demo narrative** | 3-phase story, ambiguity, inspection script | Product demo + future agent/TRACE scenarios | 8 additional seed/trend tests pass | Pass | `data/demo_seed.py`, `scripts/inspect_demo_health_story.py` |
 | **E1.1 — Spec reconciliation** | Marcus Chen profile, spec missing-data days, baseline ranges | Align canonical demo user with attached 90-day specification | Profile + seed tests pass; suite 129 | Pass | `data/demo_seed.py` |
+| **E2 — Agent readiness** | Retrieval→policy adapter, agent tools, trace schema, output guard | Enforced evidence path before future ADK | 18 new offline tests pass | Pass | `rag/evidence_policy.py`, `app/agent_tools.py`, `evals/trace_schema.py`, `app/output_guard.py` |
+| **E2.1 — Policy semantics correction** | Remove auto-contradiction; separate evidence vs recommendation auth | Fix over-broad multi-relationship suppression | Policy tests updated; suite 149 | Pass | `rag/evidence_policy.py` |
+
+---
+
+## Phase E2.1 — Policy semantics correction (2026-08-17)
+
+**Why it matters:** E2 initially treated ≥2 relationship_ids as automatic contradiction.
+That was too broad and could suppress compatible evidence (e.g. R-05 + R-06).
+
+**Corrections:**
+
+- Relationships evaluated **independently**; `contradictory_candidates` is explicit only
+- R-03 / mandatory suppression applies when upstream context sets `contradictory_candidates=True`
+- Multiple relationships without explicit contradiction → **QUALIFY** (ambiguous), not SUPPRESS
+- `evidence_authorized` vs `recommendation_authorized` separated on decision objects
+- General HHS/L2-TD/L3-SF evidence usable for grounding but does not grant recommendation authority
+
+**Verification:** 149 offline tests pass.
+
+---
+
+## Phase E2 — Agent readiness (2026-08-17)
+
+**Why it matters:** Retrieval relevance is not authorization. Assignment 3 needs a
+deterministic enforcement layer between Pinecone retrieval and any future LLM output.
+
+**Implemented:**
+
+- `evaluate_retrieved_evidence()` — SURFACE / QUALIFY / SUPPRESS from `RetrievalResult[]`
+- `retrieve_authorized_evidence()` — enforced retrieve + policy composition
+- `evals/trace_schema.py` — JSON trace helpers with secret sanitization
+- `check_final_output()` — minimal deterministic output guard
+
+**Not implemented:** Google ADK, agent orchestration, eval runner, fake traces.
+
+**Verification:**
+
+| Check | Result |
+|-------|--------|
+| Offline tests added | 18 |
+| Total offline suite | 147 pass |
+| Network calls in new tests | none |
 
 ---
 

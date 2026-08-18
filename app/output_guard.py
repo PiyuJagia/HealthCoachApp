@@ -1,0 +1,90 @@
+"""Minimal deterministic guard for future agent-generated insights."""
+
+from __future__ import annotations
+
+import re
+from dataclasses import dataclass
+
+from rag.evidence_policy import AuthorizationVerdict, EvidencePolicyDecision
+
+CAUSAL_PHRASES = (
+    r"\bcaused\b",
+    r"\bcauses\b",
+    r"\bled to\b",
+    r"\bresults? in\b",
+    r"\bproves\b",
+    r"\bproof that\b",
+)
+
+UNSUPPORTED_METHOD_PHRASES = (
+    r"changepoint analysis",
+    r"change-point analysis",
+    r"z-score analysis",
+    r"z score analysis",
+    r"robust rolling statistics",
+    r"robust rolling average",
+)
+
+RECOMMENDATION_PHRASES = (
+    r"\byou should\b",
+    r"\bi recommend\b",
+    r"\brecommend(?:ation)?(?:s)?\b",
+    r"\bmaintain your\b.+\broutine\b",
+)
+
+
+@dataclass(frozen=True)
+class GuardResult:
+    passed: bool
+    violations: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, object]:
+        return {"passed": self.passed, "violations": list(self.violations)}
+
+
+def _contains_any(patterns: tuple[str, ...], text: str) -> bool:
+    return any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in patterns)
+
+
+def check_final_output(
+    output: str,
+    *,
+    decision: EvidencePolicyDecision,
+    executed_analytical_methods: set[str] | None = None,
+) -> GuardResult:
+    """
+    Deterministically validate a candidate final insight against policy decisions.
+
+    This is not an NLP classifier. It applies explicit, testable checks only.
+    """
+    violations: list[str] = []
+    normalized = (output or "").strip()
+    if not normalized:
+        return GuardResult(passed=True, violations=())
+
+    for relationship_id in decision.suppressed_relationship_ids:
+        if relationship_id and relationship_id.lower() in normalized.lower():
+            violations.append(f"suppressed_relationship_referenced:{relationship_id}")
+
+    if decision.overall_verdict == AuthorizationVerdict.SUPPRESS and normalized:
+        violations.append("output_present_while_policy_suppressed")
+
+    recommendation_allowed = decision.recommendation_authorized
+    if _contains_any(RECOMMENDATION_PHRASES, normalized) and not recommendation_allowed:
+        violations.append("unauthorized_recommendation_language")
+
+    if _contains_any(CAUSAL_PHRASES, normalized):
+        violations.append("association_only_causal_wording")
+
+    executed = {method.lower() for method in (executed_analytical_methods or set())}
+    for pattern in UNSUPPORTED_METHOD_PHRASES:
+        if re.search(pattern, normalized, flags=re.IGNORECASE):
+            method_key = pattern.replace("\\b", "").replace(" ", "_")
+            if method_key not in executed:
+                violations.append(f"unsupported_analytical_method_claim:{pattern}")
+
+    for item in decision.relationship_decisions:
+        if item.modifier_suppressor_only and item.relationship_id.lower() in normalized.lower():
+            violations.append(f"modifier_only_relationship_surfaced:{item.relationship_id}")
+
+    return GuardResult(passed=not violations, violations=tuple(violations))

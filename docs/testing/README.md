@@ -71,16 +71,20 @@ See `scripts/test_retrieval.py` and `tests/test_retrieval.py`.
 
 ### 5. Evaluation / TRACE
 
-**NOT IMPLEMENTED YET.**
+**PARTIAL (Phase E2).** Trace schemas exist; eval runner does not.
 
-Future work will include:
+Implemented:
 
-- trace capture of retrieval + generation steps
+- structured trace schema (`evals/trace_schema.py`)
+- secret sanitization for trace payloads
+
+Future work:
+
+- trace capture from Assignment 3 agent runs
 - human review workflows
-- failure taxonomy (wrong source, unsafe interpretation, missing guardrail, etc.)
-- assertions and before/after metrics on eval datasets
+- failure taxonomy and eval datasets under `evals/datasets/` and `evals/results/`
 
-Placeholder directories exist under `evals/` but contain no TRACE implementation.
+Do not commit fabricated trace files.
 
 ## Running tests
 
