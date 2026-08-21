@@ -1,0 +1,8 @@
+{
+  "verification_status": "verified",
+  "markdown_sha256_match": true,
+  "expected_sha256": "85d8f779a26f5ce734b6b397865b78629153a123d252d2153913a555511115a7",
+  "actual_sha256": "85d8f779a26f5ce734b6b397865b78629153a123d252d2153913a555511115a7",
+  "mismatch_count": 0,
+  "mismatches": []
+}

@@ -1,0 +1,19 @@
+{
+  "adk_version": "2.7.1",
+  "baseline_dataset_version": "healthcoach_trace_baseline_v1",
+  "gemini_model": "gemini-3.6-flash",
+  "git_head": "3bb58f3b3fb3f26d97d8ff6b344cdc5a7e56d97a",
+  "max_llm_calls": 8,
+  "pinecone_index_name": "healthcoach-rag",
+  "pinecone_namespace": "healthcoach-knowledge-base",
+  "rag_default_top_k": 3,
+  "rag_min_relevance_score": 0.35,
+  "rag_top_k": 3,
+  "trend_configuration": {
+    "baseline_window_days": 30,
+    "current_window_days": 7,
+    "min_baseline_observations": 15,
+    "min_current_observations": 4,
+    "stable_percent_threshold": 3.0
+  }
+}

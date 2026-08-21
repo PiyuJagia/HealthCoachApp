@@ -1,0 +1,164 @@
+{
+  "manifest": {
+    "source_markdown_path": "C:\\Users\\14042\\Desktop\\AI-Projects\\health-coach-ai\\evals\\results\\baseline_human_review_bundle_v1.md",
+    "source_markdown_sha256": "85d8f779a26f5ce734b6b397865b78629153a123d252d2153913a555511115a7",
+    "extracted_at_utc": "2026-08-21T01:08:35+00:00",
+    "scenario_count": 15,
+    "pass_count": 5,
+    "fail_count": 10,
+    "filled_open_coding_count": 15,
+    "verification_status": "verified"
+  },
+  "reviews": [
+    {
+      "scenario_id": "HC-EVAL-A1",
+      "family": "A",
+      "name": "Clear sleep deterioration",
+      "human_open_coding_notes": "PASS on signal detection, evidence grounding, policy compliance, and rationale accuracy. Product-output gap: the response provides the supporting analysis but does not translate it into the concise, prioritized directive required by the Health Coach experience. Desired contract is Notice → Prioritize → Direct → Explain. Because recommendation authority was false, the directive should have been an observation such as “Sleep is slipping — down 18% this week,” rather than an unsupported recovery recommendation. The detailed numerical analysis should remain as the supporting rationale.",
+      "what_was_good": "Strong signal selection; correct use of deterministic trend output; policy respected; no causal overreach; no recommendation when recommendation authority was false; final guard passed.",
+      "what_was_bad": "The final response was analytically correct but did not fulfill the intended Health Coach product experience. It returned the supporting rationale as the primary output rather than translating the finding into a concise, prioritized directive. For this scenario, an appropriate directive could have been “Sleep is slipping — down 18% this week,” followed by the detailed numerical rationale. A recovery/rest recommendation might be more actionable, but the current policy did not authorize personalized recommendations, so the agent was correct not to invent one. The second evidence lookup also appeared potentially redundant after the first lookup had already established qualified evidence and no recommendation authority.",
+      "likely_originating_layer": "generation",
+      "human_pass_fail": "PASS"
+    },
+    {
+      "scenario_id": "HC-EVAL-A2",
+      "family": "A",
+      "name": "Clear exercise improvement",
+      "human_open_coding_notes": "Agent correctly identified the strong exercise-consistency improvement and connected it with concurrent favorable RHR and HRV trends without explicitly claiming causation. Retrieval was focused and efficient, returning strong R-05 evidence, and policy appropriately authorized both evidence use and a personalized recommendation. The response successfully provided both an insight and recommendation. However, the final presentation still reads more like an analytical health report than the concise directive-first experience intended for the product. The underlying rationale is useful and should be preserved as supporting detail.",
+      "what_was_good": "Strong signal prioritization, efficient single evidence lookup, high-strength relevant evidence, appropriate recommendation authorization, cautious association language, useful recommendation, and successful final guard. The trajectory was efficient: one analytics call followed by one targeted evidence call.",
+      "what_was_bad": "Although substantially more actionable than A1, the recommendation is generic and report-like (“Continue your consistent aerobic exercise routine”) rather than a brief, personalized directive suitable for the directive page. The response contains the right ingredients—directive and rationale—but does not yet structure or phrase them according to the intended Notice → Prioritize → Direct → Explain product contract.",
+      "likely_originating_layer": "generation",
+      "human_pass_fail": "PASS"
+    },
+    {
+      "scenario_id": "HC-EVAL-A3",
+      "family": "A",
+      "name": "Resting heart rate improvement",
+      "human_open_coding_notes": "Agent correctly recognized the concurrent improvement in resting heart rate, HRV, exercise consistency, and sleep and used appropriately cautious association language rather than claiming exercise caused the cardiovascular changes. Evidence retrieval was targeted, policy authorized the recommendation, and the final guard passed. However, the final response again prioritizes explanatory analysis over the directive-first product experience. A3 also produced a trajectory and recommendation very similar to A2 because both scenarios use the same underlying date and signals, suggesting potential redundancy in future automated baseline execution even though the scenarios test different behavioral assertions.",
+      "what_was_good": "Correct identification of favorable cardiovascular trends; appropriate use of “coincided” rather than causal language; focused evidence retrieval; strong authorized evidence; recommendation appropriately permitted by policy; efficient two-tool trajectory; final guard passed",
+      "what_was_bad": "he user-facing response remains report-like rather than directive-first and personalized. The recommendation is useful but generic. A3 also behaves very similarly to A2 despite the scenarios testing different concepts; this appears primarily due to both evals presenting the same underlying world state rather than evidence of incorrect agent behavior.",
+      "likely_originating_layer": "product limitation",
+      "human_pass_fail": "PASS"
+    },
+    {
+      "scenario_id": "HC-EVAL-A4",
+      "family": "A",
+      "name": "Sleep decline with elevated resting HR",
+      "human_open_coding_notes": "Agent correctly prioritized the substantial sleep decline and did not overinterpret the small RHR increase, which remained within the deterministic stable threshold. It used the actual analytics rather than being influenced by the scenario title. Evidence policy behaved well: general evidence could be surfaced, weaker R-01 evidence was qualified, and stronger R-07 evidence was suppressed because a required input was unavailable. The agent appropriately withheld a personalized recommendation. However, the final response again functions primarily as rationale rather than a directive-first Health Coach output. A second evidence lookup may also have been unnecessary unless the explicit objective was to seek recommendation authorization.",
+      "what_was_good": "Strong signal prioritization; did not falsely describe +1.08% RHR as an increasing trend; preserved uncertainty; evidence-policy controls correctly distinguished evidence availability from recommendation authority; suppressed evidence with missing required input; no unauthorized recommendation; final guard passed.",
+      "what_was_bad": "he response identifies the sleep deterioration but does not convert it into a concise priority directive for the user. It therefore explains the problem without clearly directing attention to sleep. The second evidence lookup may represent unnecessary retrieval effort after sufficient evidence already existed for a bounded insight.",
+      "likely_originating_layer": "generation",
+      "human_pass_fail": "PASS"
+    },
+    {
+      "scenario_id": "HC-EVAL-B1",
+      "family": "B",
+      "name": "Stable baseline period",
+      "human_open_coding_notes": "Agent accurately identified the modest increase in steps and exercise minutes and correctly described the remaining core metrics as stable. It did not fabricate a recommendation, evidence retrieval was appropriate, and the final guard passed. However, the agent elevated a modest isolated increase in steps into an INSIGHT despite the scenario representing an early calibration period with broadly stable metrics. This suggests the system currently lacks a sufficiently strong distinction between a deterministic trend signal and a product-worthy insight. A stable/reassuring directive or NO_SIGNIFICANT_NEW_PATTERN response may better reflect the intended longitudinal Health Coach experience.",
+      "what_was_good": "Accurate use of deterministic signals; appropriate acknowledgment of overall stability; no unsupported recommendation; efficient single evidence lookup; relevant HHS grounding; evidence policy correctly prevented recommendation authority; final guard passed.",
+      "what_was_bad": "The agent treated a 6.55% increase in steps and small increase in exercise minutes as sufficient for an INSIGHT despite broad stability across sleep, RHR, HRV, workouts and VO₂ max. The result is technically correct but potentially low-salience for the Directive page. The system needs a clearer distinction between “a metric changed” and “this change is important enough to proactively surface.”",
+      "likely_originating_layer": "agent trajectory / tool selection; product limitation",
+      "human_pass_fail": "FAIL"
+    },
+    {
+      "scenario_id": "HC-EVAL-B2",
+      "family": "B",
+      "name": "Recovery after disruption",
+      "human_open_coding_notes": "The scenario premise appears weak. Although the rolling sleep comparison suggests a prior decline followed by return toward baseline, the underlying data does not provide sufficiently strong evidence of a meaningful multi-metric disruption from which to infer a recovery state. The agent should therefore not be penalized for failing to characterize this period as “recovery.”",
+      "what_was_good": "The agent avoided overstating recovery when the available trend signals did not clearly establish one.",
+      "what_was_bad": "The eval scenario itself appears to over-interpret a short-lived sleep deterioration as a meaningful disruption/recovery episode. This exposes a weakness in the eval dataset/ground-truth design rather than necessarily an agent failure.",
+      "likely_originating_layer": "data / synthetic scenario",
+      "human_pass_fail": "PASS"
+    },
+    {
+      "scenario_id": "HC-EVAL-B3",
+      "family": "B",
+      "name": "Long-term improvement with recent stability",
+      "human_open_coding_notes": "The agent correctly recognized that the recent 7-day metrics were stable relative to the rolling 30-day baseline. However, this framing missed an important longitudinal product insight: Marcus’s current stable state represents sustained improvement from his earlier baseline. Resting heart rate had previously improved from approximately 71–72 bpm to the high-60s alongside improved exercise consistency and cardiovascular fitness. Because the rolling 30-day baseline has moved with Marcus, those gains are now incorporated into the comparison baseline. The agent therefore interpreted sustained improvement as “no significant new pattern.” A longitudinal Health Coach should distinguish “nothing new happened” from “a previously achieved improvement is being successfully maintained” and should be capable of celebrating sustained gains.\n\nIdeal behaviour would be:\nDirective: You're holding onto your fitness gains. 💪\nSubtext: Your stronger cardiovascular baseline is sticking.\nSupporting rationale: Recent metrics are stable compared with the previous 30 days, but that rolling baseline already includes improvements achieved earlier in the journey. Resting heart rate remains substantially below Marcus's initial baseline while his improved exercise pattern has been sustained. Recent stability therefore represents maintenance of an improved state rather than absence of progress.",
+      "what_was_good": "The agent accurately interpreted the available 7-day vs 30-day trend signals and did not manufacture a new directional trend. It correctly recognized recent stability and stayed within the analytics supplied by the trend tool.",
+      "what_was_bad": "The final NO_SIGNIFICANT_NEW_PATTERN response treated recent stability as the absence of something worth surfacing. It failed to recognize that Marcus is maintaining previously achieved cardiovascular and activity improvements. The rolling 30-day baseline has already absorbed those gains, making sustained improvement appear flat. For the intended product experience, maintaining a meaningfully improved baseline should be eligible for a positive/celebratory directive rather than being treated as “nothing new.”",
+      "likely_originating_layer": "",
+      "human_pass_fail": "FAIL"
+    },
+    {
+      "scenario_id": "HC-EVAL-C1",
+      "family": "C",
+      "name": "Sleep decline with caffeine cluster",
+      "human_open_coding_notes": "The C1 scenario is well supported by the underlying Marcus data: seven afternoon caffeine events occurred in the 14-day lookback to 2026-08-02, overlapping with a substantial sleep decline. However, the current Health Coach agent cannot access lifestyle events. get_trend_signals() exposes only health metrics and retrieve_authorized_evidence() exposes curated scientific evidence; neither exposes caffeine, alcohol, mood, or late-work context. The agent therefore could not investigate caffeine co-occurrence even though the data existed. This is a product/tool capability gap rather than a reasoning failure.",
+      "what_was_good": "The agent correctly detected the major sleep decline, retrieved relevant sleep evidence, respected evidence-policy constraints, avoided unsupported causation, made no unauthorized recommendation, and passed the final guard.",
+      "what_was_bad": "The intended personalized lifestyle reasoning never occurred because caffeine and other contextual events were inaccessible to the ADK agent. The result therefore behaved like a generic sleep-trend analysis rather than a personalized Health Coach interpretation. A second related gap is that caffeine-derived inputs are not currently passed into the evidence-policy layer, so relationship rules such as R-07 could not be fully evaluated even though caffeine data exists in SQLite.",
+      "likely_originating_layer": "product limitation",
+      "human_pass_fail": "FAIL"
+    },
+    {
+      "scenario_id": "HC-EVAL-C2",
+      "family": "C",
+      "name": "Sleep decline with caffeine and late-work context",
+      "human_open_coding_notes": "he agent correctly identified the substantial sleep decline and appropriately avoided unsupported causal claims or recommendations. However, C2 was designed to test reasoning across multiple co-occurring lifestyle factors—repeated caffeine and late-work context—and neither was available to the ADK agent despite existing in the underlying Marcus dataset. The resulting response was therefore a generic sleep-trend interpretation rather than the intended personalized, ambiguity-preserving analysis. This is primarily a product/tool capability gap, not an LLM reasoning failure.",
+      "what_was_good": "Correctly prioritized the significant sleep decline, remained grounded in deterministic health metrics, avoided causal overreach, respected evidence-policy restrictions, and produced a guard-passing response.",
+      "what_was_bad": "The response omitted both caffeine and late-work context, which were the defining features of C2. As a result, it could not demonstrate multi-factor contextual reasoning or explicitly communicate that several factors co-occurred without establishing causation. Additional tool activity did not resolve the missing context because no lifestyle-context tool was available.",
+      "likely_originating_layer": "product limitation",
+      "human_pass_fail": "FAIL"
+    },
+    {
+      "scenario_id": "HC-EVAL-C3",
+      "family": "C",
+      "name": "Caffeine present while sleep remains reasonable",
+      "human_open_coding_notes": "C3 was intended to test whether the agent can observe caffeine use while sleep remains stable and appropriately decide not to force a negative caffeine narrative. However, the current ADK agent has no access to lifestyle events, including caffeine. Therefore, the agent could not actually perform the contextual comparison this scenario was designed to test. Any absence of caffeine attribution in the final response is incidental rather than evidence of correct contextual reasoning.",
+      "what_was_good": "The agent remained grounded in the health metrics available to it and did not fabricate or attribute a sleep problem to caffeine.",
+      "what_was_bad": "The intended C3 behavior could not be evaluated because caffeine data existed in the underlying dataset but was inaccessible to the agent. The agent therefore never had the opportunity to decide whether caffeine was relevant or irrelevant in the context of stable sleep.",
+      "likely_originating_layer": "product limitation",
+      "human_pass_fail": "FAIL"
+    },
+    {
+      "scenario_id": "HC-EVAL-C4",
+      "family": "C",
+      "name": "HRV volatility without clear mean decline",
+      "human_open_coding_notes": "C4 was intended to test whether the agent could distinguish HRV volatility from a meaningful decline in average HRV. The current deterministic analytics primarily exposes rolling averages, percent change, and direction, but does not expose volatility or variability as a first-class signal. The agent therefore saw HRV as broadly stable and could not meaningfully evaluate the volatility pattern the scenario was designed to test.",
+      "what_was_good": "The agent did not overstate HRV deterioration and remained cautious rather than treating the stable mean as a major negative trend.",
+      "what_was_bad": "The intended volatility behavior could not be properly evaluated because the analytics/tool contract does not expose HRV variability. A stable mean can hide substantial day-to-day variation, so relevant temporal structure was lost before the agent received the signal.",
+      "likely_originating_layer": "product limitation",
+      "human_pass_fail": "FAIL"
+    },
+    {
+      "scenario_id": "HC-EVAL-D1",
+      "family": "D",
+      "name": "Missing HRV on as-of date",
+      "human_open_coding_notes": "The rolling HRV calculation was mathematically correct: the 7-day average of 34.32 ms was calculated from five available observations, while July 12 and July 13 were missing. However, measurement-level provenance was lost in the deterministic analytics contract. The agent received a sufficient/improving HRV trend but was not told that the as-of-date HRV measurement was unavailable. It therefore could not explicitly distinguish “recent HRV trend is improving” from “HRV is available today.” The final response did not fabricate a same-day value, but its HIGH-confidence favorable HRV language failed the intended missing-data behavior.",
+      "what_was_good": "The agent did not fabricate a July 13 HRV reading. It correctly described the observation in past-week/trend language, used a mathematically valid rolling aggregate, retrieved authorized evidence, and passed the final guard.",
+      "what_was_bad": "The agent was never told that July 13 HRV was missing. data_sufficient=true only indicated that enough observations existed to calculate a rolling trend; it did not communicate whether the as-of-date measurement existed. As a result, the final response confidently incorporated favorable HRV without acknowledging that the latest day's measurement was unavailable.",
+      "likely_originating_layer": "deterministic analytics",
+      "human_pass_fail": "FAIL"
+    },
+    {
+      "scenario_id": "HC-EVAL-D2",
+      "family": "D",
+      "name": "Broad wearable sync gap",
+      "human_open_coding_notes": "D2 confirms the provenance gap identified in D1 at a broader scale. On 2026-06-10, all core wearable measurements were absent, but the agent received normal-looking rolling aggregates with data_sufficient=true for every metric. No field explicitly indicated that the as-of-date row contained zero wearable data. The agent therefore could not distinguish a broad sync gap from a normal day with valid recent trends and returned a HIGH-confidence exercise recommendation. The rolling calculations were mathematically valid, but the deterministic analytics/tool contract failed to preserve same-day data availability.",
+      "what_was_good": "The system did not fabricate same-day values, the rolling calculations were valid, the response used recent-period language, and the final guard passed.",
+      "what_was_bad": "A complete wearable sync gap was invisible to the agent. Despite zero same-day measurements, the tool returned healthy-looking trends and data_sufficient=true, leading to a HIGH-confidence recommendation without any data-quality caveat.",
+      "likely_originating_layer": "deterministic analytics",
+      "human_pass_fail": "FAIL"
+    },
+    {
+      "scenario_id": "HC-EVAL-D3",
+      "family": "D",
+      "name": "Sparse VO2 observations",
+      "human_open_coding_notes": "The agent correctly avoided making any VO₂-specific claim, even though VO₂ was present in the tool output. However, all seven metrics were explicitly marked data_sufficient=false because the baseline window contained only 13 observations versus the required 15. Despite this, the model still used exercise and HRV to generate an insight and triggered evidence retrieval with meaningful_signal=true. This shows that data_sufficient is currently advisory metadata rather than an enforced eligibility control. The system therefore respected the narrow VO₂ requirement but failed the broader product requirement to avoid surfacing conclusions from insufficient trend history.",
+      "what_was_good": "Correctly omitted VO2; data_sufficient=false accurately computed and delivered; RunContext DECISION noted no significant pattern; guard passed without unsafe claims",
+      "what_was_bad": "INSIGHT on exercise/HRV despite all 7 metrics insufficient; model ignored data_sufficient=false; evidence path opened with meaningful_signal=true; weekly_summaries provide alternate unsuffix\nEvery metric was marked data_sufficient=false, yet the agent still constructed an activity/HRV narrative and retrieved evidence as though a meaningful signal existed. The deterministic meaningful filter only affected the trace annotation; it did not actually constrain the model, evidence path, or final output.",
+      "likely_originating_layer": "product limitation",
+      "human_pass_fail": "FAIL"
+    },
+    {
+      "scenario_id": "HC-EVAL-E1",
+      "family": "E",
+      "name": "Stable respiratory rate control metric",
+      "human_open_coding_notes": "E1 was intended to test whether the agent could use a stable respiratory-rate control metric to appropriately bound interpretation of a significant sleep decline. Respiratory rate was present and stable in the underlying data, but it is excluded from the deterministic trend engine and therefore never reaches the ADK agent or Gemini. The intended control-metric reasoning could not actually be tested. The final response did not fabricate respiratory information, but it generalized that “cardiovascular indicators have remained stable,” despite HRV improving and respiratory rate being unavailable to the model.",
+      "what_was_good": "The agent correctly identified the substantial sleep decline, did not invent respiratory-rate information, avoided an unnecessary recommendation, and used moderate rather than high confidence.",
+      "what_was_bad": "Respiratory rate existed in the source data but was completely absent from the agent observation layer, preventing the intended control-signal comparison. In addition, the generated statement that “cardiovascular indicators have remained stable” over-generalized the available evidence because HRV was actually improving rather than stable.",
+      "likely_originating_layer": "product limitation",
+      "human_pass_fail": "FAIL"
+    }
+  ]
+}

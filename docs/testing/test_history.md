@@ -12,7 +12,52 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | L3-SF | 14 |
 | **Total** | **407** |
 
-**Offline test suite:** 186 tests passing (includes Phase E3.1.3 quota/rate-limit handling).
+**Offline test suite:** 198 tests passing (includes Phase F1 baseline infrastructure).
+
+---
+
+## Phase F3 — TRACE failure taxonomy analysis (2026-08-20)
+
+**Why it matters:** Assignment 4 TRACE requires human open-coding of baseline traces,
+bottom-up failure clustering, counts, and prioritization **before** CODIFY (assertions/graders).
+
+**Implemented (F3 analysis only — no product changes):**
+
+- Parsed completed human reviews from `evals/results/baseline_human_review_bundle_v1.md`
+- Bottom-up taxonomy: `evals/results/failure_taxonomy_v1.md`
+- Cluster counts CSV: `evals/results/failure_taxonomy_counts_v1.csv`
+- Remediation priorities: `evals/results/remediation_priority_v1.md`
+- Analysis parser: `evals/failure_taxonomy_analysis.py`
+- Build script: `scripts/build_failure_taxonomy.py`
+
+**Baseline human outcome:** 5 PASS / 10 FAIL (33.3% / 66.7%).
+
+**Top P0 clusters:** lifestyle context inaccessible (T1), as-of-date provenance gap (T2),
+`data_sufficient` not enforced (T3).
+
+**Explicitly NOT implemented:** CODIFY, assertions, graders, product fixes, trace reruns.
+
+**Verification:** 6 new offline taxonomy-parser tests; no Gemini/Pinecone/agent reruns.
+
+---
+
+## Phase F1 — Assignment 4 TRACE baseline (2026-08-19)
+
+**Why it matters:** Assignment 4 TRACE methodology requires running the **current frozen system**
+against representative scenarios, archiving real traces, and manually reviewing them **before**
+creating failure taxonomies or automated graders.
+
+**Implemented (F1 only — steps 1–3):**
+
+- 15-scenario baseline manifest mapped to real Marcus Chen dates
+- Deterministic data-support inspection (`scripts/inspect_eval_baseline.py`)
+- Baseline runner with `--all`, `--scenario`, `--resume` (`scripts/run_eval_baseline.py`)
+- Manual review index CSV with blank human annotation columns
+- Baseline integrity metadata manifest (model, ADK, RAG, trend config — no secrets)
+
+**Explicitly NOT implemented:** failure taxonomy, assertions, graders, LLM-as-judge, scorecards.
+
+**Verification:** 12 new offline infrastructure tests; live baseline traces collected separately.
 
 ---
 
@@ -45,7 +90,7 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 | **E1.1 — Spec reconciliation** | Marcus Chen profile, spec missing-data days, baseline ranges | Align canonical demo user with attached 90-day specification | Profile + seed tests pass; suite 129 | Pass | `data/demo_seed.py` |
 | **E2 — Agent readiness** | Retrieval→policy adapter, agent tools, trace schema, output guard | Enforced evidence path before future ADK | 18 new offline tests pass | Pass | `rag/evidence_policy.py`, `app/agent_tools.py`, `evals/trace_schema.py`, `app/output_guard.py` |
 | **E2.1 — Policy semantics correction** | Remove auto-contradiction; separate evidence vs recommendation auth | Fix over-broad multi-relationship suppression | Policy tests updated; suite 149 | Pass | `rag/evidence_policy.py` |
-| **E3.1 — Health Coach ADK agent** | Google ADK agent, tools, guard, trace capture, Streamlit demo | Assignment 3 Path A — real tools + bounded multi-step agent | 18 new offline tests; 4 live Marcus scenarios | Pass (day30 initial 503 retried) | `agent/`, `streamlit_agent_demo.py`, `tests/test_health_agent.py` |
+| **F3 — Failure taxonomy analysis** | Human review parsing, cluster counts, remediation priority | Bottom-up TRACE clustering before CODIFY | 5 PASS / 10 FAIL clustered; 11 taxonomy IDs | Pass (analysis) | `evals/failure_taxonomy_analysis.py`, `scripts/build_failure_taxonomy.py`, `tests/test_failure_taxonomy_analysis.py` |
 
 ---
 

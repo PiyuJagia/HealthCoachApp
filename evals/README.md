@@ -35,9 +35,37 @@ do not return partial health guidance.
 `BOUNDED_FAILURE`, `GUARD_BLOCKED`. Older E3.1 trace archives may contain the retired status
 `NO_MEANINGFUL_INSIGHT`.
 
-**Assignment 4 status:** TRACE capture is **partial** — runs are archived, but eval runner, failure taxonomy, and before/after assertions are not implemented yet.
+**Assignment 4 status:** Phase **F1 — TRACE baseline collection** is in progress. A 15-scenario
+baseline manifest exists, but **no failure taxonomy or automated eval criteria were created before
+manual trace review.** That is intentional and follows the TRACE methodology.
 
-## Generating traces
+## Phase F1 — Baseline trace collection (Assignment 4)
+
+**Concepts (kept separate on purpose):**
+
+| Concept | Meaning |
+|---------|---------|
+| **Scenario** | Situation we deliberately test (`evals/datasets/healthcoach_trace_baseline_v1.jsonl`) |
+| **Trace** | What actually happened during an agent run (`evals/traces/{run_id}.json`) |
+| **Human note** | Free-text observation added only after manual review |
+| **Failure taxonomy** | Clusters discovered **after** reading traces — not pre-built |
+| **Eval / grader** | Automated assertions built only after failure patterns are discovered |
+
+**Artifacts:**
+
+| Artifact | Path |
+|----------|------|
+| Baseline manifest (15 scenarios) | `evals/datasets/healthcoach_trace_baseline_v1.jsonl` |
+| Data-support inspection | `python scripts/inspect_eval_baseline.py` |
+| Baseline runner | `python scripts/run_eval_baseline.py --all` |
+| Resume partial runs | `python scripts/run_eval_baseline.py --all --resume` |
+| Manual review index | `evals/results/baseline_trace_index_v1.csv` |
+| System integrity metadata | `evals/results/baseline_metadata_v1.json` |
+
+Provider failures (`TEMPORARY_MODEL_UNAVAILABLE`, `MODEL_QUOTA_EXHAUSTED`) are recorded as
+`PROVIDER_FAILURE` in the index — not product failures during F1.
+
+## Generating traces (Assignment 3 demo scenarios)
 
 ```bash
 python scripts/run_health_agent_scenarios.py --all
@@ -47,4 +75,10 @@ Or via Streamlit:
 
 ```bash
 streamlit run streamlit_agent_demo.py
+```
+
+## Generating baseline traces (Assignment 4 F1)
+
+```bash
+python scripts/run_eval_baseline.py --all
 ```

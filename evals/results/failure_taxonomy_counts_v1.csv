@@ -1,0 +1,13 @@
+taxonomy_id,cluster_name,category,priority,root_cause_class,primary_count,secondary_count,affected_scenario_count,affected_percent_of_15,primary_scenarios,secondary_scenarios,all_affected_scenarios
+T1,Lifestyle context inaccessible to agent,PRODUCT,P0,ROOT CAUSE,3,0,3,20.0,HC-EVAL-C1;HC-EVAL-C2;HC-EVAL-C3,,HC-EVAL-C1;HC-EVAL-C2;HC-EVAL-C3
+T2,As-of-date measurement provenance gap,PRODUCT,P0,ROOT CAUSE,2,0,2,13.3,HC-EVAL-D1;HC-EVAL-D2,,HC-EVAL-D1;HC-EVAL-D2
+T3,data_sufficient not enforced,PRODUCT,P0,ROOT CAUSE,1,0,1,6.7,HC-EVAL-D3,,HC-EVAL-D3
+T4,Longitudinal maintenance blind spot,PRODUCT,P1,ROOT CAUSE,1,0,1,6.7,HC-EVAL-B3,,HC-EVAL-B3
+T5,Low-salience insight surfacing,PRODUCT,P1,MIXED,1,0,1,6.7,HC-EVAL-B1,,HC-EVAL-B1
+T6,Control metric excluded from agent contract,PRODUCT,P1,ROOT CAUSE,1,0,1,6.7,HC-EVAL-E1,,HC-EVAL-E1
+T7,Directive-first output contract gap,PRODUCT,P2,DOWNSTREAM SYMPTOM,0,3,3,20.0,,HC-EVAL-A1;HC-EVAL-A2;HC-EVAL-A4,HC-EVAL-A1;HC-EVAL-A2;HC-EVAL-A4
+T8,Physiological over-generalization in generation,PRODUCT,P2,DOWNSTREAM SYMPTOM,0,1,1,6.7,,HC-EVAL-E1,HC-EVAL-E1
+T9,Redundant evidence retrieval,PRODUCT,P3,DOWNSTREAM SYMPTOM,0,2,2,13.3,,HC-EVAL-A1;HC-EVAL-A4,HC-EVAL-A1;HC-EVAL-A4
+T10,Eval scenario design mismatch,EVAL_INFRA,P2,ROOT CAUSE,1,0,1,6.7,HC-EVAL-B2,,HC-EVAL-B2
+T11,Eval overlap / ambiguous scenario discrimination,EVAL_INFRA,P3,MIXED,0,1,1,6.7,,HC-EVAL-A3,HC-EVAL-A3
+T12,Within-window variability not exposed,PRODUCT,P1,ROOT CAUSE,1,0,1,6.7,HC-EVAL-C4,,HC-EVAL-C4
