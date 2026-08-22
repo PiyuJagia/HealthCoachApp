@@ -1,0 +1,578 @@
+{
+  "marcus": {
+    "e1": {
+      "as_of_date": "2026-08-02",
+      "insight_salience": {
+        "insight_worthy": true,
+        "recommendation_worthy": true,
+        "primary_metrics": [
+          "exercise_minutes",
+          "workout_count",
+          "sleep_duration_hours",
+          "hrv_sdnn_ms",
+          "steps"
+        ],
+        "corroborating_metrics": [],
+        "reasons": [
+          "strong_recent_change",
+          "clear_recent_change",
+          "maintenance_of_decline"
+        ],
+        "salience_level": "high",
+        "control_metrics": [
+          "respiratory_rate"
+        ]
+      },
+      "metrics": {
+        "sleep_duration_hours": {
+          "metric": "sleep_duration_hours",
+          "cadence": "daily",
+          "control_metric": false,
+          "current_value": 5.83,
+          "baseline_value": 7.11,
+          "percent_change": -18.0,
+          "direction": "decreasing",
+          "as_of_date_value": 5.5,
+          "as_of_date_available": true,
+          "observation_count_current": 7,
+          "expected_observation_count_current": 7,
+          "coverage_ratio": 1.0,
+          "baseline_observation_count": 50,
+          "baseline_ready": true,
+          "partial_coverage": false,
+          "gap_caveat_required": false,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "maintenance_of_gain": false,
+          "maintenance_of_decline": false,
+          "salience": {
+            "salience_level": "high",
+            "magnitude_band": "strong",
+            "insight_candidate": true,
+            "recommendation_candidate": true,
+            "corroborating_metrics": [
+              "hrv_sdnn_ms"
+            ],
+            "reasons": [
+              "strong_recent_change"
+            ],
+            "control_metric": false
+          }
+        },
+        "resting_hr_bpm": {
+          "metric": "resting_hr_bpm",
+          "cadence": "daily",
+          "control_metric": false,
+          "current_value": 69.49,
+          "baseline_value": 69.36,
+          "percent_change": 0.18,
+          "direction": "stable",
+          "as_of_date_value": 70.2,
+          "as_of_date_available": true,
+          "observation_count_current": 7,
+          "expected_observation_count_current": 7,
+          "coverage_ratio": 1.0,
+          "baseline_observation_count": 51,
+          "baseline_ready": true,
+          "partial_coverage": false,
+          "gap_caveat_required": false,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "maintenance_of_gain": false,
+          "maintenance_of_decline": false,
+          "salience": {
+            "salience_level": "none",
+            "magnitude_band": "none",
+            "insight_candidate": false,
+            "recommendation_candidate": false,
+            "corroborating_metrics": [],
+            "reasons": [],
+            "control_metric": false
+          }
+        },
+        "hrv_sdnn_ms": {
+          "metric": "hrv_sdnn_ms",
+          "cadence": "daily",
+          "control_metric": false,
+          "current_value": 38.04,
+          "baseline_value": 34.05,
+          "percent_change": 11.72,
+          "direction": "improving",
+          "as_of_date_value": 49.4,
+          "as_of_date_available": true,
+          "observation_count_current": 7,
+          "expected_observation_count_current": 7,
+          "coverage_ratio": 1.0,
+          "baseline_observation_count": 49,
+          "baseline_ready": true,
+          "partial_coverage": false,
+          "gap_caveat_required": false,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "maintenance_of_gain": false,
+          "maintenance_of_decline": false,
+          "salience": {
+            "salience_level": "high",
+            "magnitude_band": "clear",
+            "insight_candidate": true,
+            "recommendation_candidate": true,
+            "corroborating_metrics": [
+              "sleep_duration_hours"
+            ],
+            "reasons": [
+              "clear_recent_change"
+            ],
+            "control_metric": false
+          }
+        },
+        "exercise_minutes": {
+          "metric": "exercise_minutes",
+          "cadence": "activity_dependent",
+          "control_metric": false,
+          "current_value": 26.91,
+          "baseline_value": 20.86,
+          "percent_change": 29.02,
+          "direction": "improving",
+          "as_of_date_value": 14.6,
+          "as_of_date_available": true,
+          "observation_count_current": 7,
+          "expected_observation_count_current": 7,
+          "coverage_ratio": 1.0,
+          "baseline_observation_count": 51,
+          "baseline_ready": true,
+          "partial_coverage": false,
+          "gap_caveat_required": false,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "maintenance_of_gain": false,
+          "maintenance_of_decline": false,
+          "salience": {
+            "salience_level": "high",
+            "magnitude_band": "clear",
+            "insight_candidate": true,
+            "recommendation_candidate": true,
+            "corroborating_metrics": [
+              "workout_count"
+            ],
+            "reasons": [
+              "clear_recent_change"
+            ],
+            "control_metric": false
+          }
+        },
+        "workout_count": {
+          "metric": "workout_count",
+          "cadence": "activity_dependent",
+          "control_metric": false,
+          "current_value": 0.43,
+          "baseline_value": 0.35,
+          "percent_change": 21.43,
+          "direction": "improving",
+          "as_of_date_value": 0.0,
+          "as_of_date_available": true,
+          "observation_count_current": 7,
+          "expected_observation_count_current": 7,
+          "coverage_ratio": 1.0,
+          "baseline_observation_count": 51,
+          "baseline_ready": true,
+          "partial_coverage": false,
+          "gap_caveat_required": false,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "maintenance_of_gain": false,
+          "maintenance_of_decline": false,
+          "salience": {
+            "salience_level": "high",
+            "magnitude_band": "clear",
+            "insight_candidate": true,
+            "recommendation_candidate": true,
+            "corroborating_metrics": [
+              "exercise_minutes"
+            ],
+            "reasons": [
+              "clear_recent_change"
+            ],
+            "control_metric": false
+          }
+        },
+        "steps": {
+          "metric": "steps",
+          "cadence": "daily",
+          "control_metric": false,
+          "current_value": 8865.0,
+          "baseline_value": 9010.06,
+          "percent_change": -1.61,
+          "direction": "stable",
+          "as_of_date_value": 8205.0,
+          "as_of_date_available": true,
+          "observation_count_current": 7,
+          "expected_observation_count_current": 7,
+          "coverage_ratio": 1.0,
+          "baseline_observation_count": 51,
+          "baseline_ready": true,
+          "partial_coverage": false,
+          "gap_caveat_required": false,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "maintenance_of_gain": false,
+          "maintenance_of_decline": true,
+          "salience": {
+            "salience_level": "moderate",
+            "magnitude_band": "none",
+            "insight_candidate": true,
+            "recommendation_candidate": false,
+            "corroborating_metrics": [],
+            "reasons": [
+              "maintenance_of_decline"
+            ],
+            "control_metric": false
+          }
+        },
+        "vo2_max": {
+          "metric": "vo2_max",
+          "cadence": "episodic",
+          "control_metric": false,
+          "current_value": 40.0,
+          "baseline_value": 39.3,
+          "percent_change": 1.8,
+          "direction": "stable",
+          "as_of_date_value": 39.93,
+          "as_of_date_available": true,
+          "observation_count_current": 7,
+          "expected_observation_count_current": 1,
+          "coverage_ratio": 1.0,
+          "baseline_observation_count": 50,
+          "baseline_ready": true,
+          "partial_coverage": false,
+          "gap_caveat_required": false,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "maintenance_of_gain": false,
+          "maintenance_of_decline": false,
+          "salience": {
+            "salience_level": "none",
+            "magnitude_band": "none",
+            "insight_candidate": false,
+            "recommendation_candidate": false,
+            "corroborating_metrics": [],
+            "reasons": [],
+            "control_metric": false
+          }
+        },
+        "respiratory_rate": {
+          "metric": "respiratory_rate",
+          "cadence": "daily",
+          "control_metric": true,
+          "current_value": 14.3,
+          "baseline_value": 14.54,
+          "percent_change": -1.67,
+          "direction": "stable",
+          "as_of_date_value": 14.2,
+          "as_of_date_available": true,
+          "observation_count_current": 7,
+          "expected_observation_count_current": 7,
+          "coverage_ratio": 1.0,
+          "baseline_observation_count": 51,
+          "baseline_ready": true,
+          "partial_coverage": false,
+          "gap_caveat_required": false,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "maintenance_of_gain": false,
+          "maintenance_of_decline": false,
+          "salience": {
+            "salience_level": "none",
+            "magnitude_band": "none",
+            "insight_candidate": false,
+            "recommendation_candidate": false,
+            "corroborating_metrics": [],
+            "reasons": [
+              "stable_control_context"
+            ],
+            "control_metric": true
+          }
+        }
+      },
+      "weekly_respiratory": {
+        "metric": "respiratory_rate",
+        "cadence": "daily",
+        "aggregation": "mean",
+        "aggregate_value": 14.3,
+        "observation_count": 7,
+        "expected_observation_count": 7,
+        "missing_count": 0,
+        "coverage_ratio": 1.0,
+        "partial_coverage": false,
+        "latest_valid_observation_date": "2026-08-02",
+        "as_of_date_available": true,
+        "gap_caveat_required": false,
+        "claim_semantics": {
+          "summary_value_allowed": true,
+          "summary_comparison_allowed": true,
+          "summary_recommendation_support_allowed": true
+        }
+      },
+      "average_respiratory_rate": 14.3
+    },
+    "b1": {
+      "as_of_date": "2026-06-18",
+      "insight_salience": {
+        "insight_worthy": false,
+        "recommendation_worthy": false,
+        "primary_metrics": [],
+        "corroborating_metrics": [],
+        "reasons": [
+          "same_family_weak_corroboration",
+          "detectable_but_small_absolute",
+          "no_older_horizon"
+        ],
+        "salience_level": "low",
+        "control_metrics": [
+          "respiratory_rate"
+        ]
+      },
+      "respiratory_rate": {
+        "metric": "respiratory_rate",
+        "cadence": "daily",
+        "current_value": 14.53,
+        "baseline_value": 14.34,
+        "absolute_change": 0.19,
+        "percent_change": 1.33,
+        "direction": "stable",
+        "as_of_date_value": 14.6,
+        "as_of_date_available": true,
+        "observation_count_current": 7,
+        "expected_observation_count_current": 7,
+        "coverage_ratio": 1.0,
+        "baseline_observation_count": 21,
+        "baseline_ready": true,
+        "latest_valid_observation_date": "2026-06-18",
+        "latest_valid_observation_value": 14.6,
+        "period_start": "2026-06-12",
+        "period_end": "2026-06-18",
+        "baseline_period_start": "2026-04-20",
+        "baseline_period_end": "2026-06-11",
+        "partial_coverage": false,
+        "gap_caveat_required": false,
+        "data_maturity_state": "ESTABLISHED_TREND",
+        "claim_eligibility": {
+          "snapshot_allowed": true,
+          "early_pattern_allowed": true,
+          "trend_allowed": true,
+          "recommendation_support_allowed": true,
+          "recommendation_basis": "established_trend"
+        },
+        "longitudinal": {
+          "longitudinal_context_available": false,
+          "recent_state": 14.53,
+          "long_term_reference_value": null,
+          "long_term_reference_start": null,
+          "long_term_reference_end": null,
+          "prior_significant_change_direction": "none",
+          "prior_significant_change_percent": null,
+          "prior_change_period_start": null,
+          "prior_change_period_end": null,
+          "current_vs_long_term_percent": null,
+          "maintenance_of_gain": false,
+          "maintenance_of_decline": false,
+          "days_since_change": null,
+          "horizon_recent_days": 7,
+          "horizon_medium_days": 30,
+          "horizon_long_days": 90,
+          "horizon_medium_value": 14.39,
+          "horizon_long_value": 14.39,
+          "reason": "no_history_older_than_recent_baseline"
+        },
+        "salience": {
+          "salience_level": "none",
+          "magnitude_band": "none",
+          "insight_candidate": false,
+          "recommendation_candidate": false,
+          "corroborating_metrics": [],
+          "reasons": [
+            "stable_control_context",
+            "no_older_horizon"
+          ],
+          "control_metric": true
+        },
+        "control_metric": true
+      }
+    },
+    "d2": {
+      "as_of_date": "2026-06-10",
+      "respiratory_rate": {
+        "metric": "respiratory_rate",
+        "cadence": "daily",
+        "control_metric": true,
+        "current_value": 14.37,
+        "baseline_value": 14.33,
+        "percent_change": 0.28,
+        "direction": "stable",
+        "as_of_date_value": null,
+        "as_of_date_available": false,
+        "observation_count_current": 6,
+        "expected_observation_count_current": 7,
+        "coverage_ratio": 0.8571,
+        "baseline_observation_count": 15,
+        "baseline_ready": true,
+        "partial_coverage": true,
+        "gap_caveat_required": true,
+        "data_maturity_state": "ESTABLISHED_TREND",
+        "claim_eligibility": {
+          "snapshot_allowed": true,
+          "early_pattern_allowed": true,
+          "trend_allowed": true,
+          "recommendation_support_allowed": true,
+          "recommendation_basis": "established_trend"
+        },
+        "maintenance_of_gain": false,
+        "maintenance_of_decline": false,
+        "salience": {
+          "salience_level": "none",
+          "magnitude_band": "none",
+          "insight_candidate": false,
+          "recommendation_candidate": false,
+          "corroborating_metrics": [],
+          "reasons": [
+            "stable_control_context",
+            "coverage_caveat",
+            "no_older_horizon"
+          ],
+          "control_metric": true
+        }
+      }
+    }
+  },
+  "synthetics": {
+    "partial": {
+      "metric": "respiratory_rate",
+      "cadence": "daily",
+      "control_metric": true,
+      "current_value": 14.5,
+      "baseline_value": 14.5,
+      "percent_change": 0.0,
+      "direction": "stable",
+      "as_of_date_value": null,
+      "as_of_date_available": false,
+      "observation_count_current": 4,
+      "expected_observation_count_current": 7,
+      "coverage_ratio": 0.5714,
+      "baseline_observation_count": 33,
+      "baseline_ready": true,
+      "partial_coverage": true,
+      "gap_caveat_required": true,
+      "data_maturity_state": "ESTABLISHED_TREND",
+      "claim_eligibility": {
+        "snapshot_allowed": true,
+        "early_pattern_allowed": true,
+        "trend_allowed": true,
+        "recommendation_support_allowed": false,
+        "recommendation_basis": "none"
+      },
+      "maintenance_of_gain": false,
+      "maintenance_of_decline": false,
+      "salience": {
+        "salience_level": "none",
+        "magnitude_band": "none",
+        "insight_candidate": false,
+        "recommendation_candidate": false,
+        "corroborating_metrics": [],
+        "reasons": [
+          "stable_control_context",
+          "coverage_caveat",
+          "no_older_horizon"
+        ],
+        "control_metric": true
+      }
+    },
+    "immature": {
+      "metric": "respiratory_rate",
+      "cadence": "daily",
+      "control_metric": true,
+      "current_value": 14.6,
+      "baseline_value": 14.6,
+      "percent_change": null,
+      "direction": "unknown",
+      "as_of_date_value": 14.6,
+      "as_of_date_available": true,
+      "observation_count_current": 7,
+      "expected_observation_count_current": 7,
+      "coverage_ratio": 1.0,
+      "baseline_observation_count": 1,
+      "baseline_ready": false,
+      "partial_coverage": false,
+      "gap_caveat_required": false,
+      "data_maturity_state": "EARLY_PATTERN",
+      "claim_eligibility": {
+        "snapshot_allowed": true,
+        "early_pattern_allowed": true,
+        "trend_allowed": false,
+        "recommendation_support_allowed": false,
+        "recommendation_basis": "none"
+      },
+      "maintenance_of_gain": false,
+      "maintenance_of_decline": false,
+      "salience": {
+        "salience_level": "none",
+        "magnitude_band": "none",
+        "insight_candidate": false,
+        "recommendation_candidate": false,
+        "corroborating_metrics": [],
+        "reasons": [
+          "early_pattern_observation",
+          "stable_control_context",
+          "no_older_horizon"
+        ],
+        "control_metric": true
+      }
+    }
+  }
+}

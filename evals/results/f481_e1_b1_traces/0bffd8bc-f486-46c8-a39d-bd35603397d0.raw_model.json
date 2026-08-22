@@ -1,0 +1,21 @@
+{
+  "raw_final_text": "{\n  \"scenario_id\": \"HC-EVAL-E1\",\n  \"user_id\": 1,\n  \"as_of_date\": \"2026-08-02\",\n  \"status\": \"RECOMMENDATION\",\n  \"theme\": \"Sleep Duration Decline and Caffeine Timing\",\n  \"insight\": \"Your sleep duration has decreased over the past week to an average of 5.8 hours per night, down from your baseline of 7.1 hours, coinciding with recorded afternoon caffeine consumption.\",\n  \"recommendation\": \"Consider moving caffeine intake to earlier in the day to help support longer night sleep duration.\",\n  \"policy_verdict\": \"SURFACE\",\n  \"recommendation_authorized\": true,\n  \"recommendation_worthy\": true,\n  \"final_recommendation_allowed\": true,\n  \"confidence_language\": \"HIGH\",\n  \"source_refs\": [\n    \"R-07\"\n  ],\n  \"reason_not_surfaced\": null\n}",
+  "parsed": {
+    "scenario_id": "HC-EVAL-E1",
+    "user_id": 1,
+    "as_of_date": "2026-08-02",
+    "status": "RECOMMENDATION",
+    "theme": "Sleep Duration Decline and Caffeine Timing",
+    "insight": "Your sleep duration has decreased over the past week to an average of 5.8 hours per night, down from your baseline of 7.1 hours, coinciding with recorded afternoon caffeine consumption.",
+    "recommendation": "Consider moving caffeine intake to earlier in the day to help support longer night sleep duration.",
+    "policy_verdict": "SURFACE",
+    "recommendation_authorized": true,
+    "recommendation_worthy": true,
+    "final_recommendation_allowed": true,
+    "confidence_language": "HIGH",
+    "source_refs": [
+      "R-07"
+    ],
+    "reason_not_surfaced": null
+  }
+}

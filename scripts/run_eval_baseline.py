@@ -94,11 +94,16 @@ def _git_head() -> str:
 
 def build_baseline_metadata() -> dict[str, Any]:
     from agent.agent import MAX_LLM_CALLS, MODEL
-    from analytics.trends import (
-        BASELINE_WINDOW_DAYS,
+    from analytics.maturity import (
+        BASELINE_LOOKBACK_DAYS,
         CURRENT_WINDOW_DAYS,
-        MIN_BASELINE_OBSERVATIONS,
-        MIN_CURRENT_OBSERVATIONS,
+        MIN_BASELINE_VALID_DAYS,
+        MIN_EARLY_PATTERN_OBSERVATIONS,
+        MIN_RECOMMENDATION_COVERAGE_RATIO,
+        MIN_SNAPSHOT_OBSERVATIONS,
+        MIN_TREND_RECENT_DAILY,
+        MIN_TREND_RECENT_EPISODIC,
+        RECOMMENDATION_REQUIRES_TREND,
         STABLE_PERCENT_THRESHOLD,
     )
     from rag.retrieval import DEFAULT_MIN_RELEVANCE_SCORE, DEFAULT_TOP_K, get_top_k
@@ -120,9 +125,14 @@ def build_baseline_metadata() -> dict[str, Any]:
         "pinecone_namespace": get_namespace(),
         "trend_configuration": {
             "current_window_days": CURRENT_WINDOW_DAYS,
-            "baseline_window_days": BASELINE_WINDOW_DAYS,
-            "min_current_observations": MIN_CURRENT_OBSERVATIONS,
-            "min_baseline_observations": MIN_BASELINE_OBSERVATIONS,
+            "baseline_lookback_days": BASELINE_LOOKBACK_DAYS,
+            "min_snapshot_observations": MIN_SNAPSHOT_OBSERVATIONS,
+            "min_early_pattern_observations": MIN_EARLY_PATTERN_OBSERVATIONS,
+            "min_baseline_valid_days": MIN_BASELINE_VALID_DAYS,
+            "min_trend_recent_daily": MIN_TREND_RECENT_DAILY,
+            "min_trend_recent_episodic": MIN_TREND_RECENT_EPISODIC,
+            "min_recommendation_coverage_ratio": MIN_RECOMMENDATION_COVERAGE_RATIO,
+            "recommendation_requires_trend": RECOMMENDATION_REQUIRES_TREND,
             "stable_percent_threshold": STABLE_PERCENT_THRESHOLD,
         },
         "rag_top_k": get_top_k(),

@@ -23,6 +23,7 @@ Each archived run contains:
 | `final_guard` | Pass/fail + violations |
 | `final_output` | Structured JSON result string |
 | `activity_log` | User-safe DECISION/ACT/OBSERVE/FINAL steps (no hidden CoT) |
+| `model_calls` | F4.2 ADK pre-model `LlmRequest` snapshots (optional on frozen F1 traces) |
 | `provider_retry` | Optional provider failure metadata (503/429 retries) |
 
 Trace helpers sanitize likely secret keys before persistence.
@@ -35,9 +36,10 @@ do not return partial health guidance.
 `BOUNDED_FAILURE`, `GUARD_BLOCKED`. Older E3.1 trace archives may contain the retired status
 `NO_MEANINGFUL_INSIGHT`.
 
-**Assignment 4 status:** Phase **F1 — TRACE baseline collection** is in progress. A 15-scenario
-baseline manifest exists, but **no failure taxonomy or automated eval criteria were created before
-manual trace review.** That is intentional and follows the TRACE methodology.
+**Assignment 4 status:** Phase **F4.3 — weekly-summary alignment** is complete.
+F1–F4.2 are complete. Frozen human PASS/FAIL labels are unchanged. Gemini baseline has **not** been rerun. CODIFY has **not** started. Next: T1 lifestyle context.
+
+Tracker: `evals/results/assignment4_tracker_v1.md`
 
 ## Phase F1 — Baseline trace collection (Assignment 4)
 

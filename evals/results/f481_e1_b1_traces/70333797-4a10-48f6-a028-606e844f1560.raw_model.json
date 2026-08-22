@@ -1,0 +1,19 @@
+{
+  "raw_final_text": "{\"scenario_id\": \"HC-EVAL-B1\", \"user_id\": 1, \"as_of_date\": \"2026-06-18\", \"status\": \"NO_SIGNIFICANT_NEW_PATTERN\", \"theme\": null, \"insight\": null, \"recommendation\": null, \"policy_verdict\": null, \"recommendation_authorized\": false, \"recommendation_worthy\": false, \"final_recommendation_allowed\": false, \"confidence_language\": null, \"source_refs\": [], \"reason_not_surfaced\": \"No metric changes met the salience threshold to warrant an elevated insight; observed changes in step count and exercise minutes are minor, while sleep duration, resting heart rate, HRV, and respiratory rate remain stable.\"}",
+  "parsed": {
+    "scenario_id": "HC-EVAL-B1",
+    "user_id": 1,
+    "as_of_date": "2026-06-18",
+    "status": "NO_SIGNIFICANT_NEW_PATTERN",
+    "theme": null,
+    "insight": null,
+    "recommendation": null,
+    "policy_verdict": null,
+    "recommendation_authorized": false,
+    "recommendation_worthy": false,
+    "final_recommendation_allowed": false,
+    "confidence_language": null,
+    "source_refs": [],
+    "reason_not_surfaced": "No metric changes met the salience threshold to warrant an elevated insight; observed changes in step count and exercise minutes are minor, while sleep duration, resting heart rate, HRV, and respiratory rate remain stable."
+  }
+}

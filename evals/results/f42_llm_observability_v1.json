@@ -1,0 +1,271 @@
+{
+  "inspection_id": "f42_llm_observability_v1",
+  "capture_fidelity": "adk_pre_model_request",
+  "interception_point": "adk.LlmAgent.before_model_callback",
+  "weekly_bypass": {
+    "as_of_date": "2026-07-13",
+    "tool": "get_trend_signals",
+    "trends_have_claim_eligibility": true,
+    "hrv_trend_allowed": true,
+    "hrv_as_of_date_available": false,
+    "latest_week": {
+      "week_start": "2026-07-07",
+      "week_end": "2026-07-13",
+      "average_hrv_sdnn_ms": 34.32,
+      "has_claim_eligibility": false,
+      "hrv_coverage": {
+        "observation_count": 5,
+        "expected_observation_count": 7,
+        "coverage_ratio": 0.7143,
+        "latest_valid_observation_date": "2026-07-11",
+        "as_of_date_available": false,
+        "gap_caveat_required": true
+      }
+    },
+    "bypass": {
+      "bypass_possible": true,
+      "present": true,
+      "week_count": 4,
+      "weeks_with_numeric_values": 4,
+      "has_claim_eligibility": false,
+      "coverage_without_claim_eligibility": [
+        "sleep_duration_hours",
+        "resting_hr_bpm",
+        "hrv_sdnn_ms",
+        "exercise_minutes",
+        "workout_count",
+        "steps",
+        "vo2_max"
+      ],
+      "trend_metrics_with_eligibility": [
+        "exercise_minutes",
+        "hrv_sdnn_ms",
+        "resting_hr_bpm",
+        "sleep_duration_hours",
+        "steps",
+        "vo2_max",
+        "workout_count"
+      ],
+      "reason": "weekly_summaries expose numeric averages/totals with coverage only; Gemini can cite a week average while ignoring trend claim_eligibility",
+      "recommended_remediation": "enrich_weekly_summaries_with_claim_eligibility"
+    }
+  },
+  "example_model_call": {
+    "call_index": 1,
+    "capture_fidelity": "adk_pre_model_request",
+    "capture_point": "adk.LlmAgent.before_model_callback",
+    "provenance": [
+      {
+        "component": "system_instruction",
+        "origin": "system_agent_instructions",
+        "present": true,
+        "source_id": "",
+        "notes": ""
+      },
+      {
+        "component": "user_scenario_input",
+        "origin": "user_scenario_input",
+        "present": true,
+        "source_id": "",
+        "notes": ""
+      },
+      {
+        "component": "trend_maturity",
+        "origin": "deterministic_analytics",
+        "present": true,
+        "source_id": "get_trend_signals",
+        "notes": "claim_eligibility and data_maturity_state from get_trend_signals"
+      },
+      {
+        "component": "weekly_summaries",
+        "origin": "weekly_summary",
+        "present": true,
+        "source_id": "get_trend_signals",
+        "notes": "numeric week averages without claim_eligibility"
+      },
+      {
+        "component": "rag_evidence",
+        "origin": "evidence_rag_retrieval",
+        "present": false,
+        "source_id": "retrieve_authorized_evidence",
+        "notes": ""
+      },
+      {
+        "component": "lifestyle_context",
+        "origin": "lifestyle_tool",
+        "present": false,
+        "source_id": "get_lifestyle_context",
+        "notes": "reserved for future get_lifestyle_context"
+      },
+      {
+        "component": "generation_config",
+        "origin": "generation_config",
+        "present": false,
+        "source_id": "",
+        "notes": ""
+      }
+    ],
+    "weekly_summary_bypass_risk": {
+      "bypass_possible": true,
+      "present": true,
+      "week_count": 4,
+      "weeks_with_numeric_values": 4,
+      "has_claim_eligibility": false,
+      "coverage_without_claim_eligibility": [
+        "sleep_duration_hours",
+        "resting_hr_bpm",
+        "hrv_sdnn_ms",
+        "exercise_minutes",
+        "workout_count",
+        "steps",
+        "vo2_max"
+      ],
+      "trend_metrics_with_eligibility": [
+        "exercise_minutes",
+        "hrv_sdnn_ms",
+        "resting_hr_bpm",
+        "sleep_duration_hours",
+        "steps",
+        "vo2_max",
+        "workout_count"
+      ],
+      "reason": "weekly_summaries expose numeric averages/totals with coverage only; Gemini can cite a week average while ignoring trend claim_eligibility",
+      "recommended_remediation": "enrich_weekly_summaries_with_claim_eligibility"
+    },
+    "trend_maturity_visible": {
+      "origin": "deterministic_analytics",
+      "source_id": "get_trend_signals",
+      "as_of_date": "2026-07-13",
+      "gap_caveat_required": true,
+      "as_of_any_daily_metric_available": true,
+      "metrics": [
+        {
+          "metric": "sleep_duration_hours",
+          "cadence": "daily",
+          "direction": "increasing",
+          "percent_change": 5.09,
+          "as_of_date_available": true,
+          "coverage_ratio": 1.0,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "gap_caveat_required": false,
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "partial_coverage": false
+        },
+        {
+          "metric": "resting_hr_bpm",
+          "cadence": "daily",
+          "direction": "decreasing",
+          "percent_change": -3.47,
+          "as_of_date_available": true,
+          "coverage_ratio": 1.0,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "gap_caveat_required": false,
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "partial_coverage": false
+        },
+        {
+          "metric": "hrv_sdnn_ms",
+          "cadence": "daily",
+          "direction": "improving",
+          "percent_change": 6.05,
+          "as_of_date_available": false,
+          "coverage_ratio": 0.7143,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "gap_caveat_required": true,
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "partial_coverage": true
+        },
+        {
+          "metric": "exercise_minutes",
+          "cadence": "activity_dependent",
+          "direction": "improving",
+          "percent_change": 76.36,
+          "as_of_date_available": true,
+          "coverage_ratio": 1.0,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "gap_caveat_required": false,
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "partial_coverage": false
+        },
+        {
+          "metric": "workout_count",
+          "cadence": "activity_dependent",
+          "direction": "improving",
+          "percent_change": 40.82,
+          "as_of_date_available": true,
+          "coverage_ratio": 1.0,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "gap_caveat_required": false,
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "partial_coverage": false
+        },
+        {
+          "metric": "steps",
+          "cadence": "daily",
+          "direction": "declining",
+          "percent_change": -10.34,
+          "as_of_date_available": true,
+          "coverage_ratio": 1.0,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "gap_caveat_required": false,
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "partial_coverage": false
+        },
+        {
+          "metric": "vo2_max",
+          "cadence": "episodic",
+          "direction": "stable",
+          "percent_change": 2.99,
+          "as_of_date_available": true,
+          "coverage_ratio": 1.0,
+          "data_maturity_state": "ESTABLISHED_TREND",
+          "gap_caveat_required": false,
+          "claim_eligibility": {
+            "snapshot_allowed": true,
+            "early_pattern_allowed": true,
+            "trend_allowed": true,
+            "recommendation_support_allowed": true,
+            "recommendation_basis": "established_trend"
+          },
+          "partial_coverage": false
+        }
+      ]
+    }
+  }
+}

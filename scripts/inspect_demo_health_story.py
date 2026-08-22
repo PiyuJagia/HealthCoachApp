@@ -85,7 +85,8 @@ def _print_trend_checkpoint(session, user_id: int, day_index: int, label: str) -
         print(
             f"  {trend.metric:24} current={trend.current_value} baseline={trend.baseline_value} "
             f"change={trend.absolute_change} pct={trend.percent_change} dir={trend.direction} "
-            f"sufficient={trend.data_sufficient}"
+            f"state={trend.data_maturity_state} as_of={trend.as_of_date_available} "
+            f"trend_allowed={trend.claim_eligibility.trend_allowed}"
         )
 
 

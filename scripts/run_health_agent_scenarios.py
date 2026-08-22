@@ -47,7 +47,8 @@ def _print_scenario_report(scenario_id: str, user_id: int) -> int:
     for row in summarize_trend_signals(trends):
         print(
             f"  - {row['metric']}: direction={row['direction']} "
-            f"sufficient={row['data_sufficient']} change={row['percent_change']}"
+            f"state={row.get('data_maturity_state')} "
+            f"as_of={row.get('as_of_date_available')} change={row['percent_change']}"
         )
 
     result = run_health_review(

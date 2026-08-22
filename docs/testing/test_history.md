@@ -16,6 +16,63 @@ Chronological record of major testing checkpoints. Entries are based on reposito
 
 ---
 
+## Phase F4.3 — Weekly-summary maturity / coverage alignment (2026-08-21)
+
+**Why it matters:** F4.1.1 / F4.2 showed weekly summaries could bypass claim eligibility:
+numeric week averages looked complete even when days were missing.
+
+**Implemented:** weekly-specific `claim_semantics` (observed-value vs comparison vs
+recommendation), cadence-aware coverage, NULL vs zero fix for activity totals,
+TRACE visibility of weekly provenance. Not a copy of trend `claim_eligibility`.
+
+**Artifacts:** `evals/results/f43_weekly_summary_alignment_v1.md` / `.json`
+
+**Verification:** focused weekly tests + full `pytest`. No Gemini.
+
+---
+
+## Phase F4.2 — LLM-visible TRACE observability (2026-08-21)
+
+**Why it matters:** After F4.1, TRACE still could not show what Gemini received on each
+model call (system instruction, tool results, weekly summaries, RAG, provenance).
+
+**Implemented (instrumentation + inspection only):**
+
+- Intercept ADK `LlmRequest` at `before_model_callback` immediately before Gemini
+- Persist `TraceRecord.model_calls[]` with capture_fidelity=`adk_pre_model_request`
+- Provenance tags for instructions, user input, trends, weekly summaries, RAG, reserved lifestyle
+- Weekly-summary bypass inspection (coverage without claim_eligibility)
+- No prompt, policy, RAG, taxonomy, or maturity-logic changes; no Gemini rerun; no CoT capture
+
+**Verification:** offline model-observe tests; artifacts `evals/results/f42_llm_observability_v1.md`
+
+---
+
+## Phase F4.1.1 — Deterministic contract inspection (2026-08-21)
+
+**Why it matters:** Accept F4.1 as the analytics foundation before LLM observability / rerun.
+
+**Result:** D1/D2/D3 + A1 control behave as designed; no field contradictions.
+Weekly summaries remain a bypass risk (coverage, no claim_eligibility). VO₂ cadence flags are
+correct; Marcus seed is near-daily.
+
+**Artifacts:** `evals/results/f41_contract_inspection_v1.md` / `.csv` / `.json`
+
+**Verification:** 33 passed (`tests/test_contract_inspection.py`, `test_maturity.py`, `test_trends.py`).
+No Gemini.
+
+---
+
+## Phase F4.1 — Data-maturity / claim-eligibility contract (2026-08-21)
+
+**Why it matters:** Replace `data_sufficient=false → no insight` with orthogonal maturity and
+claim-eligibility so missing as-of data weakens claims instead of silencing the coach.
+
+**Implemented:** `analytics/maturity.py`, agent-facing provenance, retired `data_sufficient`.
+Human labels / taxonomy / Gemini prompts unchanged.
+
+---
+
 ## Phase F3 — TRACE failure taxonomy analysis (2026-08-20)
 
 **Why it matters:** Assignment 4 TRACE requires human open-coding of baseline traces,
@@ -90,7 +147,10 @@ creating failure taxonomies or automated graders.
 | **E1.1 — Spec reconciliation** | Marcus Chen profile, spec missing-data days, baseline ranges | Align canonical demo user with attached 90-day specification | Profile + seed tests pass; suite 129 | Pass | `data/demo_seed.py` |
 | **E2 — Agent readiness** | Retrieval→policy adapter, agent tools, trace schema, output guard | Enforced evidence path before future ADK | 18 new offline tests pass | Pass | `rag/evidence_policy.py`, `app/agent_tools.py`, `evals/trace_schema.py`, `app/output_guard.py` |
 | **E2.1 — Policy semantics correction** | Remove auto-contradiction; separate evidence vs recommendation auth | Fix over-broad multi-relationship suppression | Policy tests updated; suite 149 | Pass | `rag/evidence_policy.py` |
-| **F3 — Failure taxonomy analysis** | Human review parsing, cluster counts, remediation priority | Bottom-up TRACE clustering before CODIFY | 5 PASS / 10 FAIL clustered; 11 taxonomy IDs | Pass (analysis) | `evals/failure_taxonomy_analysis.py`, `scripts/build_failure_taxonomy.py`, `tests/test_failure_taxonomy_analysis.py` |
+| **F4.1 — Claim-eligibility contract** | Deterministic maturity/eligibility; retire data_sufficient | T2/T3 analytics foundation | Unit tests in test_maturity/test_trends | Pass | `analytics/maturity.py` |
+| **F4.1.1 — Contract inspection** | D1/D2/D3 + A1 offline contract tables | Accept F4.1 before LLM work | 33 passed | Pass (inspection) | `evals/contract_inspection.py`, `evals/results/f41_contract_inspection_v1.md` |
+| **F4.2 — LLM-visible observability** | ADK pre-model `LlmRequest` TRACE snapshots | Know what Gemini received, and from where | Offline model-observe tests | Pass | `agent/model_observe.py`, `evals/results/f42_llm_observability_v1.md` |
+| **F4.3 — Weekly-summary alignment** | Weekly claim_semantics gated by as-of trend; cadence coverage | Close weekly bypass without copying trend eligibility | Focused weekly tests + full pytest | Pass | `tests/test_weekly_summaries.py`, `evals/results/f43_weekly_summary_alignment_v1.md` |
 
 ---
 

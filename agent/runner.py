@@ -45,7 +45,17 @@ from agent.schemas import (
 from agent.tools import RunContext
 from agent.trace import PersistedAgentRun, persist_agent_run
 from app.output_guard import check_final_output
-from evals.trace_schema import FinalGuardTrace, GenerationTrace, TraceRecord, empty_trace
+from app.recommendation_boundary import (
+    apply_recommendation_boundary,
+    salience_flags_from_signals,
+)
+from evals.trace_schema import (
+    FinalGuardTrace,
+    GenerationTrace,
+    RecommendationBoundaryTrace,
+    TraceRecord,
+    empty_trace,
+)
 from rag.evidence_policy import AuthorizationVerdict, EvidencePolicyDecision
 
 load_dotenv()
@@ -90,6 +100,39 @@ def _guard_text(result_payload: dict[str, Any]) -> str:
     return "\n".join(part for part in parts if part.strip())
 
 
+def _apply_recommendation_boundary(
+    *,
+    context: RunContext,
+    structured: dict[str, Any],
+) -> dict[str, Any]:
+    insight_worthy, recommendation_worthy = salience_flags_from_signals(context.candidate_signals)
+    authorized = bool(
+        context.last_policy_decision.recommendation_authorized
+        if context.last_policy_decision is not None
+        else False
+    )
+    updated, decision = apply_recommendation_boundary(
+        structured,
+        insight_worthy=insight_worthy,
+        recommendation_worthy=recommendation_worthy,
+        recommendation_authorized=authorized,
+    )
+    context.recommendation_boundary = RecommendationBoundaryTrace(**decision.to_dict())
+    if decision.violations:
+        context.record_decision(
+            "Recommendation boundary corrected model output: "
+            + ", ".join(decision.violations)
+        )
+    else:
+        context.record_decision(
+            "Recommendation boundary: "
+            f"worthy={decision.recommendation_worthy}, "
+            f"authorized={decision.recommendation_authorized}, "
+            f"final_recommendation_allowed={decision.final_recommendation_allowed}."
+        )
+    return updated
+
+
 def _apply_output_guard(
     *,
     context: RunContext,
@@ -99,7 +142,13 @@ def _apply_output_guard(
     as_of_date: str,
 ) -> dict[str, Any]:
     decision = context.last_policy_decision or _empty_policy_decision()
-    guard = check_final_output(_guard_text(structured), decision=decision)
+    _, recommendation_worthy = salience_flags_from_signals(context.candidate_signals)
+    guard = check_final_output(
+        _guard_text(structured),
+        decision=decision,
+        recommendation_worthy=recommendation_worthy,
+        structured=structured,
+    )
     context.final_guard = FinalGuardTrace(
         passed=guard.passed,
         violations=list(guard.violations),
@@ -129,8 +178,10 @@ def _persist_result(
     trace.retrieval = context.retrieval
     trace.policy = context.policy
     trace.generation = context.generation
+    trace.recommendation_boundary = context.recommendation_boundary
     trace.final_guard = context.final_guard
     trace.final_output = json.dumps(structured, sort_keys=True)
+    trace.model_calls = list(context.model_calls)
 
     persisted = PersistedAgentRun(
         trace=trace,
@@ -213,9 +264,11 @@ async def _execute_adk_run_once(
                 user_id=user_id,
                 as_of_date=as_of_date.isoformat(),
             )
+            structured = result.to_dict()
+            structured = _apply_recommendation_boundary(context=context, structured=structured)
             structured = _apply_output_guard(
                 context=context,
-                structured=result.to_dict(),
+                structured=structured,
                 scenario_id=scenario_id,
                 user_id=user_id,
                 as_of_date=as_of_date.isoformat(),

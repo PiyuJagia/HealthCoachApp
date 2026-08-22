@@ -1,0 +1,322 @@
+[
+  {
+    "scenario_id": "HC-EVAL-B3",
+    "run_id": "a9a79976-bf5d-4100-9758-684f33695e07",
+    "as_of_date": "2026-08-17",
+    "latency_ms": 25532,
+    "model_call_count": 4,
+    "f42_fidelity": true,
+    "tools": [
+      "get_trend_signals",
+      "get_lifestyle_context",
+      "retrieve_authorized_evidence"
+    ],
+    "activity_decisions": [
+      "Insight-worthy signal(s): hrv_sdnn_ms, vo2_max, resting_hr_bpm.",
+      "Insight-worthy but not recommendation-worthy; this does not authorize a recommendation.",
+      "Lifestyle context inspected: 4 events (alcohol, caffeine, mood); observational only.",
+      "Evidence lookup complete: verdict=QUALIFY; recommendation_authorized=True; recommendation_worthy=False; final_recommendation_allowed=False. relationships=R-05, R-03",
+      "Recommendation boundary: worthy=False, authorized=True, final_recommendation_allowed=False."
+    ],
+    "insight_worthy": true,
+    "recommendation_worthy": false,
+    "salience_reasons": [
+      "maintenance_of_gain",
+      "maintenance_of_decline"
+    ],
+    "primary_metrics": [
+      "hrv_sdnn_ms",
+      "vo2_max",
+      "resting_hr_bpm",
+      "steps"
+    ],
+    "salience_level": "moderate",
+    "longitudinal_visible_summary": {
+      "any_maintenance_of_decline": true,
+      "any_maintenance_of_gain": true,
+      "longitudinal_context_available": true,
+      "metrics_maintaining_decline": [
+        "steps"
+      ],
+      "metrics_maintaining_gains": [
+        "resting_hr_bpm",
+        "hrv_sdnn_ms",
+        "vo2_max"
+      ]
+    },
+    "lifestyle_called": true,
+    "lifestyle_summary": {
+      "as_of_date": "2026-08-17",
+      "event_count": 4,
+      "event_types": [
+        "alcohol",
+        "caffeine",
+        "mood"
+      ],
+      "late_work_context_event_count": 0,
+      "lookback_days": 14,
+      "policy_available_inputs": [
+        "alcohol_units",
+        "caffeine_mg"
+      ],
+      "window_end": "2026-08-17",
+      "window_start": "2026-08-04"
+    },
+    "evidence_queries": [
+      "maintenance of cardiovascular fitness resting heart rate hrv vo2 max"
+    ],
+    "evidence_summary": {
+      "authorized_count": 3,
+      "available_inputs": [
+        "alcohol_units",
+        "caffeine_mg"
+      ],
+      "evidence_authorized": true,
+      "final_recommendation_allowed": false,
+      "overall_verdict": "QUALIFY",
+      "query": "maintenance of cardiovascular fitness resting heart rate hrv vo2 max",
+      "recommendation_authorized": true,
+      "recommendation_worthy": false,
+      "relationship_ids": [
+        "R-05",
+        "R-03"
+      ],
+      "retrieval_count": 3
+    },
+    "relationship_ids": [
+      "R-05",
+      "R-03"
+    ],
+    "policy_reasons": [
+      "multiple_relationship_candidates_ambiguous"
+    ],
+    "policy_verdict": "QUALIFY",
+    "boundary": {
+      "final_output_respects_boundary": true,
+      "final_recommendation_allowed": false,
+      "final_recommendation_allowed_origin": "deterministic_recommendation_boundary",
+      "final_status": "INSIGHT",
+      "insight_worthy": true,
+      "model_recommendation_present": false,
+      "model_respected_boundary": true,
+      "model_status": "INSIGHT",
+      "recommendation_authorized": true,
+      "recommendation_authorized_origin": "evidence_policy",
+      "recommendation_field_present": false,
+      "recommendation_worthy": false,
+      "recommendation_worthy_origin": "deterministic_salience_analytics",
+      "violations": []
+    },
+    "boundary_visible_to_gemini": {
+      "final_recommendation_allowed": false,
+      "final_recommendation_allowed_origin": "deterministic_recommendation_boundary",
+      "origin": "deterministic_recommendation_boundary",
+      "recommendation_authorized": true,
+      "recommendation_authorized_origin": "evidence_policy",
+      "recommendation_worthy": false,
+      "recommendation_worthy_origin": "deterministic_salience_analytics"
+    },
+    "salience_visible_to_gemini": {
+      "corroborating_metrics": [],
+      "insight_worthy": true,
+      "primary_metrics": [
+        "hrv_sdnn_ms",
+        "vo2_max",
+        "resting_hr_bpm",
+        "steps"
+      ],
+      "reasons": [
+        "maintenance_of_gain",
+        "maintenance_of_decline"
+      ],
+      "recommendation_worthy": false,
+      "salience_level": "moderate"
+    },
+    "raw_status": "INSIGHT",
+    "raw_theme": "Cardiovascular Fitness Maintenance",
+    "raw_insight": "Your cardiovascular metrics—resting heart rate, HRV, and VO2 max—continue to maintain their improved levels compared to your earlier long-term baseline, while daily step counts remain stable at their recent lower level.",
+    "raw_recommendation": null,
+    "raw_recommendation_authorized": true,
+    "raw_recommendation_worthy": false,
+    "raw_final_recommendation_allowed": false,
+    "final_status": "INSIGHT",
+    "final_theme": "Cardiovascular Fitness Maintenance",
+    "final_insight": "Your cardiovascular metrics—resting heart rate, HRV, and VO2 max—continue to maintain their improved levels compared to your earlier long-term baseline, while daily step counts remain stable at their recent lower level.",
+    "final_recommendation": null,
+    "final_recommendation_authorized": true,
+    "final_recommendation_worthy": false,
+    "final_recommendation_allowed": false,
+    "guard_passed": true,
+    "guard_violations": [],
+    "mentions": {
+      "maintenance": true,
+      "caffeine": false,
+      "sleep": false,
+      "late work": false,
+      "coincid": false,
+      "co-occur": false,
+      "caused": false
+    }
+  },
+  {
+    "scenario_id": "HC-EVAL-A1",
+    "run_id": "f33a3b61-9832-47f6-be5a-aadfa1773eb1",
+    "as_of_date": "2026-08-02",
+    "latency_ms": 14693,
+    "model_call_count": 4,
+    "f42_fidelity": true,
+    "tools": [
+      "get_trend_signals",
+      "get_lifestyle_context",
+      "retrieve_authorized_evidence"
+    ],
+    "activity_decisions": [
+      "Insight-worthy signal(s): exercise_minutes, workout_count, sleep_duration_hours.",
+      "Physiology is recommendation-candidate; evidence policy remains the authorization gate.",
+      "Lifestyle context inspected: 17 events (alcohol, caffeine, mood); observational only.",
+      "Evidence lookup complete: verdict=SURFACE; recommendation_authorized=True; recommendation_worthy=True; final_recommendation_allowed=True. relationships=R-07, R-07, R-07",
+      "Recommendation boundary: worthy=True, authorized=True, final_recommendation_allowed=True."
+    ],
+    "insight_worthy": true,
+    "recommendation_worthy": true,
+    "salience_reasons": [
+      "strong_recent_change",
+      "clear_recent_change",
+      "maintenance_of_decline"
+    ],
+    "primary_metrics": [
+      "exercise_minutes",
+      "workout_count",
+      "sleep_duration_hours",
+      "hrv_sdnn_ms",
+      "steps"
+    ],
+    "salience_level": "high",
+    "longitudinal_visible_summary": {
+      "any_maintenance_of_decline": true,
+      "any_maintenance_of_gain": false,
+      "longitudinal_context_available": true,
+      "metrics_maintaining_decline": [
+        "steps"
+      ],
+      "metrics_maintaining_gains": []
+    },
+    "lifestyle_called": true,
+    "lifestyle_summary": {
+      "as_of_date": "2026-08-02",
+      "event_count": 17,
+      "event_types": [
+        "alcohol",
+        "caffeine",
+        "mood"
+      ],
+      "late_work_context_event_count": 7,
+      "lookback_days": 14,
+      "policy_available_inputs": [
+        "alcohol_units",
+        "caffeine_mg"
+      ],
+      "window_end": "2026-08-02",
+      "window_start": "2026-07-20"
+    },
+    "evidence_queries": [
+      "sleep duration decline caffeine exercise"
+    ],
+    "evidence_summary": {
+      "authorized_count": 3,
+      "available_inputs": [
+        "alcohol_units",
+        "caffeine_mg"
+      ],
+      "evidence_authorized": true,
+      "final_recommendation_allowed": true,
+      "overall_verdict": "SURFACE",
+      "query": "sleep duration decline caffeine exercise",
+      "recommendation_authorized": true,
+      "recommendation_worthy": true,
+      "relationship_ids": [
+        "R-07",
+        "R-07",
+        "R-07"
+      ],
+      "retrieval_count": 3
+    },
+    "relationship_ids": [
+      "R-07",
+      "R-07",
+      "R-07"
+    ],
+    "policy_reasons": [
+      "authorized_evidence_present"
+    ],
+    "policy_verdict": "SURFACE",
+    "boundary": {
+      "final_output_respects_boundary": true,
+      "final_recommendation_allowed": true,
+      "final_recommendation_allowed_origin": "deterministic_recommendation_boundary",
+      "final_status": "RECOMMENDATION",
+      "insight_worthy": true,
+      "model_recommendation_present": true,
+      "model_respected_boundary": true,
+      "model_status": "RECOMMENDATION",
+      "recommendation_authorized": true,
+      "recommendation_authorized_origin": "evidence_policy",
+      "recommendation_field_present": true,
+      "recommendation_worthy": true,
+      "recommendation_worthy_origin": "deterministic_salience_analytics",
+      "violations": []
+    },
+    "boundary_visible_to_gemini": {
+      "final_recommendation_allowed": true,
+      "final_recommendation_allowed_origin": "deterministic_recommendation_boundary",
+      "origin": "deterministic_recommendation_boundary",
+      "recommendation_authorized": true,
+      "recommendation_authorized_origin": "evidence_policy",
+      "recommendation_worthy": true,
+      "recommendation_worthy_origin": "deterministic_salience_analytics"
+    },
+    "salience_visible_to_gemini": {
+      "corroborating_metrics": [],
+      "insight_worthy": true,
+      "primary_metrics": [
+        "exercise_minutes",
+        "workout_count",
+        "sleep_duration_hours",
+        "hrv_sdnn_ms",
+        "steps"
+      ],
+      "reasons": [
+        "strong_recent_change",
+        "clear_recent_change",
+        "maintenance_of_decline"
+      ],
+      "recommendation_worthy": true,
+      "salience_level": "high"
+    },
+    "raw_status": "RECOMMENDATION",
+    "raw_theme": "Sleep Duration Decline and Caffeine Timing",
+    "raw_insight": "Your average sleep duration decreased from 7.11 hours to 5.83 hours over the past week (-18%), even as exercise minutes and heart rate variability (HRV) showed positive improvements. Stored context notes regular late-afternoon caffeine consumption, which co-occurs with this lower sleep duration.",
+    "raw_recommendation": "To help support longer and more restful sleep, consider limiting caffeine intake in the late afternoon and shifting consumption to earlier in the day.",
+    "raw_recommendation_authorized": true,
+    "raw_recommendation_worthy": true,
+    "raw_final_recommendation_allowed": true,
+    "final_status": "RECOMMENDATION",
+    "final_theme": "Sleep Duration Decline and Caffeine Timing",
+    "final_insight": "Your average sleep duration decreased from 7.11 hours to 5.83 hours over the past week (-18%), even as exercise minutes and heart rate variability (HRV) showed positive improvements. Stored context notes regular late-afternoon caffeine consumption, which co-occurs with this lower sleep duration.",
+    "final_recommendation": "To help support longer and more restful sleep, consider limiting caffeine intake in the late afternoon and shifting consumption to earlier in the day.",
+    "final_recommendation_authorized": true,
+    "final_recommendation_worthy": true,
+    "final_recommendation_allowed": true,
+    "guard_passed": true,
+    "guard_violations": [],
+    "mentions": {
+      "maintenance": false,
+      "caffeine": true,
+      "sleep": true,
+      "late work": false,
+      "coincid": false,
+      "co-occur": true,
+      "caused": false
+    }
+  }
+]

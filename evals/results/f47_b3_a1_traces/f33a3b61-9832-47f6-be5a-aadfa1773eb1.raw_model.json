@@ -1,0 +1,23 @@
+{
+  "raw_final_text": "{\n  \"scenario_id\": \"HC-EVAL-A1\",\n  \"user_id\": 1,\n  \"as_of_date\": \"2026-08-02\",\n  \"status\": \"RECOMMENDATION\",\n  \"theme\": \"Sleep Duration Decline and Caffeine Timing\",\n  \"insight\": \"Your average sleep duration decreased from 7.11 hours to 5.83 hours over the past week (-18%), even as exercise minutes and heart rate variability (HRV) showed positive improvements. Stored context notes regular late-afternoon caffeine consumption, which co-occurs with this lower sleep duration.\",\n  \"recommendation\": \"To help support longer and more restful sleep, consider limiting caffeine intake in the late afternoon and shifting consumption to earlier in the day.\",\n  \"policy_verdict\": \"SURFACE\",\n  \"recommendation_authorized\": true,\n  \"recommendation_worthy\": true,\n  \"final_recommendation_allowed\": true,\n  \"confidence_language\": \"MODERATE\",\n  \"source_refs\": [\n    \"healthcoach_correlation_modeling__chunk_0049\",\n    \"healthcoach_correlation_modeling__chunk_0052\",\n    \"healthcoach_correlation_modeling__chunk_0048\"\n  ],\n  \"reason_not_surfaced\": null\n}",
+  "parsed": {
+    "scenario_id": "HC-EVAL-A1",
+    "user_id": 1,
+    "as_of_date": "2026-08-02",
+    "status": "RECOMMENDATION",
+    "theme": "Sleep Duration Decline and Caffeine Timing",
+    "insight": "Your average sleep duration decreased from 7.11 hours to 5.83 hours over the past week (-18%), even as exercise minutes and heart rate variability (HRV) showed positive improvements. Stored context notes regular late-afternoon caffeine consumption, which co-occurs with this lower sleep duration.",
+    "recommendation": "To help support longer and more restful sleep, consider limiting caffeine intake in the late afternoon and shifting consumption to earlier in the day.",
+    "policy_verdict": "SURFACE",
+    "recommendation_authorized": true,
+    "recommendation_worthy": true,
+    "final_recommendation_allowed": true,
+    "confidence_language": "MODERATE",
+    "source_refs": [
+      "healthcoach_correlation_modeling__chunk_0049",
+      "healthcoach_correlation_modeling__chunk_0052",
+      "healthcoach_correlation_modeling__chunk_0048"
+    ],
+    "reason_not_surfaced": null
+  }
+}

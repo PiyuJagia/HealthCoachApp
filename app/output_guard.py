@@ -6,6 +6,10 @@ import re
 from dataclasses import dataclass
 
 from rag.evidence_policy import AuthorizationVerdict, EvidencePolicyDecision
+from app.recommendation_boundary import (
+    RECOMMENDATION_STATUS,
+    compute_final_recommendation_allowed,
+)
 
 CAUSAL_PHRASES = (
     r"\bcaused\b",
@@ -51,15 +55,24 @@ def check_final_output(
     *,
     decision: EvidencePolicyDecision,
     executed_analytical_methods: set[str] | None = None,
+    recommendation_worthy: bool = False,
+    structured: dict | None = None,
 ) -> GuardResult:
     """
     Deterministically validate a candidate final insight against policy decisions.
 
     This is not an NLP classifier. It applies explicit, testable checks only.
+    Recommendation output requires both policy authorization and product worthiness.
     """
     violations: list[str] = []
     normalized = (output or "").strip()
-    if not normalized:
+    payload = structured or {}
+    allowed = compute_final_recommendation_allowed(
+        recommendation_worthy=recommendation_worthy,
+        recommendation_authorized=decision.recommendation_authorized,
+    )
+
+    if not normalized and not payload:
         return GuardResult(passed=True, violations=())
 
     for relationship_id in decision.suppressed_relationship_ids:
@@ -69,8 +82,15 @@ def check_final_output(
     if decision.overall_verdict == AuthorizationVerdict.SUPPRESS and normalized:
         violations.append("output_present_while_policy_suppressed")
 
-    recommendation_allowed = decision.recommendation_authorized
-    if _contains_any(RECOMMENDATION_PHRASES, normalized) and not recommendation_allowed:
+    status = str(payload.get("status") or "")
+    rec_text = payload.get("recommendation")
+    rec_present = isinstance(rec_text, str) and bool(rec_text.strip())
+    if status == RECOMMENDATION_STATUS and not allowed:
+        violations.append("recommendation_status_without_final_allowance")
+    if rec_present and not allowed:
+        violations.append("recommendation_field_without_final_allowance")
+
+    if _contains_any(RECOMMENDATION_PHRASES, normalized) and not allowed:
         violations.append("unauthorized_recommendation_language")
 
     if _contains_any(CAUSAL_PHRASES, normalized):

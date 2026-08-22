@@ -1,0 +1,22 @@
+[
+  {
+    "scenario_id": "HC-EVAL-E1",
+    "run_id": "0bffd8bc-f486-46c8-a39d-bd35603397d0",
+    "trace_file": "0bffd8bc-f486-46c8-a39d-bd35603397d0.json",
+    "as_of_date": "2026-08-02",
+    "final_status": "RECOMMENDATION",
+    "raw_status": "RECOMMENDATION",
+    "latency_ms": 14014,
+    "model_call_count": 4
+  },
+  {
+    "scenario_id": "HC-EVAL-B1",
+    "run_id": "70333797-4a10-48f6-a028-606e844f1560",
+    "trace_file": "70333797-4a10-48f6-a028-606e844f1560.json",
+    "as_of_date": "2026-06-18",
+    "final_status": "NO_SIGNIFICANT_NEW_PATTERN",
+    "raw_status": "NO_SIGNIFICANT_NEW_PATTERN",
+    "latency_ms": 9437,
+    "model_call_count": 2
+  }
+]

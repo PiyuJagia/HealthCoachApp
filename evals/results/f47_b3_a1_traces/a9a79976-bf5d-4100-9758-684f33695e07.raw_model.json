@@ -1,0 +1,23 @@
+{
+  "raw_final_text": "{\n  \"scenario_id\": \"HC-EVAL-B3\",\n  \"user_id\": 1,\n  \"as_of_date\": \"2026-08-17\",\n  \"status\": \"INSIGHT\",\n  \"theme\": \"Cardiovascular Fitness Maintenance\",\n  \"insight\": \"Your cardiovascular metrics—resting heart rate, HRV, and VO2 max—continue to maintain their improved levels compared to your earlier long-term baseline, while daily step counts remain stable at their recent lower level.\",\n  \"recommendation\": null,\n  \"policy_verdict\": \"QUALIFY\",\n  \"recommendation_authorized\": true,\n  \"recommendation_worthy\": false,\n  \"final_recommendation_allowed\": false,\n  \"confidence_language\": \"MODERATE\",\n  \"source_refs\": [\n    \"healthcoach_correlation_modeling__chunk_0074\",\n    \"healthcoach_correlation_modeling__chunk_0038\",\n    \"healthcoach_correlation_modeling__chunk_0026\"\n  ],\n  \"reason_not_surfaced\": null\n}",
+  "parsed": {
+    "scenario_id": "HC-EVAL-B3",
+    "user_id": 1,
+    "as_of_date": "2026-08-17",
+    "status": "INSIGHT",
+    "theme": "Cardiovascular Fitness Maintenance",
+    "insight": "Your cardiovascular metrics—resting heart rate, HRV, and VO2 max—continue to maintain their improved levels compared to your earlier long-term baseline, while daily step counts remain stable at their recent lower level.",
+    "recommendation": null,
+    "policy_verdict": "QUALIFY",
+    "recommendation_authorized": true,
+    "recommendation_worthy": false,
+    "final_recommendation_allowed": false,
+    "confidence_language": "MODERATE",
+    "source_refs": [
+      "healthcoach_correlation_modeling__chunk_0074",
+      "healthcoach_correlation_modeling__chunk_0038",
+      "healthcoach_correlation_modeling__chunk_0026"
+    ],
+    "reason_not_surfaced": null
+  }
+}

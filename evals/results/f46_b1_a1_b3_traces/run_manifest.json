@@ -1,0 +1,53 @@
+[
+  {
+    "scenario_id": "HC-EVAL-B1",
+    "run_id": "828f9950-8743-4a1e-b210-629233d87a9e",
+    "trace_file": "828f9950-8743-4a1e-b210-629233d87a9e.json",
+    "as_of_date": "2026-06-18",
+    "final_status": "NO_SIGNIFICANT_NEW_PATTERN",
+    "theme": null,
+    "insight": null,
+    "recommendation": null,
+    "reason_not_surfaced": "Tracked metrics including sleep duration, resting heart rate, HRV, exercise minutes, and daily steps remain stable or show only minor variations that do not meet salience thresholds for elevation into an insight.",
+    "recommendation_authorized": false,
+    "policy_verdict": null,
+    "final_guard_passed": true,
+    "latency_ms": 30905,
+    "model_call_count": 2,
+    "trace_path": "C:\\Users\\14042\\Desktop\\AI-Projects\\health-coach-ai\\evals\\results\\f46_b1_a1_b3_traces\\828f9950-8743-4a1e-b210-629233d87a9e.json"
+  },
+  {
+    "scenario_id": "HC-EVAL-A1",
+    "run_id": "6400020e-7657-4996-ba03-a226fd070ac3",
+    "trace_file": "6400020e-7657-4996-ba03-a226fd070ac3.json",
+    "as_of_date": "2026-08-02",
+    "final_status": "RECOMMENDATION",
+    "theme": "Sleep Duration & Caffeine Timing",
+    "insight": "Over the past 7 days, your average sleep duration decreased by 18% (from 7.11 hours to 5.83 hours per night), coinciding with recurring afternoon caffeine intake around 4:00 PM and late work evenings.",
+    "recommendation": "Consider shifting your caffeine consumption earlier in the day\u2014ideally avoiding caffeine in the late afternoon\u2014to help facilitate earlier sleep onset and support sleep duration.",
+    "reason_not_surfaced": null,
+    "recommendation_authorized": true,
+    "policy_verdict": "SURFACE",
+    "final_guard_passed": true,
+    "latency_ms": 43785,
+    "model_call_count": 4,
+    "trace_path": "C:\\Users\\14042\\Desktop\\AI-Projects\\health-coach-ai\\evals\\results\\f46_b1_a1_b3_traces\\6400020e-7657-4996-ba03-a226fd070ac3.json"
+  },
+  {
+    "scenario_id": "HC-EVAL-B3",
+    "run_id": "2f65850e-ae3a-48a4-8249-6e5d3c5da9b9",
+    "trace_file": "2f65850e-ae3a-48a4-8249-6e5d3c5da9b9.json",
+    "as_of_date": "2026-08-17",
+    "final_status": "INSIGHT",
+    "theme": "Maintenance of Cardiovascular Fitness Gains",
+    "insight": "Your cardiovascular metrics\u2014including resting heart rate, heart rate variability (HRV), and VO2 max\u2014have remained stable recently while sustaining meaningful long-term improvements compared to your earlier baseline levels.",
+    "recommendation": "Maintain your regular aerobic exercise habit to support and sustain these ongoing cardiovascular health gains.",
+    "reason_not_surfaced": null,
+    "recommendation_authorized": true,
+    "policy_verdict": "SURFACE",
+    "final_guard_passed": true,
+    "latency_ms": 25875,
+    "model_call_count": 4,
+    "trace_path": "C:\\Users\\14042\\Desktop\\AI-Projects\\health-coach-ai\\evals\\results\\f46_b1_a1_b3_traces\\2f65850e-ae3a-48a4-8249-6e5d3c5da9b9.json"
+  }
+]

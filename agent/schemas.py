@@ -41,6 +41,8 @@ class HealthCoachResult:
     recommendation: str | None = None
     policy_verdict: str | None = None
     recommendation_authorized: bool = False
+    recommendation_worthy: bool = False
+    final_recommendation_allowed: bool = False
     confidence_language: str | None = None
     source_refs: list[str] = field(default_factory=list)
     reason_not_surfaced: str | None = None
@@ -165,6 +167,8 @@ def health_coach_result_from_payload(
         recommendation=payload.get("recommendation"),
         policy_verdict=payload.get("policy_verdict"),
         recommendation_authorized=bool(payload.get("recommendation_authorized", False)),
+        recommendation_worthy=bool(payload.get("recommendation_worthy", False)),
+        final_recommendation_allowed=bool(payload.get("final_recommendation_allowed", False)),
         confidence_language=payload.get("confidence_language"),
         source_refs=[str(item) for item in payload.get("source_refs") or []],
         reason_not_surfaced=payload.get("reason_not_surfaced"),

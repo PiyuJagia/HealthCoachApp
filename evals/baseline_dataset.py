@@ -219,9 +219,14 @@ def inspect_scenario_data_support(scenario: BaselineScenario) -> dict[str, Any]:
             "baseline_value": trend.baseline_value,
             "direction": trend.direction,
             "percent_change": trend.percent_change,
-            "data_sufficient": trend.data_sufficient,
+            "as_of_date_available": trend.as_of_date_available,
             "observation_count_current": trend.observation_count_current,
-            "observation_count_baseline": trend.observation_count_baseline,
+            "expected_observation_count_current": trend.expected_observation_count_current,
+            "coverage_ratio": trend.coverage_ratio,
+            "baseline_observation_count": trend.baseline_observation_count,
+            "baseline_ready": trend.baseline_ready,
+            "data_maturity_state": trend.data_maturity_state,
+            "claim_eligibility": trend.claim_eligibility.to_dict(),
         }
 
     null_on_date: list[str] = []

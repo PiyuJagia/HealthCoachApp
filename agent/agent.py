@@ -7,6 +7,7 @@ from datetime import date
 from google.adk.agents import Agent
 
 from agent.instructions import HEALTH_COACH_INSTRUCTIONS
+from agent.model_observe import bind_model_observation_callbacks
 from agent.tools import RunContext, build_tools
 
 MODEL = "gemini-3.6-flash"
@@ -15,12 +16,13 @@ MAX_LLM_CALLS = 8
 
 
 def build_health_coach_agent(context: RunContext) -> Agent:
-    get_trend_signals, retrieve_authorized_evidence = build_tools(context)
+    get_trend_signals, get_lifestyle_context, retrieve_authorized_evidence = build_tools(context)
     return Agent(
         name=AGENT_NAME,
         model=MODEL,
         instruction=HEALTH_COACH_INSTRUCTIONS,
-        tools=[get_trend_signals, retrieve_authorized_evidence],
+        tools=[get_trend_signals, get_lifestyle_context, retrieve_authorized_evidence],
+        **bind_model_observation_callbacks(context),
     )
 
 

@@ -35,6 +35,7 @@ class TraceSchemaTests(unittest.TestCase):
         payload = json.loads(first)
         self.assertEqual(payload["scenario_id"], "demo")
         self.assertEqual(payload["tool_calls"][0]["tool_name"], "get_trend_signals")
+        self.assertEqual(payload["model_calls"], [])
 
     def test_sanitize_for_trace_redacts_secrets(self) -> None:
         payload = {
@@ -46,6 +47,12 @@ class TraceSchemaTests(unittest.TestCase):
         self.assertEqual(sanitized["openai_api_key"], "[REDACTED]")
         self.assertEqual(sanitized["nested"]["pinecone_token"], "[REDACTED]")
         self.assertEqual(sanitized["safe"], "value")
+        self.assertEqual(sanitize_for_trace({"max_output_tokens": 2048})["max_output_tokens"], 2048)
+
+    def test_sanitize_does_not_redact_instruction_prose(self) -> None:
+        instruction = "Do not make recommendations unless recommendation_authorized=true."
+        self.assertEqual(sanitize_for_trace(instruction), instruction)
+        self.assertEqual(sanitize_for_trace("Bearer secret-token"), "[REDACTED]")
 
     def test_empty_partial_trace_state(self) -> None:
         trace = TraceRecord(

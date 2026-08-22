@@ -10,6 +10,7 @@ from unittest.mock import AsyncMock, patch
 from agent.agent import AGENT_NAME, MAX_LLM_CALLS, MODEL, build_health_coach_agent, build_review_prompt
 from agent.display import format_activity_lines, summarize_trend_signals
 from agent.events import classify_part
+from agent.instructions import HEALTH_COACH_INSTRUCTIONS
 from agent.runner import _apply_output_guard, _empty_policy_decision, _guard_text
 from agent.schemas import (
     HealthCoachResult,
@@ -39,6 +40,13 @@ class AgentBuildTests(unittest.TestCase):
         agent = build_health_coach_agent(context)
         self.assertEqual(agent.name, AGENT_NAME)
         self.assertEqual(agent.model, MODEL)
+        self.assertEqual(agent.instruction, HEALTH_COACH_INSTRUCTIONS)
+        self.assertIsNotNone(agent.before_model_callback)
+        self.assertIsNotNone(agent.after_model_callback)
+        self.assertEqual(
+            {getattr(tool, "name", getattr(tool, "__name__", "")) for tool in agent.tools},
+            {"get_trend_signals", "get_lifestyle_context", "retrieve_authorized_evidence"},
+        )
 
     def test_review_prompt_includes_scenario_context(self) -> None:
         prompt = build_review_prompt(scenario_id="day60", user_id=7, as_of_date=date(2026, 7, 17))
@@ -76,13 +84,13 @@ class ToolContextTests(unittest.TestCase):
                 {
                     "metric": "sleep_duration_hours",
                     "direction": "decreasing",
-                    "data_sufficient": True,
                     "percent_change": -5.0,
+                    "claim_eligibility": {"trend_allowed": True, "early_pattern_allowed": True},
                 }
             ],
         }
         context = RunContext(scenario_id="day30", user_id=1, as_of_date=date(2026, 6, 18))
-        get_trend_signals, _ = build_tools(context)
+        get_trend_signals, _, _ = build_tools(context)
         payload = get_trend_signals()
         self.assertIn("trends", payload)
         phases = [step["phase"] for step in context.activity_log]
@@ -106,7 +114,7 @@ class ToolContextTests(unittest.TestCase):
             suppressed_relationship_ids=tuple(),
         )
         context = RunContext(scenario_id="day60", user_id=1, as_of_date=date(2026, 7, 17))
-        _, retrieve_authorized_evidence = build_tools(context)
+        _, _, retrieve_authorized_evidence = build_tools(context)
         result = retrieve_authorized_evidence("exercise and resting heart rate")
         self.assertEqual(result["overall_verdict"], "QUALIFY")
         self.assertIsNotNone(context.policy)
@@ -213,7 +221,7 @@ class BoundedFailureTests(unittest.TestCase):
 class DisplayHelperTests(unittest.TestCase):
     def test_summarize_trend_signals(self) -> None:
         rows = summarize_trend_signals(
-            {"trends": [{"metric": "hrv_sdnn_ms", "direction": "stable", "data_sufficient": True}]}
+            {"trends": [{"metric": "hrv_sdnn_ms", "direction": "stable", "data_maturity_state": "ESTABLISHED_TREND"}]}
         )
         self.assertEqual(rows[0]["metric"], "hrv_sdnn_ms")
 

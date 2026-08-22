@@ -99,7 +99,8 @@ def _format_candidate_signals(trace: dict[str, Any]) -> str:
             f"- **{trend.get('metric')}**: current={trend.get('current_value')} | "
             f"baseline={trend.get('baseline_value')} | direction={trend.get('direction')} | "
             f"percent_change={trend.get('percent_change')} | "
-            f"data_sufficient={trend.get('data_sufficient')}"
+            f"maturity={trend.get('data_maturity_state')} | "
+            f"as_of_available={trend.get('as_of_date_available')}"
         )
     return "\n".join(lines)
 

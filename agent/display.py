@@ -12,10 +12,13 @@ def summarize_trend_signals(candidate_signals: dict[str, Any]) -> list[dict[str,
             {
                 "metric": item.get("metric"),
                 "direction": item.get("direction"),
-                "data_sufficient": item.get("data_sufficient"),
+                "data_maturity_state": item.get("data_maturity_state"),
                 "percent_change": item.get("percent_change"),
                 "current_value": item.get("current_value"),
                 "baseline_value": item.get("baseline_value"),
+                "as_of_date_available": item.get("as_of_date_available"),
+                "gap_caveat_required": item.get("gap_caveat_required"),
+                "claim_eligibility": item.get("claim_eligibility"),
             }
         )
     return rows

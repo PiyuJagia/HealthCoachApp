@@ -6,6 +6,7 @@ from datetime import date
 from typing import Any
 
 from app.health_tools import get_health_trends_for_agent
+from app.lifestyle_tools import get_lifestyle_context_for_agent
 from rag.evidence_policy import EvidencePolicyDecision, evaluate_retrieved_evidence
 from rag.retrieval import retrieve
 from rag.schemas import RetrievalResult
@@ -21,13 +22,31 @@ def get_trend_signals(
     """
     Return deterministic candidate health signals from relational user data.
 
-    Future ADK tool: wraps analytics only — no LLM, no Pinecone, no policy layer.
+    Observational only. Callers must honor claim_eligibility and coverage
+    provenance; data_sufficient is not part of this contract.
     """
     return get_health_trends_for_agent(
         user_id,
         as_of_date=as_of_date,
         include_weekly_summaries=include_weekly_summaries,
         weekly_weeks=weekly_weeks,
+    )
+
+
+def get_lifestyle_context(
+    user_id: int,
+    *,
+    as_of_date: date,
+    lookback_days: int | None = None,
+) -> dict[str, Any]:
+    """Return stored lifestyle events in a bounded as-of lookback window.
+
+    Observational context only. Does not retrieve RAG evidence or apply policy.
+    """
+    return get_lifestyle_context_for_agent(
+        user_id,
+        as_of_date=as_of_date,
+        lookback_days=lookback_days,
     )
 
 

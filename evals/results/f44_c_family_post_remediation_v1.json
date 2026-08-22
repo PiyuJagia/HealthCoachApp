@@ -1,0 +1,2034 @@
+{
+  "scenarios": [
+    {
+      "current": {
+        "scenario_id": "HC-EVAL-C1",
+        "run_id": "73208327-6e81-49f8-a675-ce88aea31af5",
+        "trace_file": "73208327-6e81-49f8-a675-ce88aea31af5.json",
+        "as_of_date": "2026-08-02",
+        "get_trend_signals_called": true,
+        "get_lifestyle_context_called": true,
+        "retrieve_authorized_evidence_called": true,
+        "tool_names": [
+          "get_trend_signals",
+          "get_lifestyle_context",
+          "retrieve_authorized_evidence"
+        ],
+        "lifestyle_result_summary": {
+          "as_of_date": "2026-08-02",
+          "event_count": 17,
+          "event_types": [
+            "alcohol",
+            "caffeine",
+            "mood"
+          ],
+          "late_work_context_event_count": 7,
+          "lookback_days": 14,
+          "policy_available_inputs": [
+            "alcohol_units",
+            "caffeine_mg"
+          ],
+          "window_end": "2026-08-02",
+          "window_start": "2026-07-20"
+        },
+        "lifestyle_context_visible_to_gemini": {
+          "origin": "lifestyle_context",
+          "summary": {
+            "event_count": 17,
+            "event_types": [
+              "alcohol",
+              "caffeine",
+              "mood"
+            ],
+            "late_work_context_event_count": 7,
+            "lookback_days": 14,
+            "origin": "lifestyle_context",
+            "policy_available_inputs": [
+              "alcohol_units",
+              "caffeine_mg"
+            ],
+            "source_id": "get_lifestyle_context",
+            "window_end": "2026-08-02",
+            "window_start": "2026-07-20"
+          },
+          "payload": {
+            "as_of_date": "2026-08-02",
+            "by_type": [
+              {
+                "count": 1,
+                "dates": [
+                  "2026-07-21"
+                ],
+                "distinct_notes": [
+                  "Synthetic social evening"
+                ],
+                "event_type": "alcohol",
+                "hours": [
+                  20
+                ],
+                "latest_occurred_at": "2026-07-21 20:30:00",
+                "quantity_mean": 1.0,
+                "quantity_sum": 1.0,
+                "unit": "standard_drinks"
+              },
+              {
+                "count": 7,
+                "dates": [
+                  "2026-07-21",
+                  "2026-07-23",
+                  "2026-07-25",
+                  "2026-07-27",
+                  "2026-07-29",
+                  "2026-07-31",
+                  "2026-08-02"
+                ],
+                "distinct_notes": [
+                  "Synthetic afternoon coffee"
+                ],
+                "event_type": "caffeine",
+                "hours": [
+                  16,
+                  16,
+                  16,
+                  16,
+                  16,
+                  16,
+                  16
+                ],
+                "latest_occurred_at": "2026-08-02 16:00:00",
+                "quantity_mean": 200.0,
+                "quantity_sum": 1400.0,
+                "unit": "mg"
+              },
+              {
+                "count": 9,
+                "dates": [
+                  "2026-07-20",
+                  "2026-07-21",
+                  "2026-07-22",
+                  "2026-07-24",
+                  "2026-07-26",
+                  "2026-07-28",
+                  "2026-07-30",
+                  "2026-08-01"
+                ],
+                "distinct_notes": [
+                  "Synthetic late work evening",
+                  "Synthetic self-report"
+                ],
+                "event_type": "mood",
+                "hours": [
+                  21,
+                  12,
+                  21,
+                  21,
+                  21,
+                  21,
+                  12,
+                  21,
+                  21
+                ],
+                "latest_occurred_at": "2026-08-01 21:15:00",
+                "quantity_mean": 3.11,
+                "quantity_sum": 28.0,
+                "unit": "scale_1_5"
+              }
+            ],
+            "disclaimer": "Lifestyle events are user-specific observational context, not scientific evidence. Co-occurrence is not causation. This tool does not authorize recommendations. Relationship claims require retrieve_authorized_evidence and the deterministic evidence policy.",
+            "event_count": 17,
+            "events": [
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-20 21:15:00",
+                "occurred_on": "2026-07-20",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "mood",
+                "hour": 12,
+                "minute": 0,
+                "notes": "Synthetic self-report",
+                "occurred_at": "2026-07-21 12:00:00",
+                "occurred_on": "2026-07-21",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 30,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-21 16:30:00",
+                "occurred_on": "2026-07-21",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "alcohol",
+                "hour": 20,
+                "minute": 30,
+                "notes": "Synthetic social evening",
+                "occurred_at": "2026-07-21 20:30:00",
+                "occurred_on": "2026-07-21",
+                "quantity": 1.0,
+                "unit": "standard_drinks"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-22 21:15:00",
+                "occurred_on": "2026-07-22",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 45,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-23 16:45:00",
+                "occurred_on": "2026-07-23",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-24 21:15:00",
+                "occurred_on": "2026-07-24",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 0,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-25 16:00:00",
+                "occurred_on": "2026-07-25",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-26 21:15:00",
+                "occurred_on": "2026-07-26",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 45,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-27 16:45:00",
+                "occurred_on": "2026-07-27",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-28 21:15:00",
+                "occurred_on": "2026-07-28",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 30,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-29 16:30:00",
+                "occurred_on": "2026-07-29",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "mood",
+                "hour": 12,
+                "minute": 0,
+                "notes": "Synthetic self-report",
+                "occurred_at": "2026-07-30 12:00:00",
+                "occurred_on": "2026-07-30",
+                "quantity": 4.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-30 21:15:00",
+                "occurred_on": "2026-07-30",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 0,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-31 16:00:00",
+                "occurred_on": "2026-07-31",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-08-01 21:15:00",
+                "occurred_on": "2026-08-01",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 0,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-08-02 16:00:00",
+                "occurred_on": "2026-08-02",
+                "quantity": 200.0,
+                "unit": "mg"
+              }
+            ],
+            "late_work_context_event_count": 7,
+            "lookback_days": 14,
+            "policy_available_inputs": [
+              "alcohol_units",
+              "caffeine_mg"
+            ],
+            "user_id": 1,
+            "window_end": "2026-08-02",
+            "window_start": "2026-07-20"
+          }
+        },
+        "lifestyle_events_visible": [
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-20 21:15:00",
+            "occurred_on": "2026-07-20",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "mood",
+            "hour": 12,
+            "minute": 0,
+            "notes": "Synthetic self-report",
+            "occurred_at": "2026-07-21 12:00:00",
+            "occurred_on": "2026-07-21",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 30,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-21 16:30:00",
+            "occurred_on": "2026-07-21",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "alcohol",
+            "hour": 20,
+            "minute": 30,
+            "notes": "Synthetic social evening",
+            "occurred_at": "2026-07-21 20:30:00",
+            "occurred_on": "2026-07-21",
+            "quantity": 1.0,
+            "unit": "standard_drinks"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-22 21:15:00",
+            "occurred_on": "2026-07-22",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 45,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-23 16:45:00",
+            "occurred_on": "2026-07-23",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-24 21:15:00",
+            "occurred_on": "2026-07-24",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 0,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-25 16:00:00",
+            "occurred_on": "2026-07-25",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-26 21:15:00",
+            "occurred_on": "2026-07-26",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 45,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-27 16:45:00",
+            "occurred_on": "2026-07-27",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-28 21:15:00",
+            "occurred_on": "2026-07-28",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 30,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-29 16:30:00",
+            "occurred_on": "2026-07-29",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "mood",
+            "hour": 12,
+            "minute": 0,
+            "notes": "Synthetic self-report",
+            "occurred_at": "2026-07-30 12:00:00",
+            "occurred_on": "2026-07-30",
+            "quantity": 4.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-30 21:15:00",
+            "occurred_on": "2026-07-30",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 0,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-31 16:00:00",
+            "occurred_on": "2026-07-31",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-08-01 21:15:00",
+            "occurred_on": "2026-08-01",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 0,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-08-02 16:00:00",
+            "occurred_on": "2026-08-02",
+            "quantity": 200.0,
+            "unit": "mg"
+          }
+        ],
+        "policy_available_inputs": {
+          "available_inputs": [
+            "alcohol_units",
+            "caffeine_mg"
+          ],
+          "reached": true,
+          "has_caffeine_mg": true,
+          "has_alcohol_units": true
+        },
+        "relationship_ids": [
+          "R-07",
+          "R-07",
+          "R-07"
+        ],
+        "evidence_queries": [
+          "sleep duration decline late caffeine afternoon coffee"
+        ],
+        "policy_verdict": "SURFACE",
+        "policy_reasons": [
+          "authorized_evidence_present"
+        ],
+        "recommendation_authorized": true,
+        "association_vs_causation": {
+          "causal_hits": [],
+          "association_hits": [
+            "\\bco-occur"
+          ],
+          "preserved": true
+        },
+        "mentions": {
+          "caffeine": true,
+          "alcohol": false,
+          "late work": false,
+          "work": false,
+          "sleep": true
+        },
+        "final_status": "RECOMMENDATION",
+        "theme": "Sleep Duration Decline and Caffeine Timing",
+        "insight": "Your average daily sleep duration decreased from 7.11 hours to 5.83 hours (-18%) over the past week. Stored lifestyle records show regular late-afternoon caffeine intake (200 mg around 16:00), which co-occurs with reduced sleep duration.",
+        "recommendation": "Consider shifting caffeine intake to earlier in the day (avoiding consumption within 6 to 8 hours of bedtime) to help support sleep duration and rest quality.",
+        "final_guard_passed": true,
+        "final_guard_violations": [],
+        "model_call_count": 4,
+        "model_calls_have_f42_fidelity": true,
+        "latency_ms": 25082,
+        "activity_log": [
+          {
+            "arguments": {
+              "as_of_date": "2026-08-02",
+              "user_id": 1
+            },
+            "phase": "ACT",
+            "tool": "get_trend_signals"
+          },
+          {
+            "phase": "OBSERVE",
+            "summary": {
+              "as_of_any_daily_metric_available": true,
+              "as_of_date": "2026-08-02",
+              "gap_caveat_required": false,
+              "metrics": [
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "decreasing",
+                  "gap_caveat_required": false,
+                  "metric": "sleep_duration_hours",
+                  "percent_change": -18.0
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "stable",
+                  "gap_caveat_required": false,
+                  "metric": "resting_hr_bpm",
+                  "percent_change": 0.18
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "improving",
+                  "gap_caveat_required": false,
+                  "metric": "hrv_sdnn_ms",
+                  "percent_change": 11.72
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "activity_dependent",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "improving",
+                  "gap_caveat_required": false,
+                  "metric": "exercise_minutes",
+                  "percent_change": 29.02
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "activity_dependent",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "improving",
+                  "gap_caveat_required": false,
+                  "metric": "workout_count",
+                  "percent_change": 21.43
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "stable",
+                  "gap_caveat_required": false,
+                  "metric": "steps",
+                  "percent_change": -1.61
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "episodic",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "stable",
+                  "gap_caveat_required": false,
+                  "metric": "vo2_max",
+                  "percent_change": 1.8
+                }
+              ],
+              "trend_count": 7
+            },
+            "tool": "get_trend_signals"
+          },
+          {
+            "label": "Reviewing stored signals for: sleep_duration_hours, hrv_sdnn_ms, exercise_minutes.",
+            "phase": "DECISION"
+          },
+          {
+            "arguments": {
+              "as_of_date": "2026-08-02",
+              "lookback_days": 14,
+              "user_id": 1
+            },
+            "phase": "ACT",
+            "tool": "get_lifestyle_context"
+          },
+          {
+            "phase": "OBSERVE",
+            "summary": {
+              "as_of_date": "2026-08-02",
+              "event_count": 17,
+              "event_types": [
+                "alcohol",
+                "caffeine",
+                "mood"
+              ],
+              "late_work_context_event_count": 7,
+              "lookback_days": 14,
+              "policy_available_inputs": [
+                "alcohol_units",
+                "caffeine_mg"
+              ],
+              "window_end": "2026-08-02",
+              "window_start": "2026-07-20"
+            },
+            "tool": "get_lifestyle_context"
+          },
+          {
+            "label": "Lifestyle context inspected: 17 events (alcohol, caffeine, mood); observational only.",
+            "phase": "DECISION"
+          },
+          {
+            "arguments": {
+              "meaningful_signal": true,
+              "query": "sleep duration decline late caffeine afternoon coffee"
+            },
+            "phase": "ACT",
+            "tool": "retrieve_authorized_evidence"
+          },
+          {
+            "phase": "OBSERVE",
+            "summary": {
+              "authorized_count": 3,
+              "available_inputs": [
+                "alcohol_units",
+                "caffeine_mg"
+              ],
+              "evidence_authorized": true,
+              "overall_verdict": "SURFACE",
+              "query": "sleep duration decline late caffeine afternoon coffee",
+              "recommendation_authorized": true,
+              "relationship_ids": [
+                "R-07",
+                "R-07",
+                "R-07"
+              ],
+              "retrieval_count": 3
+            },
+            "tool": "retrieve_authorized_evidence"
+          },
+          {
+            "label": "Evidence lookup complete: verdict=SURFACE; recommendation_authorized=True. relationships=R-07, R-07, R-07",
+            "phase": "DECISION"
+          },
+          {
+            "label": "Completed with status=RECOMMENDATION.",
+            "phase": "FINAL"
+          }
+        ]
+      },
+      "comparison": {
+        "baseline": {
+          "get_lifestyle_context_called": false,
+          "caffeine_visible": false,
+          "available_inputs": [],
+          "relationship_ids": [
+            "R-02",
+            "R-01",
+            "R-01"
+          ],
+          "policy_verdict": "QUALIFY",
+          "final_status": "INSIGHT",
+          "theme": "Sleep Duration Decline",
+          "recommendation_authorized": false,
+          "final_guard_passed": true,
+          "model_call_count": null,
+          "latency_ms": 26977,
+          "frozen_human_pass_fail": "FAIL",
+          "note": "Lifestyle inaccessible; generic sleep-trend analysis; R-07 not evaluable."
+        },
+        "improved_lifestyle_access": true,
+        "caffeine_now_visible": true,
+        "policy_inputs_now_reached": true,
+        "association_preserved": true,
+        "possible_c3_cherry_pick": false,
+        "frozen_human_pass_fail_unchanged": "FAIL"
+      }
+    },
+    {
+      "current": {
+        "scenario_id": "HC-EVAL-C2",
+        "run_id": "98d41dd1-c319-4071-843f-b9da8e241e8c",
+        "trace_file": "98d41dd1-c319-4071-843f-b9da8e241e8c.json",
+        "as_of_date": "2026-07-31",
+        "get_trend_signals_called": true,
+        "get_lifestyle_context_called": true,
+        "retrieve_authorized_evidence_called": true,
+        "tool_names": [
+          "get_trend_signals",
+          "get_lifestyle_context",
+          "retrieve_authorized_evidence"
+        ],
+        "lifestyle_result_summary": {
+          "as_of_date": "2026-07-31",
+          "event_count": 16,
+          "event_types": [
+            "alcohol",
+            "caffeine",
+            "mood"
+          ],
+          "late_work_context_event_count": 6,
+          "lookback_days": 14,
+          "policy_available_inputs": [
+            "alcohol_units",
+            "caffeine_mg"
+          ],
+          "window_end": "2026-07-31",
+          "window_start": "2026-07-18"
+        },
+        "lifestyle_context_visible_to_gemini": {
+          "origin": "lifestyle_context",
+          "summary": {
+            "event_count": 16,
+            "event_types": [
+              "alcohol",
+              "caffeine",
+              "mood"
+            ],
+            "late_work_context_event_count": 6,
+            "lookback_days": 14,
+            "origin": "lifestyle_context",
+            "policy_available_inputs": [
+              "alcohol_units",
+              "caffeine_mg"
+            ],
+            "source_id": "get_lifestyle_context",
+            "window_end": "2026-07-31",
+            "window_start": "2026-07-18"
+          },
+          "payload": {
+            "as_of_date": "2026-07-31",
+            "by_type": [
+              {
+                "count": 1,
+                "dates": [
+                  "2026-07-21"
+                ],
+                "distinct_notes": [
+                  "Synthetic social evening"
+                ],
+                "event_type": "alcohol",
+                "hours": [
+                  20
+                ],
+                "latest_occurred_at": "2026-07-21 20:30:00",
+                "quantity_mean": 1.0,
+                "quantity_sum": 1.0,
+                "unit": "standard_drinks"
+              },
+              {
+                "count": 7,
+                "dates": [
+                  "2026-07-19",
+                  "2026-07-21",
+                  "2026-07-23",
+                  "2026-07-25",
+                  "2026-07-27",
+                  "2026-07-29",
+                  "2026-07-31"
+                ],
+                "distinct_notes": [
+                  "Synthetic afternoon coffee"
+                ],
+                "event_type": "caffeine",
+                "hours": [
+                  16,
+                  16,
+                  16,
+                  16,
+                  16,
+                  16,
+                  16
+                ],
+                "latest_occurred_at": "2026-07-31 16:00:00",
+                "quantity_mean": 200.0,
+                "quantity_sum": 1400.0,
+                "unit": "mg"
+              },
+              {
+                "count": 8,
+                "dates": [
+                  "2026-07-20",
+                  "2026-07-21",
+                  "2026-07-22",
+                  "2026-07-24",
+                  "2026-07-26",
+                  "2026-07-28",
+                  "2026-07-30"
+                ],
+                "distinct_notes": [
+                  "Synthetic late work evening",
+                  "Synthetic self-report"
+                ],
+                "event_type": "mood",
+                "hours": [
+                  21,
+                  12,
+                  21,
+                  21,
+                  21,
+                  21,
+                  12,
+                  21
+                ],
+                "latest_occurred_at": "2026-07-30 21:15:00",
+                "quantity_mean": 3.12,
+                "quantity_sum": 25.0,
+                "unit": "scale_1_5"
+              }
+            ],
+            "disclaimer": "Lifestyle events are user-specific observational context, not scientific evidence. Co-occurrence is not causation. This tool does not authorize recommendations. Relationship claims require retrieve_authorized_evidence and the deterministic evidence policy.",
+            "event_count": 16,
+            "events": [
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 0,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-19 16:00:00",
+                "occurred_on": "2026-07-19",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-20 21:15:00",
+                "occurred_on": "2026-07-20",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "mood",
+                "hour": 12,
+                "minute": 0,
+                "notes": "Synthetic self-report",
+                "occurred_at": "2026-07-21 12:00:00",
+                "occurred_on": "2026-07-21",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 30,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-21 16:30:00",
+                "occurred_on": "2026-07-21",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "alcohol",
+                "hour": 20,
+                "minute": 30,
+                "notes": "Synthetic social evening",
+                "occurred_at": "2026-07-21 20:30:00",
+                "occurred_on": "2026-07-21",
+                "quantity": 1.0,
+                "unit": "standard_drinks"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-22 21:15:00",
+                "occurred_on": "2026-07-22",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 45,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-23 16:45:00",
+                "occurred_on": "2026-07-23",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-24 21:15:00",
+                "occurred_on": "2026-07-24",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 0,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-25 16:00:00",
+                "occurred_on": "2026-07-25",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-26 21:15:00",
+                "occurred_on": "2026-07-26",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 45,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-27 16:45:00",
+                "occurred_on": "2026-07-27",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-28 21:15:00",
+                "occurred_on": "2026-07-28",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 30,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-29 16:30:00",
+                "occurred_on": "2026-07-29",
+                "quantity": 200.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "mood",
+                "hour": 12,
+                "minute": 0,
+                "notes": "Synthetic self-report",
+                "occurred_at": "2026-07-30 12:00:00",
+                "occurred_on": "2026-07-30",
+                "quantity": 4.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "mood",
+                "hour": 21,
+                "minute": 15,
+                "notes": "Synthetic late work evening",
+                "occurred_at": "2026-07-30 21:15:00",
+                "occurred_on": "2026-07-30",
+                "quantity": 3.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 16,
+                "minute": 0,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-07-31 16:00:00",
+                "occurred_on": "2026-07-31",
+                "quantity": 200.0,
+                "unit": "mg"
+              }
+            ],
+            "late_work_context_event_count": 6,
+            "lookback_days": 14,
+            "policy_available_inputs": [
+              "alcohol_units",
+              "caffeine_mg"
+            ],
+            "user_id": 1,
+            "window_end": "2026-07-31",
+            "window_start": "2026-07-18"
+          }
+        },
+        "lifestyle_events_visible": [
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 0,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-19 16:00:00",
+            "occurred_on": "2026-07-19",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-20 21:15:00",
+            "occurred_on": "2026-07-20",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "mood",
+            "hour": 12,
+            "minute": 0,
+            "notes": "Synthetic self-report",
+            "occurred_at": "2026-07-21 12:00:00",
+            "occurred_on": "2026-07-21",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 30,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-21 16:30:00",
+            "occurred_on": "2026-07-21",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "alcohol",
+            "hour": 20,
+            "minute": 30,
+            "notes": "Synthetic social evening",
+            "occurred_at": "2026-07-21 20:30:00",
+            "occurred_on": "2026-07-21",
+            "quantity": 1.0,
+            "unit": "standard_drinks"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-22 21:15:00",
+            "occurred_on": "2026-07-22",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 45,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-23 16:45:00",
+            "occurred_on": "2026-07-23",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-24 21:15:00",
+            "occurred_on": "2026-07-24",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 0,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-25 16:00:00",
+            "occurred_on": "2026-07-25",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-26 21:15:00",
+            "occurred_on": "2026-07-26",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 45,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-27 16:45:00",
+            "occurred_on": "2026-07-27",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-28 21:15:00",
+            "occurred_on": "2026-07-28",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 30,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-29 16:30:00",
+            "occurred_on": "2026-07-29",
+            "quantity": 200.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "mood",
+            "hour": 12,
+            "minute": 0,
+            "notes": "Synthetic self-report",
+            "occurred_at": "2026-07-30 12:00:00",
+            "occurred_on": "2026-07-30",
+            "quantity": 4.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "mood",
+            "hour": 21,
+            "minute": 15,
+            "notes": "Synthetic late work evening",
+            "occurred_at": "2026-07-30 21:15:00",
+            "occurred_on": "2026-07-30",
+            "quantity": 3.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 16,
+            "minute": 0,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-07-31 16:00:00",
+            "occurred_on": "2026-07-31",
+            "quantity": 200.0,
+            "unit": "mg"
+          }
+        ],
+        "policy_available_inputs": {
+          "available_inputs": [
+            "alcohol_units",
+            "caffeine_mg"
+          ],
+          "reached": true,
+          "has_caffeine_mg": true,
+          "has_alcohol_units": true
+        },
+        "relationship_ids": [
+          "R-07",
+          "R-07",
+          "R-07"
+        ],
+        "evidence_queries": [
+          "caffeine late afternoon sleep duration"
+        ],
+        "policy_verdict": "SURFACE",
+        "policy_reasons": [
+          "authorized_evidence_present"
+        ],
+        "recommendation_authorized": true,
+        "association_vs_causation": {
+          "causal_hits": [],
+          "association_hits": [
+            "\\bcoincid"
+          ],
+          "preserved": true
+        },
+        "mentions": {
+          "caffeine": true,
+          "alcohol": false,
+          "late work": false,
+          "work": false,
+          "sleep": true
+        },
+        "final_status": "RECOMMENDATION",
+        "theme": "Sleep Duration and Caffeine Timing",
+        "insight": "Your average sleep duration decreased over the past week to 6.04 hours compared to your 7.14 hour baseline, coinciding with regular late-afternoon caffeine intake.",
+        "recommendation": "Consider consuming caffeine earlier in the day to avoid potential disruption to your night-time sleep.",
+        "final_guard_passed": true,
+        "final_guard_violations": [],
+        "model_call_count": 4,
+        "model_calls_have_f42_fidelity": true,
+        "latency_ms": 76106,
+        "activity_log": [
+          {
+            "arguments": {
+              "as_of_date": "2026-07-31",
+              "user_id": 1
+            },
+            "phase": "ACT",
+            "tool": "get_trend_signals"
+          },
+          {
+            "phase": "OBSERVE",
+            "summary": {
+              "as_of_any_daily_metric_available": true,
+              "as_of_date": "2026-07-31",
+              "gap_caveat_required": false,
+              "metrics": [
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "decreasing",
+                  "gap_caveat_required": false,
+                  "metric": "sleep_duration_hours",
+                  "percent_change": -15.42
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "stable",
+                  "gap_caveat_required": false,
+                  "metric": "resting_hr_bpm",
+                  "percent_change": -0.64
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "improving",
+                  "gap_caveat_required": false,
+                  "metric": "hrv_sdnn_ms",
+                  "percent_change": 9.57
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "activity_dependent",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "improving",
+                  "gap_caveat_required": false,
+                  "metric": "exercise_minutes",
+                  "percent_change": 29.95
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "activity_dependent",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "improving",
+                  "gap_caveat_required": false,
+                  "metric": "workout_count",
+                  "percent_change": 15.04
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "declining",
+                  "gap_caveat_required": false,
+                  "metric": "steps",
+                  "percent_change": -3.84
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "episodic",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "stable",
+                  "gap_caveat_required": false,
+                  "metric": "vo2_max",
+                  "percent_change": 2.04
+                }
+              ],
+              "trend_count": 7
+            },
+            "tool": "get_trend_signals"
+          },
+          {
+            "label": "Reviewing stored signals for: sleep_duration_hours, hrv_sdnn_ms, exercise_minutes.",
+            "phase": "DECISION"
+          },
+          {
+            "arguments": {
+              "as_of_date": "2026-07-31",
+              "lookback_days": 14,
+              "user_id": 1
+            },
+            "phase": "ACT",
+            "tool": "get_lifestyle_context"
+          },
+          {
+            "phase": "OBSERVE",
+            "summary": {
+              "as_of_date": "2026-07-31",
+              "event_count": 16,
+              "event_types": [
+                "alcohol",
+                "caffeine",
+                "mood"
+              ],
+              "late_work_context_event_count": 6,
+              "lookback_days": 14,
+              "policy_available_inputs": [
+                "alcohol_units",
+                "caffeine_mg"
+              ],
+              "window_end": "2026-07-31",
+              "window_start": "2026-07-18"
+            },
+            "tool": "get_lifestyle_context"
+          },
+          {
+            "label": "Lifestyle context inspected: 16 events (alcohol, caffeine, mood); observational only.",
+            "phase": "DECISION"
+          },
+          {
+            "arguments": {
+              "meaningful_signal": true,
+              "query": "caffeine late afternoon sleep duration"
+            },
+            "phase": "ACT",
+            "tool": "retrieve_authorized_evidence"
+          },
+          {
+            "phase": "OBSERVE",
+            "summary": {
+              "authorized_count": 3,
+              "available_inputs": [
+                "alcohol_units",
+                "caffeine_mg"
+              ],
+              "evidence_authorized": true,
+              "overall_verdict": "SURFACE",
+              "query": "caffeine late afternoon sleep duration",
+              "recommendation_authorized": true,
+              "relationship_ids": [
+                "R-07",
+                "R-07",
+                "R-07"
+              ],
+              "retrieval_count": 3
+            },
+            "tool": "retrieve_authorized_evidence"
+          },
+          {
+            "label": "Evidence lookup complete: verdict=SURFACE; recommendation_authorized=True. relationships=R-07, R-07, R-07",
+            "phase": "DECISION"
+          },
+          {
+            "label": "Completed with status=RECOMMENDATION.",
+            "phase": "FINAL"
+          }
+        ]
+      },
+      "comparison": {
+        "baseline": {
+          "get_lifestyle_context_called": false,
+          "caffeine_visible": false,
+          "available_inputs": [],
+          "relationship_ids": [
+            "R-01",
+            "R-02",
+            "R-01"
+          ],
+          "policy_verdict": "QUALIFY",
+          "final_status": "INSIGHT",
+          "theme": "Recent Decrease in Sleep Duration",
+          "recommendation_authorized": false,
+          "final_guard_passed": true,
+          "model_call_count": null,
+          "latency_ms": 50952,
+          "frozen_human_pass_fail": "FAIL",
+          "note": "Caffeine and late-work omitted; generic sleep-trend analysis."
+        },
+        "improved_lifestyle_access": true,
+        "caffeine_now_visible": true,
+        "policy_inputs_now_reached": true,
+        "association_preserved": true,
+        "possible_c3_cherry_pick": false,
+        "frozen_human_pass_fail_unchanged": "FAIL"
+      }
+    },
+    {
+      "current": {
+        "scenario_id": "HC-EVAL-C3",
+        "run_id": "029c1fc9-3127-4ca6-88ca-bd83e28d58ce",
+        "trace_file": "029c1fc9-3127-4ca6-88ca-bd83e28d58ce.json",
+        "as_of_date": "2026-06-29",
+        "get_trend_signals_called": true,
+        "get_lifestyle_context_called": true,
+        "retrieve_authorized_evidence_called": true,
+        "tool_names": [
+          "get_trend_signals",
+          "get_lifestyle_context",
+          "retrieve_authorized_evidence"
+        ],
+        "lifestyle_result_summary": {
+          "as_of_date": "2026-06-29",
+          "event_count": 4,
+          "event_types": [
+            "alcohol",
+            "caffeine",
+            "mood"
+          ],
+          "late_work_context_event_count": 0,
+          "lookback_days": 14,
+          "policy_available_inputs": [
+            "alcohol_units",
+            "caffeine_mg"
+          ],
+          "window_end": "2026-06-29",
+          "window_start": "2026-06-16"
+        },
+        "lifestyle_context_visible_to_gemini": {
+          "origin": "lifestyle_context",
+          "summary": {
+            "event_count": 4,
+            "event_types": [
+              "alcohol",
+              "caffeine",
+              "mood"
+            ],
+            "late_work_context_event_count": 0,
+            "lookback_days": 14,
+            "origin": "lifestyle_context",
+            "policy_available_inputs": [
+              "alcohol_units",
+              "caffeine_mg"
+            ],
+            "source_id": "get_lifestyle_context",
+            "window_end": "2026-06-29",
+            "window_start": "2026-06-16"
+          },
+          "payload": {
+            "as_of_date": "2026-06-29",
+            "by_type": [
+              {
+                "count": 1,
+                "dates": [
+                  "2026-06-24"
+                ],
+                "distinct_notes": [
+                  "Synthetic social evening"
+                ],
+                "event_type": "alcohol",
+                "hours": [
+                  20
+                ],
+                "latest_occurred_at": "2026-06-24 20:30:00",
+                "quantity_mean": 1.0,
+                "quantity_sum": 1.0,
+                "unit": "standard_drinks"
+              },
+              {
+                "count": 2,
+                "dates": [
+                  "2026-06-26",
+                  "2026-06-29"
+                ],
+                "distinct_notes": [
+                  "Synthetic afternoon coffee"
+                ],
+                "event_type": "caffeine",
+                "hours": [
+                  15,
+                  15
+                ],
+                "latest_occurred_at": "2026-06-29 15:30:00",
+                "quantity_mean": 180.0,
+                "quantity_sum": 360.0,
+                "unit": "mg"
+              },
+              {
+                "count": 1,
+                "dates": [
+                  "2026-06-19"
+                ],
+                "distinct_notes": [
+                  "Synthetic self-report"
+                ],
+                "event_type": "mood",
+                "hours": [
+                  12
+                ],
+                "latest_occurred_at": "2026-06-19 12:00:00",
+                "quantity_mean": 4.0,
+                "quantity_sum": 4.0,
+                "unit": "scale_1_5"
+              }
+            ],
+            "disclaimer": "Lifestyle events are user-specific observational context, not scientific evidence. Co-occurrence is not causation. This tool does not authorize recommendations. Relationship claims require retrieve_authorized_evidence and the deterministic evidence policy.",
+            "event_count": 4,
+            "events": [
+              {
+                "event_type": "mood",
+                "hour": 12,
+                "minute": 0,
+                "notes": "Synthetic self-report",
+                "occurred_at": "2026-06-19 12:00:00",
+                "occurred_on": "2026-06-19",
+                "quantity": 4.0,
+                "unit": "scale_1_5"
+              },
+              {
+                "event_type": "alcohol",
+                "hour": 20,
+                "minute": 30,
+                "notes": "Synthetic social evening",
+                "occurred_at": "2026-06-24 20:30:00",
+                "occurred_on": "2026-06-24",
+                "quantity": 1.0,
+                "unit": "standard_drinks"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 15,
+                "minute": 0,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-06-26 15:00:00",
+                "occurred_on": "2026-06-26",
+                "quantity": 180.0,
+                "unit": "mg"
+              },
+              {
+                "event_type": "caffeine",
+                "hour": 15,
+                "minute": 30,
+                "notes": "Synthetic afternoon coffee",
+                "occurred_at": "2026-06-29 15:30:00",
+                "occurred_on": "2026-06-29",
+                "quantity": 180.0,
+                "unit": "mg"
+              }
+            ],
+            "late_work_context_event_count": 0,
+            "lookback_days": 14,
+            "policy_available_inputs": [
+              "alcohol_units",
+              "caffeine_mg"
+            ],
+            "user_id": 1,
+            "window_end": "2026-06-29",
+            "window_start": "2026-06-16"
+          }
+        },
+        "lifestyle_events_visible": [
+          {
+            "event_type": "mood",
+            "hour": 12,
+            "minute": 0,
+            "notes": "Synthetic self-report",
+            "occurred_at": "2026-06-19 12:00:00",
+            "occurred_on": "2026-06-19",
+            "quantity": 4.0,
+            "unit": "scale_1_5"
+          },
+          {
+            "event_type": "alcohol",
+            "hour": 20,
+            "minute": 30,
+            "notes": "Synthetic social evening",
+            "occurred_at": "2026-06-24 20:30:00",
+            "occurred_on": "2026-06-24",
+            "quantity": 1.0,
+            "unit": "standard_drinks"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 15,
+            "minute": 0,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-06-26 15:00:00",
+            "occurred_on": "2026-06-26",
+            "quantity": 180.0,
+            "unit": "mg"
+          },
+          {
+            "event_type": "caffeine",
+            "hour": 15,
+            "minute": 30,
+            "notes": "Synthetic afternoon coffee",
+            "occurred_at": "2026-06-29 15:30:00",
+            "occurred_on": "2026-06-29",
+            "quantity": 180.0,
+            "unit": "mg"
+          }
+        ],
+        "policy_available_inputs": {
+          "available_inputs": [
+            "alcohol_units",
+            "caffeine_mg"
+          ],
+          "reached": true,
+          "has_caffeine_mg": true,
+          "has_alcohol_units": true
+        },
+        "relationship_ids": [
+          "R-05",
+          "R-05"
+        ],
+        "evidence_queries": [
+          "exercise minutes workout frequency cardiovascular indicators hrv resting heart rate"
+        ],
+        "policy_verdict": "SURFACE",
+        "policy_reasons": [
+          "authorized_evidence_present"
+        ],
+        "recommendation_authorized": true,
+        "association_vs_causation": {
+          "causal_hits": [],
+          "association_hits": [],
+          "preserved": true
+        },
+        "mentions": {
+          "caffeine": false,
+          "alcohol": false,
+          "late work": false,
+          "work": true,
+          "sleep": false
+        },
+        "final_status": "RECOMMENDATION",
+        "theme": "Exercise Consistency and Cardiovascular Health",
+        "insight": "Your weekly exercise duration and workout frequency have increased significantly compared to baseline, while resting heart rate and heart rate variability remain favorable.",
+        "recommendation": "Maintain a regular aerobic exercise routine to support ongoing cardiovascular fitness and physiological recovery.",
+        "final_guard_passed": true,
+        "final_guard_violations": [],
+        "model_call_count": 4,
+        "model_calls_have_f42_fidelity": true,
+        "latency_ms": 21567,
+        "activity_log": [
+          {
+            "arguments": {
+              "as_of_date": "2026-06-29",
+              "user_id": 1
+            },
+            "phase": "ACT",
+            "tool": "get_trend_signals"
+          },
+          {
+            "phase": "OBSERVE",
+            "summary": {
+              "as_of_any_daily_metric_available": true,
+              "as_of_date": "2026-06-29",
+              "gap_caveat_required": false,
+              "metrics": [
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "stable",
+                  "gap_caveat_required": false,
+                  "metric": "sleep_duration_hours",
+                  "percent_change": 2.06
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "stable",
+                  "gap_caveat_required": false,
+                  "metric": "resting_hr_bpm",
+                  "percent_change": -1.89
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "improving",
+                  "gap_caveat_required": false,
+                  "metric": "hrv_sdnn_ms",
+                  "percent_change": 4.52
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "activity_dependent",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "improving",
+                  "gap_caveat_required": false,
+                  "metric": "exercise_minutes",
+                  "percent_change": 152.53
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "activity_dependent",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "improving",
+                  "gap_caveat_required": false,
+                  "metric": "workout_count",
+                  "percent_change": 71.43
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "daily",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "declining",
+                  "gap_caveat_required": false,
+                  "metric": "steps",
+                  "percent_change": -15.89
+                },
+                {
+                  "as_of_date_available": true,
+                  "cadence": "episodic",
+                  "claim_eligibility": {
+                    "early_pattern_allowed": true,
+                    "recommendation_basis": "established_trend",
+                    "recommendation_support_allowed": true,
+                    "snapshot_allowed": true,
+                    "trend_allowed": true
+                  },
+                  "coverage_ratio": 1.0,
+                  "data_maturity_state": "ESTABLISHED_TREND",
+                  "direction": "stable",
+                  "gap_caveat_required": false,
+                  "metric": "vo2_max",
+                  "percent_change": 1.17
+                }
+              ],
+              "trend_count": 7
+            },
+            "tool": "get_trend_signals"
+          },
+          {
+            "label": "Reviewing stored signals for: hrv_sdnn_ms, exercise_minutes, workout_count.",
+            "phase": "DECISION"
+          },
+          {
+            "arguments": {
+              "as_of_date": "2026-06-29",
+              "lookback_days": 14,
+              "user_id": 1
+            },
+            "phase": "ACT",
+            "tool": "get_lifestyle_context"
+          },
+          {
+            "phase": "OBSERVE",
+            "summary": {
+              "as_of_date": "2026-06-29",
+              "event_count": 4,
+              "event_types": [
+                "alcohol",
+                "caffeine",
+                "mood"
+              ],
+              "late_work_context_event_count": 0,
+              "lookback_days": 14,
+              "policy_available_inputs": [
+                "alcohol_units",
+                "caffeine_mg"
+              ],
+              "window_end": "2026-06-29",
+              "window_start": "2026-06-16"
+            },
+            "tool": "get_lifestyle_context"
+          },
+          {
+            "label": "Lifestyle context inspected: 4 events (alcohol, caffeine, mood); observational only.",
+            "phase": "DECISION"
+          },
+          {
+            "arguments": {
+              "meaningful_signal": true,
+              "query": "exercise minutes workout frequency cardiovascular indicators hrv resting heart rate"
+            },
+            "phase": "ACT",
+            "tool": "retrieve_authorized_evidence"
+          },
+          {
+            "phase": "OBSERVE",
+            "summary": {
+              "authorized_count": 3,
+              "available_inputs": [
+                "alcohol_units",
+                "caffeine_mg"
+              ],
+              "evidence_authorized": true,
+              "overall_verdict": "SURFACE",
+              "query": "exercise minutes workout frequency cardiovascular indicators hrv resting heart rate",
+              "recommendation_authorized": true,
+              "relationship_ids": [
+                "R-05",
+                "R-05"
+              ],
+              "retrieval_count": 3
+            },
+            "tool": "retrieve_authorized_evidence"
+          },
+          {
+            "label": "Evidence lookup complete: verdict=SURFACE; recommendation_authorized=True. relationships=R-05, R-05",
+            "phase": "DECISION"
+          },
+          {
+            "label": "Completed with status=RECOMMENDATION.",
+            "phase": "FINAL"
+          }
+        ]
+      },
+      "comparison": {
+        "baseline": {
+          "get_lifestyle_context_called": false,
+          "caffeine_visible": false,
+          "available_inputs": [],
+          "relationship_ids": [
+            "R-05",
+            "R-05"
+          ],
+          "policy_verdict": "SURFACE",
+          "final_status": "RECOMMENDATION",
+          "theme": "Aerobic Exercise and Cardiovascular Indicators",
+          "recommendation_authorized": true,
+          "final_guard_passed": true,
+          "model_call_count": null,
+          "latency_ms": 12570,
+          "frozen_human_pass_fail": "FAIL",
+          "note": "Caffeine inaccessible, so C3 control could not be tested; agent discussed exercise not caffeine."
+        },
+        "improved_lifestyle_access": true,
+        "caffeine_now_visible": true,
+        "policy_inputs_now_reached": true,
+        "association_preserved": true,
+        "possible_c3_cherry_pick": false,
+        "frozen_human_pass_fail_unchanged": "FAIL"
+      }
+    }
+  ]
+}
