@@ -2,7 +2,7 @@
 
 Progression: **Baseline → Human Review → Failure Taxonomy → Remediation → Improved Observability → Rerun → CODIFY → Final Validation → Submission**
 
-Human eval labels, PASS/FAIL, and taxonomy remain frozen until a later Gemini rerun. CODIFY is not started.
+Frozen human baseline remains 5 PASS / 10 FAIL and is not overwritten. F7 post-remediation measurement is complete (`post_remediation_v1`). Assignment 4 itself is not complete.
 
 | Phase | Status | Notes |
 |---|---|---|
@@ -20,10 +20,16 @@ Human eval labels, PASS/FAIL, and taxonomy remain frozen until a later Gemini re
 | F4.7 Recommendation boundary | COMPLETE + LIVE VALIDATED | Combined gate enforced; B3 rec blocked / INSIGHT kept; A1 dual-true rec permitted |
 | F4.8 T6 Respiratory control metric | COMPLETE + LIVE VALIDATED | Daily RR as control metric; E1 did not mint respiratory reassurance; B1 stayed non-salient |
 | F4.9 T12 Variability | COMPLETE | HRV-only `within_window_spread`; C4 spread visible without calling HRV declining |
-| Remaining F4 product remediation | IN PROGRESS | T1, T4, T5, T6, T12, F4.7 closed; T7 remain |
-| Gemini baseline rerun | NOT STARTED | Full 15-scenario rerun not started; targeted C1/C2/C3 post-F4.4 check recorded below |
-| CODIFY (graders/assertions) | NOT STARTED | |
-| Final validation | NOT STARTED | |
+| F5.0 T7/T8 Output + Interpretation Contract | COMPLETE | Design approved; A/B interpretation ceiling; no Level C in MVP |
+| F5.1 T7/T8 MVP Implementation | COMPLETE | Schema split, stamped facts, prompt honor, smallest guard; no Gemini |
+| F5.1A Motivational quote field | COMPLETE + ACCEPTED FOR MVP | Optional quote; quiet-path null; F5.2 C4 quote-as-advice is an accepted limitation |
+| F5.2 Targeted live Gemini validation | COMPLETE | A1/B1/B3/C2/E1/C4 only; F5.1 live validated; F5.1A partial (C4 quote FAIL); T5/T6/T12/F4.7 remained closed |
+| Remaining F4 product remediation | COMPLETE for F4 contract work | T1, T4, T5, T6, T12, F4.7 closed; T7/T8 implemented in F5.1 |
+| F7 Full post-remediation evaluation | COMPLETE | 15-scenario Gemini measurement; run_id=`post_remediation_v1`; 0 deterministic CODIFY fails; frozen labels unchanged |
+| F7.1 Post-remediation synthesis | COMPLETE | Decision-quality analysis only; `f71_post_remediation_synthesis_v1.md`; READY WITH ACCEPTED MVP LIMITATIONS |
+| F8 Streamlit TRACE Dashboard | COMPLETE | TRACE Evals tab in `streamlit_agent_demo.py`; CODIFY-on-demand; no Gemini; Cloud seed via `ensure_demo_health_data` |
+| CODIFY (graders/assertions) | COMPLETE | TRACE deterministic graders + semantic specs; 415 pytest; F5.2 smoke 0 fails |
+| Final validation | NOT STARTED | Use `post_remediation_v1` as the measured run; writeup/packaging only — no extra Gemini |
 | Submission | NOT STARTED | |
 
 ## F4.1.1 artifacts
@@ -127,9 +133,91 @@ Human eval labels, PASS/FAIL, and taxonomy remain frozen until a later Gemini re
 - **Tests:** `tests/test_spread.py` (19). Full pytest **370 passed**. Frozen labels unchanged. No Gemini / CODIFY / T7 / T8.
 - **Artifacts:** `evals/results/f49_variability_design_v1.md`, `evals/results/f49_spread_inspection_v1.md` / `.json`
 
+## F5.0 T7/T8 output + interpretation contract — COMPLETE
+
+- **Job:** Move from what the system knows (F4.1–F4.9) to what the model may infer and how the product communicates it.
+- **T7:** Directive-first output (Notice → Prioritize → Direct → Explain). Current `theme` + `insight` + `recommendation` is report-first; `insight` does three jobs.
+- **T8:** Metric-level fact vs named multi-metric summary vs physiological interpretation. Mixed signals stay mixed. Control/spread cannot mint system-health claims.
+- **Approved refinement for F5.1:** MVP interpretation ceiling is Level A/B only. Authorized evidence does not by itself authorize a broad physiological-state conclusion.
+- **Artifact:** `evals/results/f50_output_interpretation_design_v1.md`
+
+## F5.1 T7/T8 MVP implementation — COMPLETE
+
+- **Schema:** `primary_message`, `subtext`, `supporting_metric_facts`; `insight` kept as rationale JSON key.
+- **Stamping:** system-stamped facts from F4.1–F4.9 with roles `primary` / `supporting` / `control` / `spread_context`. Model-invented lists overwritten.
+- **Quiet path:** `insight_worthy=false` → `NO_SIGNIFICANT_NEW_PATTERN`, `primary_message=null`.
+- **F4.7:** unchanged. Rec leak scan extended to primary/subtext/insight.
+- **Guard:** INSIGHT/RECOMMENDATION require `primary_message`; quiet path cannot keep a primary card. No T8 phrase blacklist.
+- **Prompt:** smallest honor for field split, A/B ceiling, mixed signals, T6/T12, F4.7. No directive categories.
+- **TRACE:** `raw_model_output` + `output_contract` + final `structured_result`. F4.2 unchanged. No CoT.
+- **Tests:** `tests/test_output_interpretation.py`. Focused related suite 78 passed. Full pytest **387 passed**.
+- **Not in this phase:** Gemini, CODIFY, frozen labels, UI, commit.
+- **Artifact:** `evals/results/f51_output_interpretation_mvp_v1.md`
+
+## F5.1A motivational quote — COMPLETE
+
+- **Schema:** optional `motivational_quote` (string or null). Not a recommendation, rationale, evidence, or metric claim.
+- **Quiet path:** `NO_SIGNIFICANT_NEW_PATTERN` or null `primary_message` → quote forced null. TRACE records raw vs removed.
+- **F4.7:** unchanged. Existing rec-phrase leak scan now includes the quote. Generic encouragement allowed when rec is blocked.
+- **T8:** quote must stay motivational, not physiological-state interpretation. Prompt only; no phrase blacklist.
+- **Display:** PRIMARY → SUBTEXT → MOTIVATIONAL QUOTE → RATIONALE → RECOMMENDATION → FACTS.
+- **Tests:** added to `tests/test_output_interpretation.py`. Full pytest **394 passed**.
+- **Artifact:** `evals/results/f51a_motivational_quote_contract_v1.md`
+- **Not in this phase:** Gemini, CODIFY, frozen labels, UI, commit.
+
+## F5.2 targeted live Gemini validation — COMPLETE
+
+- **Scope:** A1 / B1 / B3 / C2 / E1 / C4 only. Measurement. No product, prompt, schema, analytics, guard, frozen-label, or taxonomy changes. No CODIFY. No full 15-scenario rerun.
+- **Model:** `gemini-3.6-flash`. F4.2 `capture_fidelity=adk_pre_model_request` on every call. No hidden CoT. Transient 503 on A1; provider retry completed all six traces.
+- **F5.1:** LIVE VALIDATED. Correct primary messages; B1 quiet path; stamped facts overwrite empty model lists; T8 stayed A/B; raw prose = final prose; guard PASS.
+- **F5.1A:** ACCEPTED FOR MVP with limitation. Quiet-path quote null (B1). B3 GOOD. A1/C2/E1 ACCEPTABLE. C4 FAIL quote-as-advice is catalogued, not remediated.
+- **Regressions:** T5 closed (B1). T6 closed (E1 RR control, no cardiorespiratory reassurance). T12 behaved (C4 spread 2.61, `spread_context`, not inverted). F4.7 intact (B3 rec blocked; sanitizer idle).
+- **Known unchanged:** A1/E1/C2/C4 caffeine latch; C2 unused late-work/alcohol; Streamlit Theme/Insight UI.
+- **Frozen human labels:** unchanged.
+- **Artifacts:** `evals/results/f52_targeted_live_validation_v1.md`; traces `evals/results/f52_targeted_live_traces/`; runner `scripts/run_f52_targeted.py`.
+
+## F6.0 CODIFY — COMPLETE
+
+- **Purpose:** Encode validated F4/F5 contracts as TRACE graders. No product, prompt, schema, analytics, guard, frozen-label, or taxonomy changes. No Gemini.
+- **F5.1A:** accepted for MVP. C4 quote-as-advice is a known semantic gap (`sem_quote_not_hidden_advice`), not a new keyword rule.
+- **Implemented:** 18 deterministic graders (F4.1–F4.9, F4.7, F5.1/F5.1A, plus B1/B3/E1/C4/A-family controls). C2 has no single-cause deterministic rule.
+- **Specified only:** 9 LLM-as-judge / human / hybrid graders (T8, mixed signals, primary selection, quote advice, C2 confounders, RR/spread prose).
+- **Tests:** `tests/test_codify.py`. Full pytest **415 passed**.
+- **F5.2 smoke:** 6 traces, 0 deterministic fails.
+- **Artifacts:** `evals/results/f60_codify_v1.md`, `f60_codify_coverage_v1.json` / `.csv`, `f60_codify_f52_smoke_v1.json`. Package: `evals/codify/`.
+
+## F7.0 full post-remediation evaluation — COMPLETE
+
+- **Purpose:** Measure the frozen F4–F6 system on all 15 original scenarios. No product, prompt, schema, analytics, guard, grader, frozen-label, or taxonomy mutations during the run.
+- **Run:** `post_remediation_v1`. Model `gemini-3.6-flash` via ADK. Config: `evals/results/post_remediation_run_config_v1.json`.
+- **Product traces:** 15 official (B2 first attempt 503 then resume; B1 quiet path product-valid; F1 index ERROR is missing `policy.overall_verdict` because no RAG).
+- **CODIFY:** 18 deterministic graders as-is. 270 evaluations; 168 PASS; 0 FAIL; 102 NA.
+- **Scenario quality:** New V2 reviews only. Frozen 5 PASS / 10 FAIL unchanged. 14 IMPROVED, 0 REGRESSED, B2 BASELINE_EVAL_ISSUE.
+- **Taxonomy:** T1–T6, T12 CLOSED; T7/T8 IMPROVED; T9 not meaningfully retested; T10 eval design; T11 still present (A2/A3).
+- **Artifacts:** `post_remediation_review_bundle_v1.md`, `post_remediation_comparison_v1.md`, `post_remediation_taxonomy_status_v1.md`, `post_remediation_codify_results_v1.json`, `post_remediation_codify_summary_v1.json`, `post_remediation_trace_index_v1.csv`, traces in `post_remediation_traces_v1/`.
+- **Not done:** Assignment 4 complete mark, commit, remediation, grader changes.
+
+## F7.1 post-remediation synthesis — COMPLETE
+
+- **Purpose:** Decision-quality analysis of `post_remediation_v1`. No product, Gemini, grader, or frozen-label changes.
+- **Three scores kept distinct:** frozen baseline 5 PASS / 10 FAIL; V2 scenario quality 15 PASS / 0 FAIL; CODIFY 168 PASS / 0 FAIL / 102 NA.
+- **Decision:** READY WITH ACCEPTED MVP LIMITATIONS. No extra Gemini run.
+- **Artifact:** `evals/results/f71_post_remediation_synthesis_v1.md`.
+- **Not done:** Assignment 4 SUBMITTED.
+
+## F8.0 Streamlit TRACE dashboard — COMPLETE
+
+- **Purpose:** Assignment 4 screenshot surface. Display frozen baseline, V2, taxonomy closure, CODIFY; run deterministic graders on official V2 traces.
+- **Integration:** New **TRACE Evals** tab in `streamlit_agent_demo.py`. Health Coach tab unchanged.
+- **No Gemini.** Button calls `evals.dashboard.run_deterministic_codify`.
+- **Launch:** `.\.venv\Scripts\python.exe -m streamlit run streamlit_agent_demo.py`
+- **Artifact:** `evals/results/f80_streamlit_trace_dashboard_v1.md`
+- **Not done:** Assignment 4 SUBMITTED.
+
 ## Remaining backlog
 
 1. C2-style ambiguity collapse / A1 R-07 latch as a UX question (architecture now permits A1 rec when both gates are true)
-2. Other taxonomy: T7 output contract (T8 remains generation-constraint after T12 exists)
-3. Full Gemini baseline rerun
-4. CODIFY
+2. Residual F5.1A quote-safety (C4 hidden-rec quote) — accepted MVP limitation; optional later judge or smallest prompt pass
+3. Full 15-scenario post-remediation Gemini evaluation — COMPLETE (`post_remediation_v1`; do not remediate from this run)
+4. Final validation writeup / submission packaging (Assignment 4 not complete until these)
+5. Optional later: execute LLM-as-judge specs (T8, mixed signals, quote-as-advice) — not required before final validation

@@ -37,6 +37,9 @@ class HealthCoachResult:
     as_of_date: str
     status: str
     theme: str | None = None
+    primary_message: str | None = None
+    subtext: str | None = None
+    motivational_quote: str | None = None
     insight: str | None = None
     recommendation: str | None = None
     policy_verdict: str | None = None
@@ -46,33 +49,15 @@ class HealthCoachResult:
     confidence_language: str | None = None
     source_refs: list[str] = field(default_factory=list)
     reason_not_surfaced: str | None = None
+    supporting_metric_facts: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
     def user_facing_summary(self) -> str:
-        if self.status == HealthCoachStatus.NO_SIGNIFICANT_NEW_PATTERN.value:
-            return (
-                self.insight
-                or self.reason_not_surfaced
-                or DEFAULT_NO_PATTERN_MESSAGE
-            )
-        if self.status == HealthCoachStatus.BOUNDED_FAILURE.value:
-            return "Analysis stopped after reaching the bounded step limit. No health guidance was returned."
-        if self.status == HealthCoachStatus.GUARD_BLOCKED.value:
-            return "A safety guard blocked the candidate response. No health guidance was returned."
-        if self.status == HealthCoachStatus.TEMPORARY_MODEL_UNAVAILABLE.value:
-            return self.reason_not_surfaced or TEMPORARY_MODEL_UNAVAILABLE_MESSAGE
-        if self.status == HealthCoachStatus.MODEL_QUOTA_EXHAUSTED.value:
-            return self.reason_not_surfaced or MODEL_QUOTA_EXHAUSTED_MESSAGE
-        parts: list[str] = []
-        if self.theme:
-            parts.append(f"Theme: {self.theme}")
-        if self.insight:
-            parts.append(f"Insight: {self.insight}")
-        if self.recommendation:
-            parts.append(f"Recommendation: {self.recommendation}")
-        return "\n".join(parts) if parts else DEFAULT_NO_PATTERN_MESSAGE
+        from agent.display import format_health_coach_output
+
+        return format_health_coach_output(self.to_dict())
 
 
 def bounded_failure_result(
@@ -163,6 +148,9 @@ def health_coach_result_from_payload(
         as_of_date=str(payload.get("as_of_date") or as_of_date),
         status=str(payload.get("status") or HealthCoachStatus.NO_SIGNIFICANT_NEW_PATTERN.value),
         theme=payload.get("theme"),
+        primary_message=payload.get("primary_message"),
+        subtext=payload.get("subtext"),
+        motivational_quote=payload.get("motivational_quote"),
         insight=payload.get("insight"),
         recommendation=payload.get("recommendation"),
         policy_verdict=payload.get("policy_verdict"),
@@ -172,4 +160,7 @@ def health_coach_result_from_payload(
         confidence_language=payload.get("confidence_language"),
         source_refs=[str(item) for item in payload.get("source_refs") or []],
         reason_not_surfaced=payload.get("reason_not_surfaced"),
+        supporting_metric_facts=[
+            dict(item) for item in (payload.get("supporting_metric_facts") or []) if isinstance(item, dict)
+        ],
     )

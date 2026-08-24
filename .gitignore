@@ -31,3 +31,12 @@ Thumbs.db
 # Local SQLite database files (schema tracked via SQLAlchemy models)
 data/*.db
 data/*.db-journal
+
+# Local review backups
+*.human_review_backup
+
+# Abandoned / companion F7 capture files (not the official scored TRACE set)
+evals/results/post_remediation_traces_v1/*.raw_model.json
+evals/results/post_remediation_traces_v1/run_manifest.json
+evals/results/post_remediation_traces_v1/58f212ef-bca3-4628-be17-83a2a9e09489.json
+evals/results/post_remediation_traces_v1/ae17a8a3-dd31-4caf-aca3-0dde6b85f8f7.json

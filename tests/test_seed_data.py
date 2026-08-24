@@ -20,6 +20,7 @@ from data.demo_seed import (
     PHASE3_DISRUPTION_START_INDEX,
     PHASE3_RECOVERY_START_INDEX,
     checkpoint_date,
+    ensure_demo_health_data,
     seed_demo_health_data,
 )
 from data.repository import list_health_daily_for_user, list_lifestyle_events_for_user
@@ -227,6 +228,25 @@ class SeedDataTests(unittest.TestCase):
 
     def test_fixed_random_seed_constant(self) -> None:
         self.assertEqual(DEMO_RANDOM_SEED, 42)
+
+    def test_ensure_demo_health_data_is_idempotent(self) -> None:
+        first = ensure_demo_health_data(self.session)
+        second = ensure_demo_health_data(self.session)
+        self.assertEqual(first.id, second.id)
+        self.assertEqual(first.display_name, DEMO_DISPLAY_NAME)
+        self.assertEqual(len(list_health_daily_for_user(self.session, first.id)), DEMO_DAY_COUNT)
+        self.assertEqual(len(list_health_daily_for_user(self.session, second.id)), DEMO_DAY_COUNT)
+
+
+class EnsureDemoDataEmptyTests(unittest.TestCase):
+    def test_ensure_seeds_when_demo_user_is_missing(self) -> None:
+        session = open_test_session()
+        user = ensure_demo_health_data(session)
+        self.assertEqual(user.display_name, DEMO_DISPLAY_NAME)
+        self.assertEqual(len(list_health_daily_for_user(session, user.id)), DEMO_DAY_COUNT)
+        again = ensure_demo_health_data(session)
+        self.assertEqual(again.id, user.id)
+        session.close()
 
 
 if __name__ == "__main__":

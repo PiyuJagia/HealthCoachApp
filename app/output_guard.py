@@ -7,6 +7,8 @@ from dataclasses import dataclass
 
 from rag.evidence_policy import AuthorizationVerdict, EvidencePolicyDecision
 from app.recommendation_boundary import (
+    INSIGHT_STATUS,
+    NO_PATTERN_STATUS,
     RECOMMENDATION_STATUS,
     compute_final_recommendation_allowed,
 )
@@ -50,6 +52,10 @@ def _contains_any(patterns: tuple[str, ...], text: str) -> bool:
     return any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in patterns)
 
 
+def _text_present(value: object) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
 def check_final_output(
     output: str,
     *,
@@ -84,7 +90,15 @@ def check_final_output(
 
     status = str(payload.get("status") or "")
     rec_text = payload.get("recommendation")
-    rec_present = isinstance(rec_text, str) and bool(rec_text.strip())
+    rec_present = _text_present(rec_text)
+    primary_present = _text_present(payload.get("primary_message"))
+    if status in {INSIGHT_STATUS, RECOMMENDATION_STATUS} and not primary_present:
+        violations.append("elevated_status_without_primary_message")
+    if status == NO_PATTERN_STATUS and primary_present:
+        violations.append("primary_message_on_quiet_path")
+    quote_present = _text_present(payload.get("motivational_quote"))
+    if (status == NO_PATTERN_STATUS or not primary_present) and quote_present:
+        violations.append("motivational_quote_on_quiet_path")
     if status == RECOMMENDATION_STATUS and not allowed:
         violations.append("recommendation_status_without_final_allowance")
     if rec_present and not allowed:

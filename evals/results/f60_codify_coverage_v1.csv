@@ -1,0 +1,28 @@
+grader_id,contract,taxonomy,grader_type,executable,current_coverage,remaining_gap
+f41_established_trend_requires_trend_allowed,F4.1,T2/T3,DETERMINISTIC,True,implemented,
+f41_gap_and_as_of_flags_present,F4.1,T2,DETERMINISTIC,True,implemented,
+f43_weekly_cannot_bypass_trend_eligibility,F4.3,T2/T3,DETERMINISTIC,True,implemented,
+f44_lifestyle_inputs_require_lookup,F4.4,T1,DETERMINISTIC,True,implemented,
+f45_maintenance_of_gain_may_surface,F4.5,T4,DETERMINISTIC,True,implemented,
+f46_t5_unworthy_not_elevated,F4.6,T5,DETERMINISTIC,True,implemented,
+f47_recommendation_requires_both_gates,F4.7,,DETERMINISTIC,True,implemented,
+f47_rec_phrase_leak_when_blocked,F4.7,,DETERMINISTIC,True,implemented,
+f48_t6_control_not_primary,F4.8,T6,DETERMINISTIC,True,implemented,
+f49_t12_spread_distinct_from_level,F4.9,T12,DETERMINISTIC,True,implemented,
+f51_output_contract_shape,F5.1,T7,DETERMINISTIC,True,implemented,
+f51_facts_are_system_stamped,F5.1,T7,DETERMINISTIC,True,implemented,
+f51a_quote_null_on_quiet_path,F5.1A,T7,DETERMINISTIC,True,implemented,Semantic quote-safety remains LLM/human.
+scenario_b1_quiet_path,F4.6,T5,DETERMINISTIC,True,implemented,
+scenario_b3_maintenance_without_rec,F4.5/F4.7,T4,DETERMINISTIC,True,implemented,
+scenario_e1_rr_control,F4.8,T6,DETERMINISTIC,True,implemented,
+scenario_c4_spread_distinct,F4.9,T12,DETERMINISTIC,True,implemented,
+scenario_a_family_mature_data,F4.1,,DETERMINISTIC,True,implemented,
+sem_primary_selects_highest_priority,F5.1,T7,LLM_AS_JUDGE,False,spec_only,Needs LLM-as-judge with primary_metrics as a hint; human adjudication for ties.
+sem_t8_no_level_c,F5.1,T8,LLM_AS_JUDGE,False,spec_only,LLM-as-judge + human. Offline CODIFY does not invoke Gemini.
+sem_mixed_signals_preserved,F5.1,T8,LLM_AS_JUDGE,False,spec_only,LLM-as-judge + human. Omission vs collapse still requires judgment.
+sem_association_not_causation,F4.4,T1,HYBRID,False,spec_only,Do not add a C2 single-cause deterministic rule. Accepted MVP caffeine selection stays human/LLM.
+sem_rationale_quality,F5.1,T7,HUMAN_REVIEW,False,spec_only,Human review; optional later LLM-as-judge.
+sem_quote_not_hidden_advice,F5.1A,T7,LLM_AS_JUDGE,False,spec_only,Optional later judge. Not a reason to reopen F5.1A product code.
+sem_c2_confounders_not_collapsed,F4.4,T1,HUMAN_REVIEW,False,spec_only,Human / LLM only.
+sem_t6_no_cardiorespiratory_reassurance,F4.8,T6,LLM_AS_JUDGE,False,spec_only,Structured control-role is deterministic (f48). Prose reassurance needs a judge.
+sem_t12_spread_not_stress,F4.9,T12,LLM_AS_JUDGE,False,spec_only,Level/direction consistency is deterministic (f49). Stress/recovery wording needs a judge.

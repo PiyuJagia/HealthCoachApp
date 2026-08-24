@@ -1,0 +1,301 @@
+{
+  "graders": [
+    {
+      "grader_id": "f41_established_trend_requires_trend_allowed",
+      "contract": "F4.1",
+      "taxonomy": "T2/T3",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "ESTABLISHED_TREND rows must have trend_allowed; trend_allowed=false must not be ESTABLISHED_TREND.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f41_gap_and_as_of_flags_present",
+      "contract": "F4.1",
+      "taxonomy": "T2",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "Each trend row must expose as_of_date_available and gap_caveat_required as booleans.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f43_weekly_cannot_bypass_trend_eligibility",
+      "contract": "F4.3",
+      "taxonomy": "T2/T3",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "Weekly summary_comparison / recommendation_support cannot exceed the matching as-of trend gates.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f44_lifestyle_inputs_require_lookup",
+      "contract": "F4.4",
+      "taxonomy": "T1",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "Lifestyle-derived policy inputs (caffeine_mg, alcohol_units) must follow an actual lifestyle lookup.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f45_maintenance_of_gain_may_surface",
+      "contract": "F4.5",
+      "taxonomy": "T4",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "When insight_worthy and maintenance_of_gain are present, status must not be quiet.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f46_t5_unworthy_not_elevated",
+      "contract": "F4.6",
+      "taxonomy": "T5",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "insight_worthy=false must not produce INSIGHT or RECOMMENDATION.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f47_recommendation_requires_both_gates",
+      "contract": "F4.7",
+      "taxonomy": "",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "final_recommendation_allowed = worthy AND authorized; blocked rec field/status must be empty.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f47_rec_phrase_leak_when_blocked",
+      "contract": "F4.7",
+      "taxonomy": "",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "When allowed=false, existing rec-phrase list must not appear in primary/subtext/insight/quote.",
+      "notes": "Reuses the product phrase list. Novel wording remains human/LLM."
+    },
+    {
+      "grader_id": "f48_t6_control_not_primary",
+      "contract": "F4.8",
+      "taxonomy": "T6",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "Control metrics cannot sit in primary_metrics or independently authorize a recommendation.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f49_t12_spread_distinct_from_level",
+      "contract": "F4.9",
+      "taxonomy": "T12",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "Spread stays distinct from level/direction; higher spread cannot flip an improving/stable mean to decreasing.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f51_output_contract_shape",
+      "contract": "F5.1",
+      "taxonomy": "T7",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "INSIGHT/RECOMMENDATION requires primary_message; quiet path has null primary and null quote.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f51_facts_are_system_stamped",
+      "contract": "F5.1",
+      "taxonomy": "T7",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "supporting_metric_facts origin must be deterministic_output_contract.",
+      "notes": ""
+    },
+    {
+      "grader_id": "f51a_quote_null_on_quiet_path",
+      "contract": "F5.1A",
+      "taxonomy": "T7",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "Semantic quote-safety remains LLM/human.",
+      "expected_behavior": "motivational_quote is a separate field and must be null on the quiet path.",
+      "notes": "C4 quote-as-advice is an accepted MVP limitation; not graded here."
+    },
+    {
+      "grader_id": "scenario_b1_quiet_path",
+      "contract": "F4.6",
+      "taxonomy": "T5",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "B1 remains NO_SIGNIFICANT_NEW_PATTERN with null primary/quote/recommendation.",
+      "notes": ""
+    },
+    {
+      "grader_id": "scenario_b3_maintenance_without_rec",
+      "contract": "F4.5/F4.7",
+      "taxonomy": "T4",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "B3 may surface INSIGHT for maintenance_of_gain without a recommendation.",
+      "notes": ""
+    },
+    {
+      "grader_id": "scenario_e1_rr_control",
+      "contract": "F4.8",
+      "taxonomy": "T6",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "E1 respiratory rate remains control context and is not the sole primary insight.",
+      "notes": ""
+    },
+    {
+      "grader_id": "scenario_c4_spread_distinct",
+      "contract": "F4.9",
+      "taxonomy": "T12",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "C4 HRV level stays improving/stable while spread remains spread_context.",
+      "notes": ""
+    },
+    {
+      "grader_id": "scenario_a_family_mature_data",
+      "contract": "F4.1",
+      "taxonomy": "",
+      "grader_type": "DETERMINISTIC",
+      "executable": true,
+      "current_coverage": "implemented",
+      "remaining_gap": "",
+      "expected_behavior": "A-family traces keep at least one ESTABLISHED_TREND with trend_allowed.",
+      "notes": ""
+    },
+    {
+      "grader_id": "sem_primary_selects_highest_priority",
+      "contract": "F5.1",
+      "taxonomy": "T7",
+      "grader_type": "LLM_AS_JUDGE",
+      "executable": false,
+      "current_coverage": "spec_only",
+      "remaining_gap": "Needs LLM-as-judge with primary_metrics as a hint; human adjudication for ties.",
+      "expected_behavior": "primary_message names the highest-priority eligible/salient observation.",
+      "notes": ""
+    },
+    {
+      "grader_id": "sem_t8_no_level_c",
+      "contract": "F5.1",
+      "taxonomy": "T8",
+      "grader_type": "LLM_AS_JUDGE",
+      "executable": false,
+      "current_coverage": "spec_only",
+      "remaining_gap": "LLM-as-judge + human. Offline CODIFY does not invoke Gemini.",
+      "expected_behavior": "No unsupported user-level physiological-state conclusion (Level C).",
+      "notes": "Do not solve with a phrase dictionary."
+    },
+    {
+      "grader_id": "sem_mixed_signals_preserved",
+      "contract": "F5.1",
+      "taxonomy": "T8",
+      "grader_type": "LLM_AS_JUDGE",
+      "executable": false,
+      "current_coverage": "spec_only",
+      "remaining_gap": "LLM-as-judge + human. Omission vs collapse still requires judgment.",
+      "expected_behavior": "Discordant metric directions remain distinguishable in user-facing prose.",
+      "notes": ""
+    },
+    {
+      "grader_id": "sem_association_not_causation",
+      "contract": "F4.4",
+      "taxonomy": "T1",
+      "grader_type": "HYBRID",
+      "executable": false,
+      "current_coverage": "spec_only",
+      "remaining_gap": "Do not add a C2 single-cause deterministic rule. Accepted MVP caffeine selection stays human/LLM.",
+      "expected_behavior": "Lifestyle context stays observational; association \u2260 causation.",
+      "notes": "Product guard already scans a small causal-phrase list. Paraphrase needs judgment."
+    },
+    {
+      "grader_id": "sem_rationale_quality",
+      "contract": "F5.1",
+      "taxonomy": "T7",
+      "grader_type": "HUMAN_REVIEW",
+      "executable": false,
+      "current_coverage": "spec_only",
+      "remaining_gap": "Human review; optional later LLM-as-judge.",
+      "expected_behavior": "Rationale is grounded, concise enough, and separate from the notice.",
+      "notes": ""
+    },
+    {
+      "grader_id": "sem_quote_not_hidden_advice",
+      "contract": "F5.1A",
+      "taxonomy": "T7",
+      "grader_type": "LLM_AS_JUDGE",
+      "executable": false,
+      "current_coverage": "spec_only",
+      "remaining_gap": "Optional later judge. Not a reason to reopen F5.1A product code.",
+      "expected_behavior": "Motivational quote remains a mild nudge, not a hidden directive.",
+      "notes": "F5.2 C4 FAIL is an accepted MVP limitation. No new hard semantic classifier in this phase."
+    },
+    {
+      "grader_id": "sem_c2_confounders_not_collapsed",
+      "contract": "F4.4",
+      "taxonomy": "T1",
+      "grader_type": "HUMAN_REVIEW",
+      "executable": false,
+      "current_coverage": "spec_only",
+      "remaining_gap": "Human / LLM only.",
+      "expected_behavior": "C2 late-work/alcohol/caffeine remain multiple observational factors.",
+      "notes": "Existing MVP caffeine-selection behavior is accepted. No deterministic single-cause rule."
+    },
+    {
+      "grader_id": "sem_t6_no_cardiorespiratory_reassurance",
+      "contract": "F4.8",
+      "taxonomy": "T6",
+      "grader_type": "LLM_AS_JUDGE",
+      "executable": false,
+      "current_coverage": "spec_only",
+      "remaining_gap": "Structured control-role is deterministic (f48). Prose reassurance needs a judge.",
+      "expected_behavior": "Stable RR is not converted into cardiorespiratory-health reassurance.",
+      "notes": ""
+    },
+    {
+      "grader_id": "sem_t12_spread_not_stress",
+      "contract": "F4.9",
+      "taxonomy": "T12",
+      "grader_type": "LLM_AS_JUDGE",
+      "executable": false,
+      "current_coverage": "spec_only",
+      "remaining_gap": "Level/direction consistency is deterministic (f49). Stress/recovery wording needs a judge.",
+      "expected_behavior": "Higher HRV spread is not described as decline, poor recovery, or instability.",
+      "notes": ""
+    }
+  ]
+}

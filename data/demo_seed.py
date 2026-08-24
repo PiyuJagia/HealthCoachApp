@@ -325,6 +325,39 @@ def build_demo_lifestyle_events(user_id: int, start_date: date, rng: random.Rand
     return events
 
 
+def _existing_demo_user(session) -> User | None:
+    from sqlalchemy import select
+
+    return session.scalar(
+        select(User).where(User.display_name == DEMO_DISPLAY_NAME).order_by(User.id.asc())
+    )
+
+
+def ensure_demo_health_data(session=None) -> User:
+    """Idempotently create the Marcus demo dataset if it is not already present.
+
+    Does not reset tables or insert a second demo user when one already exists.
+    Safe for Streamlit reruns and local use of an existing SQLite file.
+    """
+    from data.database import get_session_factory, init_database
+
+    init_database(drop_existing=False)
+    owns_session = session is None
+    if owns_session:
+        session = get_session_factory()()
+    try:
+        user = _existing_demo_user(session)
+        if user is None:
+            user = seed_demo_health_data(session, reset=False)
+        _ = user.id, user.display_name
+        if owns_session:
+            session.expunge(user)
+        return user
+    finally:
+        if owns_session:
+            session.close()
+
+
 def seed_demo_health_data(session, *, reset: bool = False) -> User:
     """Create the fictional demo user and ~90 days of synthetic observations."""
     from data.database import init_database

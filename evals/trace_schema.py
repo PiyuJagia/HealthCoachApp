@@ -134,6 +134,7 @@ ORIGIN_WEEKLY_SUMMARY = "weekly_summary"
 ORIGIN_EVIDENCE_RAG = "evidence_rag_retrieval"
 ORIGIN_EVIDENCE_POLICY = "evidence_policy"
 ORIGIN_RECOMMENDATION_BOUNDARY = "deterministic_recommendation_boundary"
+ORIGIN_OUTPUT_CONTRACT = "deterministic_output_contract"
 ORIGIN_LIFESTYLE_TOOL = "lifestyle_context"
 ORIGIN_PRIOR_MODEL_TOOL = "prior_model_tool_interaction"
 ORIGIN_GENERATION_CONFIG = "generation_config"
@@ -271,6 +272,10 @@ class RecommendationBoundaryTrace:
 class GenerationTrace:
     model_name: str = ""
     final_insight: str = ""
+    primary_message: str | None = None
+    subtext: str | None = None
+    motivational_quote: str | None = None
+    recommendation: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return sanitize_for_trace(asdict(self))
@@ -298,6 +303,8 @@ class TraceRecord:
     policy: PolicyTrace | None = None
     generation: GenerationTrace | None = None
     recommendation_boundary: RecommendationBoundaryTrace | None = None
+    output_contract: dict[str, Any] | None = None
+    raw_model_output: dict[str, Any] | None = None
     final_guard: FinalGuardTrace | None = None
     final_output: str = ""
     model_calls: list[ModelCallContextTrace] = field(default_factory=list)
@@ -317,6 +324,8 @@ class TraceRecord:
             "recommendation_boundary": (
                 self.recommendation_boundary.to_dict() if self.recommendation_boundary else None
             ),
+            "output_contract": sanitize_for_trace(self.output_contract),
+            "raw_model_output": sanitize_for_trace(self.raw_model_output),
             "final_guard": self.final_guard.to_dict() if self.final_guard else None,
             "final_output": self.final_output,
             "model_calls": [call.to_dict() for call in self.model_calls],

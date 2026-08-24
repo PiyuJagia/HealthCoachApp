@@ -36,8 +36,7 @@ do not return partial health guidance.
 `BOUNDED_FAILURE`, `GUARD_BLOCKED`. Older E3.1 trace archives may contain the retired status
 `NO_MEANINGFUL_INSIGHT`.
 
-**Assignment 4 status:** Phase **F4.3 — weekly-summary alignment** is complete.
-F1–F4.2 are complete. Frozen human PASS/FAIL labels are unchanged. Gemini baseline has **not** been rerun. CODIFY has **not** started. Next: T1 lifestyle context.
+**Assignment 4 status:** F1–F5.2 complete. CODIFY v1 complete (`evals/codify/`). Frozen human PASS/FAIL labels unchanged. Full 15-scenario Gemini baseline has **not** been rerun.
 
 Tracker: `evals/results/assignment4_tracker_v1.md`
 
@@ -51,7 +50,7 @@ Tracker: `evals/results/assignment4_tracker_v1.md`
 | **Trace** | What actually happened during an agent run (`evals/traces/{run_id}.json`) |
 | **Human note** | Free-text observation added only after manual review |
 | **Failure taxonomy** | Clusters discovered **after** reading traces — not pre-built |
-| **Eval / grader** | Automated assertions built only after failure patterns are discovered |
+| **Eval / grader** | CODIFY v1 TRACE graders in `evals/codify/`; semantic T8/quote judges are spec-only |
 
 **Artifacts:**
 

@@ -108,6 +108,8 @@ class RunContext:
     last_lifestyle_context: dict[str, Any] = field(default_factory=dict)
     lifestyle_available_inputs: set[str] = field(default_factory=set)
     recommendation_boundary: RecommendationBoundaryTrace | None = None
+    output_contract: dict[str, Any] | None = None
+    raw_model_output: dict[str, Any] | None = None
 
     def record_decision(self, label: str) -> None:
         self.activity_log.append({"phase": "DECISION", "label": label})
@@ -177,6 +179,9 @@ def build_tools(context: RunContext) -> tuple:
         higher spread is not a decline. Do not infer stress, poor recovery,
         or cardiovascular instability from spread alone. Compare to baseline
         spread only when spread_comparison_allowed is true.
+        Put the concise priority in primary_message and the explanation in insight.
+        Stay at named metric facts or named multi-metric summaries. Do not
+        invent supporting_metric_facts; the system stamps those.
         """
         context.record_act("get_trend_signals", {"user_id": context.user_id, "as_of_date": context.as_of_date.isoformat()})
         result = agent_tools.get_trend_signals(context.user_id, as_of_date=context.as_of_date)

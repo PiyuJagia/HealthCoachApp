@@ -44,6 +44,7 @@ from agent.schemas import (
 )
 from agent.tools import RunContext
 from agent.trace import PersistedAgentRun, persist_agent_run
+from app.output_contract import apply_output_interpretation_contract
 from app.output_guard import check_final_output
 from app.recommendation_boundary import (
     apply_recommendation_boundary,
@@ -93,6 +94,9 @@ def _empty_policy_decision() -> EvidencePolicyDecision:
 def _guard_text(result_payload: dict[str, Any]) -> str:
     parts = [
         str(result_payload.get("theme") or ""),
+        str(result_payload.get("primary_message") or ""),
+        str(result_payload.get("subtext") or ""),
+        str(result_payload.get("motivational_quote") or ""),
         str(result_payload.get("insight") or ""),
         str(result_payload.get("recommendation") or ""),
         str(result_payload.get("reason_not_surfaced") or ""),
@@ -129,6 +133,24 @@ def _apply_recommendation_boundary(
             f"worthy={decision.recommendation_worthy}, "
             f"authorized={decision.recommendation_authorized}, "
             f"final_recommendation_allowed={decision.final_recommendation_allowed}."
+        )
+    return updated
+
+
+def _apply_output_interpretation_contract(
+    *,
+    context: RunContext,
+    structured: dict[str, Any],
+) -> dict[str, Any]:
+    updated, decision = apply_output_interpretation_contract(
+        structured,
+        signals=context.candidate_signals,
+    )
+    context.output_contract = decision.to_dict()
+    if decision.violations:
+        context.record_decision(
+            "Output interpretation contract corrected model output: "
+            + ", ".join(decision.violations)
         )
     return updated
 
@@ -179,6 +201,8 @@ def _persist_result(
     trace.policy = context.policy
     trace.generation = context.generation
     trace.recommendation_boundary = context.recommendation_boundary
+    trace.output_contract = context.output_contract
+    trace.raw_model_output = context.raw_model_output
     trace.final_guard = context.final_guard
     trace.final_output = json.dumps(structured, sort_keys=True)
     trace.model_calls = list(context.model_calls)
@@ -265,7 +289,9 @@ async def _execute_adk_run_once(
                 as_of_date=as_of_date.isoformat(),
             )
             structured = result.to_dict()
+            context.raw_model_output = dict(structured)
             structured = _apply_recommendation_boundary(context=context, structured=structured)
+            structured = _apply_output_interpretation_contract(context=context, structured=structured)
             structured = _apply_output_guard(
                 context=context,
                 structured=structured,
@@ -291,7 +317,14 @@ async def _execute_adk_run_once(
         context.final_guard = FinalGuardTrace(passed=True, violations=[])
 
     insight_text = structured.get("insight") or structured.get("reason_not_surfaced") or ""
-    context.generation = GenerationTrace(model_name=MODEL, final_insight=str(insight_text))
+    context.generation = GenerationTrace(
+        model_name=MODEL,
+        final_insight=str(insight_text),
+        primary_message=structured.get("primary_message"),
+        subtext=structured.get("subtext"),
+        motivational_quote=structured.get("motivational_quote"),
+        recommendation=structured.get("recommendation"),
+    )
     context.record_final(f"Completed with status={structured.get('status')}.")
 
     return _persist_result(

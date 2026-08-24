@@ -184,6 +184,7 @@ class GuardBoundaryTests(unittest.TestCase):
             recommendation_worthy=True,
             structured={
                 "status": "RECOMMENDATION",
+                "primary_message": "Sleep duration declined.",
                 "recommendation": "I recommend shifting caffeine earlier.",
             },
         )
@@ -318,6 +319,7 @@ class RunnerAndTraceTests(unittest.TestCase):
             user_id=1,
             as_of_date="2026-08-17",
             status="INSIGHT",
+            primary_message="Resting heart rate, HRV, and VO2 remain improved versus the earlier baseline.",
             insight="Your cardiovascular gains appear to be holding.",
             recommendation="Maintain your regular aerobic exercise habit.",
             recommendation_authorized=True,
@@ -423,7 +425,8 @@ class RunnerAndTraceTests(unittest.TestCase):
     def test_prompt_requires_combined_gate(self) -> None:
         self.assertIn("final_recommendation_allowed=true", HEALTH_COACH_INSTRUCTIONS)
         self.assertIn("Either flag alone is not enough", HEALTH_COACH_INSTRUCTIONS)
-        self.assertIn("do not hide advice inside insight prose", HEALTH_COACH_INSTRUCTIONS)
+        self.assertIn("do not hide advice inside", HEALTH_COACH_INSTRUCTIONS)
+        self.assertIn("motivational_quote", HEALTH_COACH_INSTRUCTIONS)
 
 
 if __name__ == "__main__":
