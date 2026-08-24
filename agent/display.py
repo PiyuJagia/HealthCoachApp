@@ -4,6 +4,34 @@ from __future__ import annotations
 
 from typing import Any
 
+from agent.provider_retry import (
+    is_gemini_quota_exhausted,
+    is_transient_gemini_unavailable,
+    iter_exception_chain,
+)
+
+
+ANALYZE_HEALTH_SPINNER = "Analyzing health signals…"
+GEMINI_BUSY_UI_MESSAGE = (
+    "Gemini is temporarily busy. Please try Analyze Health again in a moment."
+)
+GEMINI_UNAVAILABLE_UI_MESSAGE = (
+    "Gemini is temporarily unavailable. Please try again shortly."
+)
+EVIDENCE_UNAVAILABLE_UI_MESSAGE = (
+    "Health evidence retrieval is temporarily unavailable. Please try again shortly."
+)
+ANALYSIS_FAILED_UI_MESSAGE = "Health analysis could not be completed. Please try again."
+
+_SAFE_ANALYZE_MESSAGES = frozenset(
+    {
+        GEMINI_BUSY_UI_MESSAGE,
+        GEMINI_UNAVAILABLE_UI_MESSAGE,
+        EVIDENCE_UNAVAILABLE_UI_MESSAGE,
+        ANALYSIS_FAILED_UI_MESSAGE,
+    }
+)
+
 
 def summarize_trend_signals(candidate_signals: dict[str, Any]) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
@@ -67,6 +95,88 @@ def model_quota_exhausted_message(structured: dict[str, Any]) -> str:
     return str(
         structured.get("reason_not_surfaced")
         or "The Health Coach has reached its current model usage limit. Please try again later."
+    )
+
+
+def _exception_type_name(item: BaseException) -> str:
+    module = type(item).__module__ or ""
+    return f"{module}.{type(item).__name__}".lower()
+
+
+def _is_evidence_provider_error(exc: BaseException) -> bool:
+    openai_types: tuple[type, ...] = ()
+    pinecone_types: tuple[type, ...] = ()
+    try:
+        from openai import OpenAIError
+
+        openai_types = (OpenAIError,)
+    except ImportError:  # pragma: no cover
+        pass
+    try:
+        from pinecone.exceptions import PineconeException
+
+        pinecone_types = (PineconeException,)
+    except ImportError:  # pragma: no cover
+        pass
+
+    for item in iter_exception_chain(exc):
+        if openai_types and isinstance(item, openai_types):
+            return True
+        if pinecone_types and isinstance(item, pinecone_types):
+            return True
+        type_name = _exception_type_name(item)
+        if "openai" in type_name or "pinecone" in type_name:
+            return True
+        if isinstance(item, RuntimeError):
+            message = str(item).lower()
+            if (
+                "pinecone" in message
+                or "openai embedding" in message
+                or "embedding request failed" in message
+            ):
+                return True
+    return False
+
+
+def _is_gemini_provider_error(exc: BaseException) -> bool:
+    try:
+        from google.genai.errors import APIError, ClientError, ServerError
+    except ImportError:  # pragma: no cover
+        APIError = ClientError = ServerError = ()  # type: ignore[misc, assignment]
+    for item in iter_exception_chain(exc):
+        if APIError and isinstance(item, (APIError, ClientError, ServerError)):
+            return True
+        type_name = _exception_type_name(item)
+        if "google.genai" in type_name or "google.adk" in type_name:
+            return True
+    return False
+
+
+def user_facing_analyze_error(exc: BaseException) -> str:
+    """Map a provider exception to a fixed UI sentence. Never returns str(exc)."""
+    if is_transient_gemini_unavailable(exc):
+        return GEMINI_BUSY_UI_MESSAGE
+    if is_gemini_quota_exhausted(exc):
+        return "The Health Coach has reached its current model usage limit. Please try again later."
+    if _is_evidence_provider_error(exc):
+        return EVIDENCE_UNAVAILABLE_UI_MESSAGE
+    if _is_gemini_provider_error(exc):
+        return GEMINI_UNAVAILABLE_UI_MESSAGE
+    return ANALYSIS_FAILED_UI_MESSAGE
+
+
+def analyze_health_status_message(structured: dict[str, Any]) -> str | None:
+    """User-facing copy for already-translated runner statuses. TRACE text is unchanged."""
+    if is_temporary_model_unavailable(structured):
+        return GEMINI_BUSY_UI_MESSAGE
+    if is_model_quota_exhausted(structured):
+        return model_quota_exhausted_message(structured)
+    return None
+
+
+def is_safe_analyze_error_message(message: str) -> bool:
+    return message in _SAFE_ANALYZE_MESSAGES or message.startswith(
+        "The Health Coach has reached its current model usage limit."
     )
 
 

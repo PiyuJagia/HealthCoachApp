@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 
 import streamlit as st
@@ -12,19 +13,20 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 load_dotenv(PROJECT_ROOT / ".env")
 
 from agent.display import (
+    ANALYZE_HEALTH_SPINNER,
+    analyze_health_status_message,
     format_activity_lines,
-    is_model_quota_exhausted,
-    is_temporary_model_unavailable,
-    model_quota_exhausted_message,
     policy_summary,
     summarize_trend_signals,
-    temporary_unavailable_message,
+    user_facing_analyze_error,
 )
 from agent.runner import run_health_review
 from agent.scenarios import SCENARIOS, resolve_demo_user_id
 from app.agent_tools import get_trend_signals
 from app.trace_eval_dashboard import render_trace_eval_dashboard
 from data.demo_seed import DEMO_DISPLAY_NAME, DEMO_GOAL, ensure_demo_health_data
+
+LOGGER = logging.getLogger("health_coach.streamlit")
 
 st.set_page_config(page_title="Health Coach / TRACE Evals", layout="wide")
 
@@ -59,17 +61,23 @@ def _render_health_coach_demo() -> None:
     st.markdown(f"**Review date:** {scenario.as_of_date.isoformat()} ({scenario.scenario_id})")
 
     if st.button("Analyze Health", type="primary"):
-        with st.spinner("Running Health Coach agent..."):
-            user_id = resolve_demo_user_id()
-            trends = get_trend_signals(user_id, as_of_date=scenario.as_of_date)
-            result = run_health_review(
-                scenario_id=scenario.scenario_id,
-                user_id=user_id,
-                as_of_date=scenario.as_of_date,
-            )
+        try:
+            with st.spinner(ANALYZE_HEALTH_SPINNER):
+                user_id = resolve_demo_user_id()
+                trends = get_trend_signals(user_id, as_of_date=scenario.as_of_date)
+                result = run_health_review(
+                    scenario_id=scenario.scenario_id,
+                    user_id=user_id,
+                    as_of_date=scenario.as_of_date,
+                )
+        except Exception as exc:  # noqa: BLE001 — UI translates provider errors; traceback stays in logs
+            LOGGER.exception("Analyze Health failed")
+            st.error(user_facing_analyze_error(exc))
+            st.caption("You can click Analyze Health again.")
+            return
 
         st.subheader("A. HEALTH SIGNALS")
-        st.dataframe(summarize_trend_signals(trends), use_container_width=True)
+        st.dataframe(summarize_trend_signals(trends), width="stretch")
 
         st.subheader("B. AGENT ACTIVITY")
         for line in format_activity_lines(result.activity_log):
@@ -94,10 +102,9 @@ def _render_health_coach_demo() -> None:
 
         st.subheader("D. HEALTH COACH RESULT")
         structured = result.structured
-        if is_temporary_model_unavailable(structured):
-            st.warning(temporary_unavailable_message(structured))
-        elif is_model_quota_exhausted(structured):
-            st.warning(model_quota_exhausted_message(structured))
+        status_message = analyze_health_status_message(structured)
+        if status_message:
+            st.warning(status_message)
         elif structured.get("status") == "NO_SIGNIFICANT_NEW_PATTERN":
             st.write("No significant new pattern")
             summary = structured.get("insight") or structured.get("reason_not_surfaced")

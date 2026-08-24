@@ -54,7 +54,7 @@ def render_trace_eval_dashboard() -> None:
         st.write(f"Baseline {score.baseline_pass_rate:.1f}% → Post-remediation {score.v2_pass_rate:.1f}%")
 
     st.subheader("Failure → remediation")
-    st.dataframe(list(bundle.remediation_examples), use_container_width=True, hide_index=True)
+    st.dataframe(list(bundle.remediation_examples), width="stretch", hide_index=True)
 
     st.subheader("Failure taxonomy")
     st.dataframe(
@@ -67,7 +67,7 @@ def render_trace_eval_dashboard() -> None:
             }
             for row in bundle.taxonomy_rows
         ],
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 
@@ -78,7 +78,7 @@ def render_trace_eval_dashboard() -> None:
         f"({score.codify_evaluations} evaluations)"
     )
     with st.expander("Grader catalog"):
-        st.dataframe(bundle.grader_rows, use_container_width=True, hide_index=True)
+        st.dataframe(bundle.grader_rows, width="stretch", hide_index=True)
 
     if st.button("Run deterministic TRACE checks", type="primary"):
         with st.spinner("Grading official post-remediation traces (no Gemini)..."):
@@ -97,7 +97,7 @@ def render_trace_eval_dashboard() -> None:
             st.caption(f"{live['timestamp_utc']} · {live['trace_count']} official traces · in-memory only")
 
     st.subheader("Scenario comparison")
-    st.dataframe(bundle.comparison_rows, use_container_width=True, hide_index=True)
+    st.dataframe(bundle.comparison_rows, width="stretch", hide_index=True)
 
     with st.expander("Known MVP limitations"):
         for item in bundle.known_limitations:
@@ -105,5 +105,5 @@ def render_trace_eval_dashboard() -> None:
 
     with st.expander("TRACE Assignment Evidence"):
         st.write("Target → Run → Analyze → Cluster → Evaluate / Codify → Remediate → Rerun")
-        st.dataframe(list(bundle.evidence_rows), use_container_width=True, hide_index=True)
+        st.dataframe(list(bundle.evidence_rows), width="stretch", hide_index=True)
         st.caption("Frozen baseline labels were not overwritten. CODIFY does not call Gemini.")
